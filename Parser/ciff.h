@@ -7,6 +7,7 @@
 #include <iostream>
 #include <fstream>
 #include <exception>
+#include <memory>
 
 using namespace std;
 
