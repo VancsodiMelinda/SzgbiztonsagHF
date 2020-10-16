@@ -35,4 +35,11 @@
       <Filter>Resource Files</Filter>
     </ResourceCompile>
   </ItemGroup>
+  <ItemGroup>
+    <CopyFileToFolders Include="..\ParserTestFiles\1.caff" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\ParserTestFiles\2.caff" />
+    <None Include="..\ParserTestFiles\3.caff" />
+  </ItemGroup>
 </Project>
