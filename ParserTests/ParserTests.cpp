@@ -3,7 +3,6 @@
 
 #include "../Parser/caff.h"
 
-
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
 namespace ParserTests
@@ -84,6 +83,34 @@ namespace ParserTests
 				wchar_t* wc = new wchar_t[s];
 				mbstowcs_s(&ret, wc, s, what, s - 1);
 				Assert::Fail(wc);
+			}
+		}
+
+		TEST_METHOD(test_caff4)
+		{
+			char* in_file = "bad_caff_magic.caff";
+			unique_ptr<caff> c = make_unique<caff>();
+			ifstream f;
+			f.open(in_file, ios::in | ios::binary);
+
+			if (!f.is_open()) {
+				Assert::Fail(L"file not found");
+			}
+
+			bool exceptionThrown = false;
+
+			try
+			{
+				parse_caff_file(f, c.get());
+			}
+			catch (bad_magic&) // special exception type
+			{
+				exceptionThrown = true;
+			}
+
+			if (!exceptionThrown)
+			{
+				Assert::Fail(L"expected to throw bad_magic exception");
 			}
 		}
 
