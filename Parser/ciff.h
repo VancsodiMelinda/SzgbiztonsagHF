@@ -19,7 +19,7 @@ using namespace std;
 
 #define uint_max		4294967295
 
-
+class bad_magic : public exception {};
 class eof_in_caption : public exception {};
 class long_ciff_header : public exception {};
 class eof_in_tags : public exception {};

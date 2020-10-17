@@ -2,17 +2,14 @@
 #include "caff.h"
 
 
-// Warning	C26429	Symbol 'argv' is never tested for nullness, it can be marked as not_null(f.23).Parser	C : \Users\roli\Source\Repos\SzgbiztonsagHF\Parser\Parser.cpp	9
-//  argv cannot be null
-// Warning	C26485	Expression 'argv': No array to pointer decay(bounds.3).Parser	C : \Users\roli\Source\Repos\SzgbiztonsagHF\Parser\Parser.cpp	11
-//  argv is null terminated, sizeof will never be called on it
+// Warning	C26429	Symbol 'argv' is never tested for nullness, it can be marked as not_null(f.23).Parser
+//  argv cannot be null, initialized by the function calling main
+// Warning	C26485	Expression 'argv': No array to pointer decay(bounds.3).Parser
+//  argv is null terminated, sizeof will never be called on it & argc holds size anyway
 #pragma warning(suppress: 26429 26485)
-int main(int argc, char* argv[])
+int main(int argc, const char *const *const argv)
 {
     int ret = SUCCESS;
-
-    char* in_file = nullptr;
-    char* out_dir = nullptr;
 
     unique_ptr<caff> c = make_unique<caff>();
     
@@ -22,15 +19,15 @@ int main(int argc, char* argv[])
         return EARGC_MISMATCH;
     }
 
-    // Warning	C26481	Don't use pointer arithmetic. Use span instead (bounds.1).	Parser	C:\Users\roli\Source\Repos\SzgbiztonsagHF\Parser\Parser.cpp	49	
+    // Warning	C26481	Don't use pointer arithmetic. Use span instead (bounds.1).
     //  std::span should be used (C++20) only, but bound checking is correct
     #pragma warning(suppress: 26481)
-    in_file = argv[1];
+    string in_file(argv[1]);
     
-    // Warning	C26481	Don't use pointer arithmetic. Use span instead (bounds.1).	Parser	C:\Users\roli\Source\Repos\SzgbiztonsagHF\Parser\Parser.cpp	49	
+    // Warning	C26481	Don't use pointer arithmetic. Use span instead (bounds.1).
     //  std::span should be used (C++20) only, but bound checking is correct
     #pragma warning(suppress: 26481)
-    out_dir = argv[2];
+    string out_dir(argv[2]);
 
     ifstream f;
     f.open(in_file, ios::in | ios::binary);
@@ -92,9 +89,19 @@ int main(int argc, char* argv[])
     if (ret != SUCCESS)
         return ret;
 
+
+
+    try {
+        c->dump_preview();
+        c->dump_metadata();
+    }
+    catch (exception&) {
+        return UNKNOWN_ERROR;
+    }
+
 //          write caff.frames[0].pixels to <name>_preview.bmp
 //          write caff as json to <name>.json
 
     
-    return 0;
+    return SUCCESS;
 }

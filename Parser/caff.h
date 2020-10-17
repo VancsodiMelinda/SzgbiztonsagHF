@@ -8,7 +8,6 @@
 // Exceptions
 
 class invalid_id : public exception {};
-class bad_magic : public exception {};
 class header_id_mismatch : public exception {};
 class header_size_mismatch : public exception {};
 class too_much_blocks : public exception {};
@@ -85,11 +84,12 @@ struct caff {
 
 public:
 	caff(void) noexcept(true);
+	void dump_preview(void);
+	void dump_metadata(void);
 };
 
 
 void parse_caff_file(ifstream & f, caff * c) noexcept (false);
-void check_header(ifstream & f, caff_header & head, uint64_t & size, uint64_t & num_anim) noexcept (false);
 
 
 /*

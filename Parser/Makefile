@@ -17,5 +17,4 @@ clean:
 	rm $(NAME)
 
 afl-asan:
-# ASAN needs around 17,5 preallocated memory on x64, so let's compile it to x86
 	AFL_USE_ASAN=1 $(AFLCC) $(WARNS) -o $(NAME) -g $(SRCS) $(LDFLAGS)

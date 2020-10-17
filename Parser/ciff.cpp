@@ -2,7 +2,7 @@
 
 using namespace std;
 
-// Warning	C26455	Default constructor may not throw.Declare it 'noexcept' (f.6).Parser	C : \Users\roli\Source\Repos\SzgbiztonsagHF\Parser\ciff.cpp	5
+// Warning	C26455	Default constructor may not throw.Declare it 'noexcept' (f.6).Parser
 //	using allocator, so it may throw
 #pragma warning(suppress: 26455)
 ciff::ciff(void) {
@@ -25,22 +25,28 @@ ciff::ciff(ifstream& f) {
 	f.read(&magic[2], sizeof(char));
 	f.read(&magic[3], sizeof(char));
 
-	// Warning	C26493	Don't use C-style casts (type.4).	Parser	C:\Users\roli\Source\Repos\SzgbiztonsagHF\Parser\caff.cpp	20	
+	if (magic[0] != 'C' ||
+		magic[1] != 'I' ||
+		magic[2] != 'F' ||
+		magic[3] != 'F')
+		throw bad_magic();
+
+	// Warning	C26493	Don't use C-style casts (type.4).
 	//	this is the most reliable way to read into variables, >> fails
 	#pragma warning(suppress: 26493)
 	f.read((char*)&header_size, sizeof(header_size));
 
-	// Warning	C26493	Don't use C-style casts (type.4).	Parser	C:\Users\roli\Source\Repos\SzgbiztonsagHF\Parser\caff.cpp	20	
+	// Warning	C26493	Don't use C-style casts (type.4).
 	//	this is the most reliable way to read into variables, >> fails
 	#pragma warning(suppress: 26493)
 	f.read((char*)&content_size, sizeof(content_size));
 
-	// Warning	C26493	Don't use C-style casts (type.4).	Parser	C:\Users\roli\Source\Repos\SzgbiztonsagHF\Parser\caff.cpp	20	
+	// Warning	C26493	Don't use C-style casts (type.4).
 	//	this is the most reliable way to read into variables, >> fails
 	#pragma warning(suppress: 26493)
 	f.read((char*)&width, sizeof(width));
 
-	// Warning	C26493	Don't use C-style casts (type.4).	Parser	C:\Users\roli\Source\Repos\SzgbiztonsagHF\Parser\caff.cpp	20	
+	// Warning	C26493	Don't use C-style casts (type.4).
 	//	this is the most reliable way to read into variables, >> fails
 	#pragma warning(suppress: 26493)
 	f.read((char*)&height, sizeof(height));
