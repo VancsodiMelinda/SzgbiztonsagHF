@@ -11,7 +11,7 @@ namespace ParserTests
 	{
 	public:
 		
-		TEST_METHOD(test_caff1)
+		TEST_METHOD(caff1_parse)
 		{
 			char* in_file = "1.caff";
 			unique_ptr<caff> c = make_unique<caff>();
@@ -36,7 +36,7 @@ namespace ParserTests
 			}
 		}
 
-		TEST_METHOD(test_caff2)
+		TEST_METHOD(caff2_parse)
 		{
 			char* in_file = "2.caff";
 			unique_ptr<caff> c = make_unique<caff>();
@@ -61,7 +61,7 @@ namespace ParserTests
 			}
 		}
 
-		TEST_METHOD(test_caff3)
+		TEST_METHOD(caff3_parse)
 		{
 			char* in_file = "3.caff";
 			unique_ptr<caff> c = make_unique<caff>();
@@ -86,7 +86,7 @@ namespace ParserTests
 			}
 		}
 
-		TEST_METHOD(test_caff4)
+		TEST_METHOD(bad_caff_magic)
 		{
 			char* in_file = "bad_caff_magic.caff";
 			unique_ptr<caff> c = make_unique<caff>();

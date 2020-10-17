@@ -100,7 +100,7 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <AdditionalLibraryDirectories>C:\Users\user\Desktop\BME VIK MSc\2020-21-1\Szamitogep biztonsag [4]\hf\SzgbiztonsagHF\Parser\x64\Debug;$(VCInstallDir)UnitTest\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>caff.obj</AdditionalDependencies>
+      <AdditionalDependencies>..\Parser\Debug\*.obj</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
