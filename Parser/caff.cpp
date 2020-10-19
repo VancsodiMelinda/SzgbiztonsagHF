@@ -150,7 +150,10 @@ void parse_caff_file(ifstream &f, caff *c) noexcept (false)
 	if (c->head.size != length)
 		throw header_size_mismatch();
 
+	// should be while (!f.eof())
 	while (f.eof()) {
+		// should read new ID
+		// should read length
 
 		// exceeded number of data blocks specified in header & the creds
 		// creds thought to be optional, location not specified, could be last block
