@@ -14,8 +14,8 @@ ciff::ciff(void) {
 	content_size = 0;
 	width = 0;
 	height = 0;
-	caption = vector<char>(0);
-	tags = vector<vector<char>>(0);
+	caption = string("");
+	tags = vector<string>(0);
 	pixels = vector<vector<RGB>>(0);
 };
 
@@ -29,7 +29,7 @@ ciff::ciff(ifstream& f) {
 		magic[1] != 'I' ||
 		magic[2] != 'F' ||
 		magic[3] != 'F')
-		throw bad_magic();
+		throw bad_magic("bad CIFF magic");
 
 	// Warning	C26493	Don't use C-style casts (type.4).
 	//	this is the most reliable way to read into variables, >> fails
@@ -52,7 +52,7 @@ ciff::ciff(ifstream& f) {
 	f.read((char*)&height, sizeof(height));
 	
 	if (content_size != width * height * RGB_count)
-		throw content_size_mismatch();
+		throw content_size_mismatch("ciff content size mismatch");
 
 	size_t bytes_read = hdr_size_min;
 	char c = 0;
@@ -61,59 +61,62 @@ ciff::ciff(ifstream& f) {
 	while (true) {
 		f.get(c);
 		if (f.eof())
-			throw eof_in_caption();
+			throw eof_in_caption("eof in caption");
 
 		bytes_read++;
-		if (bytes_read >= header_size)
-			throw long_ciff_header();
 
 		if (c != '\n')
-			caption.push_back(c);
-		else {
-			caption.push_back('\0');
+			caption += c;
+		else
 			break;
-		}
+
+		if (bytes_read >= header_size)
+			throw long_ciff_header("ciff header longer then expected");
 	}
+
+	tags = vector<string>();
+	tags.push_back(string(""));
+
 
 	// loop to get tags, search until end of header
 	while (true) {
 		f.get(c);
 		if (f.eof())
-			throw eof_in_tags();
+			throw eof_in_tags("found eof in ciff tags");
 
 		bytes_read++;
+
+		if (c != '\0')
+			tags.back() += c;
+		else
+			tags.push_back(string(""));
+
 		if (bytes_read >= header_size)
 			break;
 
-		if (c != '\0')
-			tags.back().push_back(c);
-		else {
-			tags.back().push_back('\0');
-			tags.push_back(vector<char>());
-		}
 
 	}
+	if (tags.back().compare("") != 0)
+		throw missing_tag_end("last ciff tag not null-terminated");
 
-	if (tags.back().back() != '\0')
-		throw missing_tag_end();
+	tags.pop_back();
 
-	if (content_size > uint_max)
-		throw size_trunc();
+	bytes_read = 0;
 
 	pixels = vector<vector<RGB>>();
 	for (auto i = 0; i != width; i++) {
 		pixels.push_back(vector<RGB>());
 		for (auto j = 0; j != height; j++) {
 			pixels.back().push_back(RGB());
-			f.read(&pixels.back().back().R, sizeof(char));
-			f.read(&pixels.back().back().G, sizeof(char));
-			f.read(&pixels.back().back().B, sizeof(char));
+			f.read((char*)&pixels.back().back().R, sizeof(char));
+			f.read((char*)&pixels.back().back().G, sizeof(char));
+			f.read((char*)&pixels.back().back().B, sizeof(char));
+			bytes_read += 3;
 		}
 	}
 
-	if (f.peek() != EOF)
-		throw longer_content();
-
+	if (bytes_read != content_size)
+		throw content_size_mismatch("ciff content size mismatch");
 }
 
 RGB::RGB(void) noexcept {

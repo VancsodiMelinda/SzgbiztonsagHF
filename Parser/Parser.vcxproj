@@ -146,8 +146,10 @@
     <ClCompile Include="Parser.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="bitmap_image.hpp" />
     <ClInclude Include="caff.h" />
     <ClInclude Include="ciff.h" />
+    <ClInclude Include="error.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

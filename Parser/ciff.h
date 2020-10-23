@@ -6,10 +6,10 @@
 #include <vector>
 #include <iostream>
 #include <fstream>
-#include <exception>
 #include <memory>
 
-using namespace std;
+#include "error.h"
+
 
 #define hdr_size_min	(sizeof(char)*4 + sizeof(uint64_t)*4)
 
@@ -19,22 +19,13 @@ using namespace std;
 
 #define uint_max		4294967295
 
-class bad_magic : public exception {};
-class eof_in_caption : public exception {};
-class long_ciff_header : public exception {};
-class eof_in_tags : public exception {};
-class missing_tag_end : public exception {};
-class size_trunc : public exception {};
-class content_size_mismatch : public exception {};
-class longer_content : public exception {};
-
 
 #define RGB_count		3
 
 struct RGB {
-	char R;
-	char G;
-	char B;
+	unsigned char R;
+	unsigned char G;
+	unsigned char B;
 
 public:
 	RGB(void) noexcept;
@@ -47,8 +38,8 @@ struct ciff {
 	uint64_t content_size;
 	uint64_t width;
 	uint64_t height;
-	vector<char> caption;
-	vector<vector<char>> tags;
+	string caption;
+	vector<string> tags;
 	vector<vector<RGB>> pixels;
 
 public:

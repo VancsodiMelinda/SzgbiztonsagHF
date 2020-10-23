@@ -22,8 +22,13 @@ namespace ParserTests
 				Assert::Fail(L"file not found");
 			}
 
+			parse_caff_file(f, c.get());
+			c->dump_preview(string("1_preview.bmp"));
+
+			/*
 			try {
 				parse_caff_file(f, c.get());
+				c->dump_preview(string("1_preview.bmp"));
 			}
 			catch (const exception& e) {
 				size_t ret = 0;
@@ -34,6 +39,8 @@ namespace ParserTests
 				mbstowcs_s(&ret, wc, s, what, s - 1);
 				Assert::Fail(wc);
 			}
+
+			*/
 		}
 
 		TEST_METHOD(caff2_parse)
@@ -49,6 +56,7 @@ namespace ParserTests
 
 			try {
 				parse_caff_file(f, c.get());
+				c->dump_preview(string("2_preview.bmp"));
 			}
 			catch (const exception& e) {
 				size_t ret = 0;
@@ -74,6 +82,7 @@ namespace ParserTests
 
 			try {
 				parse_caff_file(f, c.get());
+				c->dump_preview(string("3_preview.bmp"));
 			}
 			catch (const exception& e) {
 				size_t ret = 0;

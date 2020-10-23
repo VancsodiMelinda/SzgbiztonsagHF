@@ -32,5 +32,11 @@
     <ClInclude Include="ciff.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="error.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="bitmap_image.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

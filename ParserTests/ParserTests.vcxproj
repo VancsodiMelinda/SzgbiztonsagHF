@@ -116,7 +116,7 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <AdditionalLibraryDirectories>C:\Users\user\Desktop\BME VIK MSc\2020-21-1\Szamitogep biztonsag [4]\hf\SzgbiztonsagHF\Parser\x64\Debug;$(VCInstallDir)UnitTest\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>caff.obj;ciff.obj;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>..\Parser\x64\Debug\*.obj;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -176,11 +176,6 @@
     <ResourceCompile Include="ParserTests.rc" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Parser\Parser.vcxproj">
-      <Project>{8a7f4ea0-388a-4966-bb80-c07fee27ff4c}</Project>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <CopyFileToFolders Include="..\ParserTestFiles\1.caff">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
       <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</DeploymentContent>
@@ -198,6 +193,11 @@
       <DeploymentContent>true</DeploymentContent>
     </None>
     <None Include="..\ParserTestFiles\bad_ciff_magic.caff" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Parser\Parser.vcxproj">
+      <Project>{8a7f4ea0-388a-4966-bb80-c07fee27ff4c}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -3,34 +3,7 @@
 // header file defining the caff structure
 
 #include "ciff.h"
-
-
-// Exceptions
-
-class invalid_id : public exception {};
-class header_id_mismatch : public exception {};
-class header_size_mismatch : public exception {};
-class too_much_blocks : public exception {};
-
-
-// return codes
-
-#define UNKNOWN_ERROR			-1
-#define SUCCESS					0
-#define EARGC_MISMATCH			1
-#define EIN_NOT_FOUND			2
-#define EINVALID_ID				3
-#define EBAD_MAGIC				4
-#define EHEAD_ID_MISMATCH		5
-#define EHEAD_SIZE_MISMATCH		6
-#define ETOO_MUCH_BLOCKS		7
-#define EOF_IN_CAPTION			8
-#define ELONG_CIFF_HEAD			9
-#define EOF_IN_TAGS				10
-#define EMISSING_TAG_END		11
-#define ESIZE_TRUNC				12
-#define ECONT_SIZE_MISMATCH		13
-#define ELONGER_CONTENT			14
+#include "bitmap_image.hpp"
 
 // block types
 
@@ -40,6 +13,12 @@ class too_much_blocks : public exception {};
 
 // sizeof(caff_header) != 20, probably because of constructors
 #define caff_hdr_size			20
+
+#define bmp_hdr_size			14
+#define bmp_info_size			40
+
+#define bmp_res_vert			400
+#define bmp_res_hor				300
 
 struct caff_header {
 	char magic[4];
@@ -61,7 +40,7 @@ struct caff_creds {
 		uint8_t minute;
 	} date;
 	uint64_t creator_len;
-	unique_ptr<char[]> name;
+	string name;
 
 public:
 	caff_creds(void) noexcept(true);
@@ -84,8 +63,8 @@ struct caff {
 
 public:
 	caff(void) noexcept(true);
-	void dump_preview(void);
-	void dump_metadata(void);
+	void dump_preview(string&) noexcept(false);
+	void dump_metadata(string&);
 };
 
 

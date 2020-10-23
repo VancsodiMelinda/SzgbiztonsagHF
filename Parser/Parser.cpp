@@ -29,10 +29,29 @@ int main(int argc, const char *const *const argv)
     #pragma warning(suppress: 26481)
     string out_dir(argv[2]);
 
+    if (out_dir.back() != '\\' && out_dir.back() != '/') {
+        cerr << "trailing dir separator missing from output directory" << endl;
+        return ENO_TRAILING_SEP;
+    }
+
+    const size_t last_slash = in_file.find_last_of("/\\");
+    const size_t extension = in_file.find_last_of('.');
+
+    string f_name = in_file.substr(last_slash + 1, extension - last_slash - 1);
+
+    if (f_name.find('.') != string::npos) {
+        cerr << "filename shall not contain a . character" << endl;
+        return EDOT_FOUND;
+    }
+
+    string preview_path = out_dir + f_name + string("_preview.bmp");
+    string metadata_path = out_dir + f_name + string(".json");
+
+
     ifstream f;
     f.open(in_file, ios::in | ios::binary);
 
-    if (!f.is_open()) {
+    if(!f.is_open()) {
         cerr << in_file << " not found" << endl;
         return EIN_NOT_FOUND;
     }
@@ -89,19 +108,17 @@ int main(int argc, const char *const *const argv)
     if (ret != SUCCESS)
         return ret;
 
-
-
     try {
-        c->dump_preview();
-        c->dump_metadata();
+        c->dump_preview(preview_path);
+        c->dump_metadata(metadata_path);
+    }
+    catch (const out_open_fail&) {
+        ret = EOUT_OPEN_FAIL;
     }
     catch (exception&) {
-        return UNKNOWN_ERROR;
+        ret = UNKNOWN_ERROR;
     }
 
-//          write caff.frames[0].pixels to <name>_preview.bmp
-//          write caff as json to <name>.json
-
     
-    return SUCCESS;
+    return ret;
 }
