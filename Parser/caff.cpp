@@ -100,6 +100,7 @@ frame::frame(ifstream& f) {
 
 caff::caff(void) noexcept(true) {
 	head = caff_header();
+	have_creds = false;
 	creds = caff_creds();
 	frames = vector<frame>();
 };
@@ -125,7 +126,54 @@ void caff::dump_preview(string & out_file) noexcept(false) {
 
 
 void caff::dump_metadata(string & out_file) {
-	// TODO
+	ofstream f;
+	f.open(out_file);
+	if (!f.is_open())
+		throw out_open_fail("failed to open metadata file");
+
+	f << "{" << endl;
+	f << "\t" << "\"anim_count\": " << head.num_anim << "," << endl;
+	if (have_creds) {
+		f << "\t" << "\"date\": {" << endl;
+		f << "\t\t" << "\"year\": " << creds.date.year << "," << endl;
+		f << "\t\t" << "\"month\": " << static_cast<unsigned>(creds.date.month) << "," << endl;
+		f << "\t\t" << "\"day\": " << static_cast<unsigned>(creds.date.day) << "," << endl;
+		f << "\t\t" << "\"hour\": " << static_cast<unsigned>(creds.date.hour) << "," << endl;
+		f << "\t\t" << "\"minute\": " << static_cast<unsigned>(creds.date.minute) << endl;
+		f << "\t" << "}," << endl;
+		f << "\t" << "\"creator\": \"" << creds.name << "\"," << endl;
+	}
+
+	f << "\t" << "\"frames\": [" << endl;
+	for (int i = 0; i != frames.size(); i++) {
+		f << "\t\t" << "{" << endl;
+		f << "\t\t\t" << "\"duration\": " << frames[i].duration << "," << endl;
+		f << "\t\t\t" << "\"image\": {" << endl;
+
+		f << "\t\t\t\t" << "\"width\": " << frames[i].img.get()->width << "," << endl;
+		f << "\t\t\t\t" << "\"height\": " << frames[i].img.get()->height << "," << endl;
+		f << "\t\t\t\t" << "\"caption\": \"" << frames[i].img.get()->caption << "\"," << endl;
+
+		f << "\t\t\t\t" << "\"tags\": [" << endl;
+		for (int j = 0; j != frames[i].img.get()->tags.size(); j++) {
+			f << "\t\t\t\t\t" << "\"" << frames[i].img.get()->tags[j] << "\"";
+			if (j != frames[i].img.get()->tags.size() - 1)
+				f << ",";
+			f << endl;
+		}
+		f << "\t\t\t\t" << "]" << endl;
+
+		f << "\t\t\t" << "}" << endl;
+
+		if (i != frames.size() - 1)
+			f << "\t\t" << "}," << endl;
+		else 
+			f << "\t\t" << "}" << endl;
+	}
+	f << "\t" << "]" << endl;
+
+	f << "}" << endl;
+
 };
 
 
@@ -137,8 +185,6 @@ void parse_caff_file(ifstream &f, caff *c) noexcept (false)
 	uint64_t num_anim_var = 0;
 
 	int tmp = 0;
-
-	bool have_cred = false;
 
 	tmp = f.tellg();
 
@@ -174,7 +220,7 @@ void parse_caff_file(ifstream &f, caff *c) noexcept (false)
 
 		// exceeded number of data blocks specified in header & the creds
 		// creds thought to be optional, location not specified, could be last block
-		if (have_cred && c->head.num_anim == num_anim_var)
+		if (c->have_creds && c->head.num_anim == num_anim_var)
 			break;
 //			throw too_much_blocks("number of animation blocks exceeded");
 
@@ -190,7 +236,7 @@ void parse_caff_file(ifstream &f, caff *c) noexcept (false)
 		switch (id)
 		{
 			case CREDIT:
-				have_cred = true;
+				c->have_creds = true;
 
 				cpos = f.tellg();
 				c->creds = caff_creds(f);

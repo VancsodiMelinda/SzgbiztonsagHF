@@ -189,10 +189,24 @@
     <None Include="..\ParserTestFiles\3.caff">
       <DeploymentContent>true</DeploymentContent>
     </None>
+    <None Include="..\ParserTestFiles\bad_caff_credits_id.caff">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="..\ParserTestFiles\bad_caff_header_id.caff">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="..\ParserTestFiles\bad_caff_header_length.caff">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
     <None Include="..\ParserTestFiles\bad_caff_magic.caff">
       <DeploymentContent>true</DeploymentContent>
     </None>
-    <None Include="..\ParserTestFiles\bad_ciff_magic.caff" />
+    <None Include="..\ParserTestFiles\bad_ciff_magic.caff">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="..\ParserTestFiles\bad_ciff_magic2.caff">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Parser\Parser.vcxproj">

@@ -58,6 +58,7 @@ public:
 
 struct caff {
 	caff_header head;
+	bool have_creds;
 	caff_creds creds;
 	vector<frame> frames;
 

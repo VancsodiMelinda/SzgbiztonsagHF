@@ -8,7 +8,9 @@
 //  argv is null terminated, sizeof will never be called on it & argc holds size anyway
 #pragma warning(suppress: 26429 26485)
 int main(int argc, const char *const *const argv)
+//int main()
 {
+    
     int ret = SUCCESS;
 
     unique_ptr<caff> c = make_unique<caff>();
@@ -28,6 +30,7 @@ int main(int argc, const char *const *const argv)
     //  std::span should be used (C++20) only, but bound checking is correct
     #pragma warning(suppress: 26481)
     string out_dir(argv[2]);
+    
 
     if (out_dir.back() != '\\' && out_dir.back() != '/') {
         cerr << "trailing dir separator missing from output directory" << endl;
