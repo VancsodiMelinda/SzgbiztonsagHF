@@ -31,6 +31,7 @@ public:
 	RGB(void) noexcept;
 };
 
+
 struct ciff {
 
 	char magic[4];

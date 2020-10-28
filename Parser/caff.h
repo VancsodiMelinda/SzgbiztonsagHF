@@ -3,7 +3,6 @@
 // header file defining the caff structure
 
 #include "ciff.h"
-#include "bitmap_image.hpp"
 
 // block types
 
