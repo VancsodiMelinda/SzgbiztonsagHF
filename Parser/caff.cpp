@@ -202,6 +202,9 @@ void parse_caff_file(ifstream &f, caff *c) noexcept (false)
 		switch (id)
 		{
 			case CREDIT:
+				if (c->have_creds)
+					throw multiple_credits("more than 1 credits block found");
+
 				c->have_creds = true;
 
 				cpos = f.tellg();
@@ -217,7 +220,7 @@ void parse_caff_file(ifstream &f, caff *c) noexcept (false)
 
 				// exceeded number of data blocks specified in header & the creds
 				// creds thought to be optional, location not specified, could be last block
-				if (c->have_creds && c->head.num_anim == num_anim_var)
+				if (c->head.num_anim == num_anim_var)
 					throw too_much_blocks("number of animation blocks exceeded");
 
 

@@ -90,6 +90,7 @@ ciff::ciff(ifstream& f) {
 
 	tags.pop_back();
 
+
 	bytes_read = 0;
 
 	pixels = vector<vector<RGB>>(height);

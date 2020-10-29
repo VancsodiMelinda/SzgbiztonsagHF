@@ -24,6 +24,7 @@ class longer_content : public runtime_error { public: longer_content(const char*
 class out_open_fail : public runtime_error { public: out_open_fail(const char* w) : runtime_error(w) {} };
 class block_size_mismatch : public runtime_error { public: block_size_mismatch(const char* w) : runtime_error(w) {} };
 class ciff_header_size_mismatch : public runtime_error { public: ciff_header_size_mismatch(const char* w) : runtime_error(w) {} };
+class multiple_credits : public runtime_error { public: multiple_credits(const char* w) : runtime_error(w) {} };
 
 
 // return codes
@@ -49,5 +50,6 @@ enum errors {
 	ELONGER_CONTENT,
 	EOUT_OPEN_FAIL,
 	EBS_MISMATCH,
-	ECIFF_HEAD_SIZE_MISMATCH
+	ECIFF_HEAD_SIZE_MISMATCH,
+	EMULTIPLE_CREDITS
 };
