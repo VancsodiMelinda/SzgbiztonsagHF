@@ -1,6 +1,9 @@
 #pragma once
 
 #include <exception>
+#include <unordered_map>
+#include <typeindex>
+#include <typeinfo>
 
 using namespace std;
 
@@ -19,7 +22,7 @@ class size_trunc : public runtime_error { public: size_trunc(const char* w) : ru
 class content_size_mismatch : public runtime_error { public: content_size_mismatch(const char* w) : runtime_error(w) {} };
 class longer_content : public runtime_error { public: longer_content(const char* w) : runtime_error(w) {} };
 class out_open_fail : public runtime_error { public: out_open_fail(const char* w) : runtime_error(w) {} };
-class block_size_miscmatch : public runtime_error { public: block_size_miscmatch(const char* w) : runtime_error(w) {} };
+class block_size_mismatch : public runtime_error { public: block_size_mismatch(const char* w) : runtime_error(w) {} };
 class ciff_header_size_mismatch : public runtime_error { public: ciff_header_size_mismatch(const char* w) : runtime_error(w) {} };
 
 
@@ -45,5 +48,6 @@ enum errors {
 	ECONT_SIZE_MISMATCH,
 	ELONGER_CONTENT,
 	EOUT_OPEN_FAIL,
-	EBS_MISMATCH
+	EBS_MISMATCH,
+	ECIFF_HEAD_SIZE_MISMATCH
 };

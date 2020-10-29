@@ -1,6 +1,27 @@
 
 #include "caff.h"
 
+unordered_map<type_index, errors> error_map;
+
+void init_error_map() {
+    error_map[type_index(typeid(invalid_id))] = EINVALID_ID;
+    error_map[type_index(typeid(header_id_mismatch))] = EHEAD_ID_MISMATCH;
+    error_map[type_index(typeid(header_size_mismatch))] = EHEAD_SIZE_MISMATCH;
+    error_map[type_index(typeid(too_much_blocks))] = ETOO_MUCH_BLOCKS;
+    error_map[type_index(typeid(bad_magic))] = EBAD_MAGIC;
+    error_map[type_index(typeid(eof_in_caption))] = EOF_IN_CAPTION;
+    error_map[type_index(typeid(long_ciff_header))] = ELONG_CIFF_HEAD;
+    error_map[type_index(typeid(eof_in_tags))] = EOF_IN_TAGS;
+    error_map[type_index(typeid(missing_tag_end))] = EMISSING_TAG_END;
+    error_map[type_index(typeid(size_trunc))] = ESIZE_TRUNC;
+    error_map[type_index(typeid(content_size_mismatch))] = ECONT_SIZE_MISMATCH;
+    error_map[type_index(typeid(longer_content))] = ELONGER_CONTENT;
+    error_map[type_index(typeid(out_open_fail))] = EOUT_OPEN_FAIL;
+    error_map[type_index(typeid(block_size_mismatch))] = EBS_MISMATCH;
+    error_map[type_index(typeid(ciff_header_size_mismatch))] = ECIFF_HEAD_SIZE_MISMATCH;
+    error_map[type_index(typeid(out_open_fail))] = EOUT_OPEN_FAIL;
+}
+
 
 // Warning	C26429	Symbol 'argv' is never tested for nullness, it can be marked as not_null(f.23).Parser
 //  argv cannot be null, initialized by the function calling main
@@ -10,7 +31,9 @@
 int main(int argc, const char *const *const argv)
 //int main()
 {
-    
+
+    init_error_map();
+
     int ret = SUCCESS;
 
     unique_ptr<caff> c = make_unique<caff>();
@@ -62,48 +85,11 @@ int main(int argc, const char *const *const argv)
     try {
         parse_caff_file(f, c.get());
     }
-    catch ( const exception & ) {
-        try {
-            throw;
-        } catch(const invalid_id & ) {
-            ret = EINVALID_ID;
-        }
-        catch (const bad_magic&) {
-            ret = EBAD_MAGIC;
-        }
-        catch (const header_id_mismatch&) {
-            ret = EHEAD_ID_MISMATCH;
-        }
-        catch (const header_size_mismatch&) {
-            ret = EHEAD_SIZE_MISMATCH;
-        }
-        catch (const too_much_blocks&) {
-            ret = ETOO_MUCH_BLOCKS;
-        }
-        catch (const eof_in_caption&) {
-            ret = EOF_IN_CAPTION;
-        }
-        catch (const long_ciff_header&) {
-            ret = ELONG_CIFF_HEAD;
-        }
-        catch (const eof_in_tags&) {
-            ret = EOF_IN_TAGS;
-        }
-        catch (const missing_tag_end&) {
-            ret = EMISSING_TAG_END;
-        }
-        catch (const size_trunc&) {
-            ret = ESIZE_TRUNC;
-        }
-        catch (const content_size_mismatch&) {
-            ret = ECONT_SIZE_MISMATCH;
-        }
-        catch (const longer_content&) {
-            ret = ELONGER_CONTENT;
-        }
-        catch (const exception&) {
+    catch ( const exception & e) {
+        if (error_map.count(type_index(typeid(e))))
+            ret = error_map.at(type_index(typeid(e)));
+        else
             ret = UNKNOWN_ERROR;
-        }
     }
 
     f.close();
@@ -115,11 +101,11 @@ int main(int argc, const char *const *const argv)
         c->dump_preview(preview_path);
         c->dump_metadata(metadata_path);
     }
-    catch (const out_open_fail&) {
-        ret = EOUT_OPEN_FAIL;
-    }
     catch (exception&) {
-        ret = UNKNOWN_ERROR;
+        if (error_map.count(type_index(typeid(e))))
+            ret = error_map.at(type_index(typeid(e)));
+        else
+            ret = UNKNOWN_ERROR;
     }
 
     

@@ -33,7 +33,6 @@
 #include <string>
 #include <vector>
 
-
 class bitmap_image
 {
 public:

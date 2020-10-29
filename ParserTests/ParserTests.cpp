@@ -27,22 +27,6 @@ namespace ParserTests
 			c->dump_preview(string("1_preview.bmp"));
 			c->dump_metadata(string("1_meta.json"));
 
-			/*
-			try {
-				parse_caff_file(f, c.get());
-				c->dump_preview(string("1_preview.bmp"));
-			}
-			catch (const exception& e) {
-				size_t ret = 0;
-
-				const char* what = typeid(e).name();
-				const size_t s = strlen(what) + 1;
-				wchar_t* wc = new wchar_t[s];
-				mbstowcs_s(&ret, wc, s, what, s - 1);
-				Assert::Fail(wc);
-			}
-
-			*/
 		}
 
 		TEST_METHOD(caff2_parse)
@@ -56,19 +40,9 @@ namespace ParserTests
 				Assert::Fail(L"file not found");
 			}
 
-			try {
-				parse_caff_file(f, c.get());
-				c->dump_preview(string("2_preview.bmp"));
-			}
-			catch (const exception& e) {
-				size_t ret = 0;
-
-				const char* what = typeid(e).name();
-				const size_t s = strlen(what) + 1;
-				wchar_t* wc = new wchar_t[s];
-				mbstowcs_s(&ret, wc, s, what, s - 1);
-				Assert::Fail(wc);
-			}
+			parse_caff_file(f, c.get());
+			c->dump_preview(string("2_preview.bmp"));
+			
 		}
 
 		TEST_METHOD(caff3_parse)
@@ -82,19 +56,20 @@ namespace ParserTests
 				Assert::Fail(L"file not found");
 			}
 
+			bool exceptionThrown = false;
+
 			try {
 				parse_caff_file(f, c.get());
 				c->dump_preview(string("3_preview.bmp"));
 			}
-			catch (const exception& e) {
-				size_t ret = 0;
-
-				const char* what = typeid(e).name();
-				const size_t s = strlen(what) + 1;
-				wchar_t* wc = new wchar_t[s];
-				mbstowcs_s(&ret, wc, s, what, s - 1);
-				Assert::Fail(wc);
+			catch (const invalid_id& ) {
+				exceptionThrown = true;
 			}
+
+			if (!exceptionThrown) {
+				Assert::Fail(L"expected to throw invalid_id exception");
+			}
+
 		}
 	};
 

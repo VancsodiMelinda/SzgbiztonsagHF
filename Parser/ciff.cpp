@@ -16,7 +16,7 @@ ciff::ciff(void) {
 	height = 0;
 	caption = string("");
 	tags = vector<string>(0);
-	pixels = vector<vector<RGB>>(0);
+	pixels = vector<vector<RGB>>();
 };
 
 ciff::ciff(ifstream& f) {
@@ -31,26 +31,15 @@ ciff::ciff(ifstream& f) {
 		magic[3] != 'F')
 		throw bad_magic("bad CIFF magic");
 
-	// Warning	C26493	Don't use C-style casts (type.4).
-	//	this is the most reliable way to read into variables, >> fails
-	#pragma warning(suppress: 26493)
-	f.read((char*)&header_size, sizeof(header_size));
+	f.read(static_cast<char*>(static_cast<void*>(&header_size)), sizeof(header_size));
 
-	// Warning	C26493	Don't use C-style casts (type.4).
-	//	this is the most reliable way to read into variables, >> fails
-	#pragma warning(suppress: 26493)
-	f.read((char*)&content_size, sizeof(content_size));
+	f.read(static_cast<char*>(static_cast<void*>(&content_size)), sizeof(content_size));
 
-	// Warning	C26493	Don't use C-style casts (type.4).
-	//	this is the most reliable way to read into variables, >> fails
-	#pragma warning(suppress: 26493)
-	f.read((char*)&width, sizeof(width));
+	f.read(static_cast<char*>(static_cast<void*>(&width)), sizeof(width));
 
-	// Warning	C26493	Don't use C-style casts (type.4).
-	//	this is the most reliable way to read into variables, >> fails
-	#pragma warning(suppress: 26493)
-	f.read((char*)&height, sizeof(height));
-	
+	f.read(static_cast<char*>(static_cast<void*>(&height)), sizeof(height));
+
+
 	if (content_size != width * height * RGB_count)
 		throw content_size_mismatch("ciff content size mismatch");
 
@@ -103,14 +92,15 @@ ciff::ciff(ifstream& f) {
 
 	bytes_read = 0;
 
-	pixels = vector<vector<RGB>>();
-	for (auto i = 0; i != width; i++) {
-		pixels.push_back(vector<RGB>());
-		for (auto j = 0; j != height; j++) {
-			pixels.back().push_back(RGB());
-			f.read((char*)&pixels.back().back().R, sizeof(char));
-			f.read((char*)&pixels.back().back().G, sizeof(char));
-			f.read((char*)&pixels.back().back().B, sizeof(char));
+	pixels = vector<vector<RGB>>(height);
+	fill(pixels.begin(), pixels.end(), vector<RGB>(width));
+
+
+	for (auto i = 0; i != height; i++) {
+		for (auto j = 0; j != width; j++) {
+			f.read((char*)&pixels[i][j].R, sizeof(char));
+			f.read((char*)&pixels[i][j].G, sizeof(char));
+			f.read((char*)&pixels[i][j].B, sizeof(char));
 			bytes_read += 3;
 		}
 	}

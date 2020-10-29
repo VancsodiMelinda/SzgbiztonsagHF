@@ -1,5 +1,10 @@
 #include "caff.h"
 
+#pragma warning(push)
+#pragma warning(disable: 26451 26812 6001 )
+#include "bitmap_image.hpp"
+#pragma warning(pop)
+
 using namespace std;
 
 caff_header::caff_header(void) noexcept(true) {
@@ -23,15 +28,9 @@ caff_header::caff_header(ifstream& f) {
 		magic[3] != 'F')
 		throw bad_magic("bad CAFF magic");
 
-	// Warning	C26493	Don't use C-style casts (type.4).	
-	//	this is the most reliable way to read into variables, >> fails
-	#pragma warning(suppress: 26493)
-	f.read((char*)&size, sizeof(size));
+	f.read(static_cast<char*>(static_cast<void*>(&size)), sizeof(size));
 
-	// Warning	C26493	Don't use C-style casts (type.4).
-	//	this is the most reliable way to read into variables, >> fails
-	#pragma warning(suppress: 26493)
-	f.read((char*)&num_anim, sizeof(num_anim));
+	f.read(static_cast<char*>(static_cast<void*>(&num_anim)), sizeof(num_anim));
 }
 
 
@@ -46,35 +45,17 @@ caff_creds::caff_creds(void) noexcept(true) {
 };
 
 caff_creds::caff_creds(ifstream& f) {
-	// Warning	C26493	Don't use C-style casts (type.4).
-	//	this is the most reliable way to read into variables, >> fails
-	#pragma warning(suppress: 26493)
-	f.read((char*)&date.year, sizeof(date.year));
+	f.read(static_cast<char*>(static_cast<void*>(&date.year)), sizeof(date.year));
 	
-	// Warning	C26493	Don't use C-style casts (type.4).
-	//	this is the most reliable way to read into variables, >> fails
-	#pragma warning(suppress: 26493)
-	f.read((char*)&date.month, sizeof(date.month));
+	f.read(static_cast<char*>(static_cast<void*>(&date.month)), sizeof(date.month));
 	
-	// Warning	C26493	Don't use C-style casts (type.4).
-	//	this is the most reliable way to read into variables, >> fails
-	#pragma warning(suppress: 26493)
-	f.read((char*)&date.day, sizeof(date.day));
+	f.read(static_cast<char*>(static_cast<void*>(&date.day)), sizeof(date.day));
 	
-	// Warning	C26493	Don't use C-style casts (type.4).
-	//	this is the most reliable way to read into variables, >> fails
-	#pragma warning(suppress: 26493)
-	f.read((char*)&date.hour, sizeof(date.hour));
+	f.read(static_cast<char*>(static_cast<void*>(&date.hour)), sizeof(date.hour));
 	
-	// Warning	C26493	Don't use C-style casts (type.4).
-	//	this is the most reliable way to read into variables, >> fails
-	#pragma warning(suppress: 26493)
-	f.read((char*)&date.minute, sizeof(date.minute));
+	f.read(static_cast<char*>(static_cast<void*>(&date.minute)), sizeof(date.minute));
 	
-	// Warning	C26493	Don't use C-style casts (type.4).
-	//	this is the most reliable way to read into variables, >> fails
-	#pragma warning(suppress: 26493)
-	f.read((char*)&creator_len, sizeof(creator_len));
+	f.read(static_cast<char*>(static_cast<void*>(&creator_len)), sizeof(creator_len));
 
 	name = string("");
 	for (int i = 0; i != creator_len; i++)
@@ -89,10 +70,7 @@ frame::frame(void) noexcept {
 };
 
 frame::frame(ifstream& f) {
-	// Warning	C26493	Don't use C-style casts (type.4).
-	//	this is the most reliable way to read into variables, >> fails
-	#pragma warning(suppress: 26493)
-	f.read((char*)&duration, sizeof(duration));
+	f.read(static_cast<char*>(static_cast<void*>(&duration)), sizeof(duration));
 
 	img = make_unique<ciff>(f);
 };
@@ -108,15 +86,23 @@ caff::caff(void) noexcept(true) {
 
 void caff::dump_preview(string & out_file) noexcept(false) {
 
+	if (frames[0].img.get()->width > UINT32_MAX)
+		throw size_trunc("width truncation");
+	if (frames[0].img.get()->height > UINT32_MAX)
+		throw size_trunc("height truncation");
+
+	// Warning	C4244	'argument': conversion from 'uint64_t' to 'const unsigned int', possible loss of data
+	//	higly unlikely to have such big height & width, the bitmap lib doesn't support unint64_t
+	#pragma warning(suppress: 4244)
 	bitmap_image preview(frames[0].img.get()->width,frames[0].img.get()->height);
 
 	// iterate through pixels & write RGB pixels (BMP uses the order BGR)
-	for (int i = 0; i != frames[0].img.get()->pixels.size(); i++) {
-		for (int j = 0; j != frames[0].img.get()->pixels[i].size(); j++) {
+	for (int i = 0; i != frames[0].img.get()->width; i++) {
+		for (int j = 0; j != frames[0].img.get()->height; j++) {
 			preview.set_pixel(i, j,
-				frames[0].img.get()->pixels[i][j].R,
-				frames[0].img.get()->pixels[i][j].G,
-				frames[0].img.get()->pixels[i][j].B);
+				frames[0].img.get()->pixels[j][i].R,
+				frames[0].img.get()->pixels[j][i].G,
+				frames[0].img.get()->pixels[j][i].B);
 		}
 	}
 
@@ -184,27 +170,14 @@ void parse_caff_file(ifstream &f, caff *c) noexcept (false)
 	uint64_t length = 0;
 	uint64_t num_anim_var = 0;
 
-	int tmp = 0;
-
-	tmp = f.tellg();
-
 	f >> id;
-
-	tmp = f.tellg();
 
 	if (id != HEADER)
 		throw header_id_mismatch("caff header id not matching");
 
-	// Warning	C26493	Don't use C-style casts (type.4).
-	//	this is the most reliable way to read into variables, >> fails
-	#pragma warning(suppress: 26493)
-	f.read((char*)&length, sizeof(length));
-
-	tmp = f.tellg();
+	f.read(static_cast<char*>(static_cast<void*>(&length)), sizeof(length));
 
 	c->head = caff_header(f);
-
-	tmp = f.tellg();
 
 	// length is parsed from the block
 	if(length != caff_hdr_size)
@@ -213,24 +186,17 @@ void parse_caff_file(ifstream &f, caff *c) noexcept (false)
 	if (c->head.size != length)
 		throw header_size_mismatch("caff header size mismatch");
 
-	int cpos = 0;
-	int npos = 0;
+	streamoff cpos = 0;
+	streamoff npos = 0;
 
-	while (!f.eof()) {
-
-		// exceeded number of data blocks specified in header & the creds
-		// creds thought to be optional, location not specified, could be last block
-		if (c->have_creds && c->head.num_anim == num_anim_var)
-			break;
-//			throw too_much_blocks("number of animation blocks exceeded");
+	while (f.good()) {
 
 		f >> id;
 
+		if (!f.good())
+			break;
 
-		// Warning	C26493	Don't use C-style casts (type.4).
-		//	this is the most reliable way to read into variables, >> fails
-		#pragma warning(suppress: 26493)
-		f.read((char*)&length, sizeof(length));
+		f.read(static_cast<char*>(static_cast<void*>(&length)), sizeof(length));
 
 
 		switch (id)
@@ -243,11 +209,18 @@ void parse_caff_file(ifstream &f, caff *c) noexcept (false)
 
 				npos = f.tellg();
 				if (length != npos - cpos)
-					throw block_size_miscmatch("credits block too long");
+					throw block_size_mismatch("credits block too long");
 
 				break;
 
 			case ANIMATION:
+
+				// exceeded number of data blocks specified in header & the creds
+				// creds thought to be optional, location not specified, could be last block
+				if (c->have_creds && c->head.num_anim == num_anim_var)
+					throw too_much_blocks("number of animation blocks exceeded");
+
+
 				num_anim_var++;
 
 				cpos = f.tellg();
@@ -255,7 +228,7 @@ void parse_caff_file(ifstream &f, caff *c) noexcept (false)
 
 				npos = f.tellg();
 				if (length != npos - cpos)
-					throw block_size_miscmatch("animation block too long");
+					throw block_size_mismatch("animation block too long");
 
 				break;
 
