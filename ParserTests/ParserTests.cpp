@@ -305,6 +305,34 @@ namespace ParserTests
 	{
 		TEST_METHOD(bad_ciff_magic)
 		{
+			char* in_file = "bad_ciff_magic.caff";
+			unique_ptr<caff> c = make_unique<caff>();
+			ifstream f;
+			f.open(in_file, ios::in | ios::binary);
+
+			if (!f.is_open()) {
+				Assert::Fail(L"file not found");
+			}
+
+			bool exceptionThrown = false;
+
+			try
+			{
+				parse_caff_file(f, c.get());
+			}
+			catch (bad_magic&) // special exception type
+			{
+				exceptionThrown = true;
+			}
+
+			if (!exceptionThrown)
+			{
+				Assert::Fail(L"expected to throw bad_magic exception");
+			}
+		}
+
+		TEST_METHOD(bad_ciff_magic2)
+		{
 			char* in_file = "bad_ciff_magic2.caff";
 			unique_ptr<caff> c = make_unique<caff>();
 			ifstream f;
@@ -330,5 +358,178 @@ namespace ParserTests
 				Assert::Fail(L"expected to throw bad_magic exception");
 			}
 		}
+
+		TEST_METHOD(bad_ciff_content_size)
+		{
+			char* in_file = "bad_ciff_content_size.caff";
+			unique_ptr<caff> c = make_unique<caff>();
+			ifstream f;
+			f.open(in_file, ios::in | ios::binary);
+
+			if (!f.is_open()) {
+				Assert::Fail(L"file not found");
+			}
+
+			bool exceptionThrown = false;
+
+			try
+			{
+				parse_caff_file(f, c.get());
+			}
+			catch (content_size_mismatch&) // special exception type
+			{
+				exceptionThrown = true;
+			}
+
+			if (!exceptionThrown)
+			{
+				Assert::Fail(L"expected to throw content_size_mismatch exception");
+			}
+		}
+
+		TEST_METHOD(bad_ciff_width)
+		{
+			char* in_file = "bad_ciff_width.caff";
+			unique_ptr<caff> c = make_unique<caff>();
+			ifstream f;
+			f.open(in_file, ios::in | ios::binary);
+
+			if (!f.is_open()) {
+				Assert::Fail(L"file not found");
+			}
+
+			bool exceptionThrown = false;
+
+			try
+			{
+				parse_caff_file(f, c.get());
+			}
+			catch (content_size_mismatch&) // special exception type
+			{
+				exceptionThrown = true;
+			}
+
+			if (!exceptionThrown)
+			{
+				Assert::Fail(L"expected to throw content_size_mismatch exception");
+			}
+		}
+
+		TEST_METHOD(bad_ciff_height)
+		{
+			char* in_file = "bad_ciff_height.caff";
+			unique_ptr<caff> c = make_unique<caff>();
+			ifstream f;
+			f.open(in_file, ios::in | ios::binary);
+
+			if (!f.is_open()) {
+				Assert::Fail(L"file not found");
+			}
+
+			bool exceptionThrown = false;
+
+			try
+			{
+				parse_caff_file(f, c.get());
+			}
+			catch (content_size_mismatch&) // special exception type
+			{
+				exceptionThrown = true;
+			}
+
+			if (!exceptionThrown)
+			{
+				Assert::Fail(L"expected to throw content_size_mismatch exception");
+			}
+		}
+
+		TEST_METHOD(bad_ciff_caption)
+		{
+			char* in_file = "bad_ciff_caption.caff";  // no \n
+			unique_ptr<caff> c = make_unique<caff>();
+			ifstream f;
+			f.open(in_file, ios::in | ios::binary);
+
+			if (!f.is_open()) {
+				Assert::Fail(L"file not found");
+			}
+
+			bool exceptionThrown = false;
+
+			try
+			{
+				parse_caff_file(f, c.get());
+			}
+			catch (long_ciff_header&) // special exception type
+			{
+				exceptionThrown = true;
+			}
+
+			if (!exceptionThrown)
+			{
+				Assert::Fail(L"expected to throw long_ciff_header exception");
+			}
+		}
+
+		// ciff header is smaller than header_size
+		/*
+		TEST_METHOD(bad_ciff_caption2)
+		{
+			char* in_file = "bad_ciff_caption2.caff";  // no \n
+			unique_ptr<caff> c = make_unique<caff>();
+			ifstream f;
+			f.open(in_file, ios::in | ios::binary);
+
+			if (!f.is_open()) {
+				Assert::Fail(L"file not found");
+			}
+
+			bool exceptionThrown = false;
+
+			try
+			{
+				parse_caff_file(f, c.get());
+			}
+			catch (long_ciff_header&) // special exception type
+			{
+				exceptionThrown = true;
+			}
+
+			if (!exceptionThrown)
+			{
+				Assert::Fail(L"expected to throw long_ciff_header exception");
+			}
+		}
+		*/
+
+		TEST_METHOD(bad_ciff_tags)
+		{
+			char* in_file = "bad_ciff_tags.caff";  // no \n
+			unique_ptr<caff> c = make_unique<caff>();
+			ifstream f;
+			f.open(in_file, ios::in | ios::binary);
+
+			if (!f.is_open()) {
+				Assert::Fail(L"file not found");
+			}
+
+			bool exceptionThrown = false;
+
+			try
+			{
+				parse_caff_file(f, c.get());
+			}
+			catch (missing_tag_end&) // special exception type
+			{
+				exceptionThrown = true;
+			}
+
+			if (!exceptionThrown)
+			{
+				Assert::Fail(L"expected to throw missing_tag_end exception");
+			}
+		}
+
+		
 	};
 }

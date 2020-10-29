@@ -213,10 +213,28 @@
     <None Include="..\ParserTestFiles\bad_caff_magic.caff">
       <DeploymentContent>true</DeploymentContent>
     </None>
+    <None Include="..\ParserTestFiles\bad_ciff_caption.caff">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="..\ParserTestFiles\bad_ciff_caption2.caff">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="..\ParserTestFiles\bad_ciff_content_size.caff">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="..\ParserTestFiles\bad_ciff_height.caff">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
     <None Include="..\ParserTestFiles\bad_ciff_magic.caff">
       <DeploymentContent>true</DeploymentContent>
     </None>
     <None Include="..\ParserTestFiles\bad_ciff_magic2.caff">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="..\ParserTestFiles\bad_ciff_tags.caff">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="..\ParserTestFiles\bad_ciff_width.caff">
       <DeploymentContent>true</DeploymentContent>
     </None>
   </ItemGroup>

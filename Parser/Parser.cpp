@@ -72,7 +72,9 @@ int main(int argc, const char *const *const argv)
 
     string preview_path = out_dir + f_name + string("_preview.bmp");
     string metadata_path = out_dir + f_name + string(".json");
+    
 
+    //string in_file = "../ParserTestFiles/1.caff";
     ifstream f;
     f.open(in_file, ios::in | ios::binary);
 
