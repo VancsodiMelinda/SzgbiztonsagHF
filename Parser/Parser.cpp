@@ -73,7 +73,6 @@ int main(int argc, const char *const *const argv)
     string preview_path = out_dir + f_name + string("_preview.bmp");
     string metadata_path = out_dir + f_name + string(".json");
 
-
     ifstream f;
     f.open(in_file, ios::in | ios::binary);
 
@@ -94,6 +93,7 @@ int main(int argc, const char *const *const argv)
 
     f.close();
 
+    
     if (ret != SUCCESS)
         return ret;
 
@@ -101,13 +101,13 @@ int main(int argc, const char *const *const argv)
         c->dump_preview(preview_path);
         c->dump_metadata(metadata_path);
     }
-    catch (exception&) {
+    catch (exception& e) {
         if (error_map.count(type_index(typeid(e))))
             ret = error_map.at(type_index(typeid(e)));
         else
             ret = UNKNOWN_ERROR;
     }
-
+    
     
     return ret;
 }

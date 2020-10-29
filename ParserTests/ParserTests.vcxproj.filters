@@ -44,8 +44,12 @@
     <None Include="..\ParserTestFiles\bad_caff_magic.caff" />
     <None Include="..\ParserTestFiles\bad_ciff_magic.caff" />
     <None Include="..\ParserTestFiles\bad_ciff_magic2.caff" />
-    <None Include="..\ParserTestFiles\bad_caff_header_length.caff" />
     <None Include="..\ParserTestFiles\bad_caff_header_id.caff" />
     <None Include="..\ParserTestFiles\bad_caff_credits_id.caff" />
+    <None Include="..\ParserTestFiles\bad_caff_animation_id.caff" />
+    <None Include="..\ParserTestFiles\bad_caff_header_length.caff" />
+    <None Include="..\ParserTestFiles\bad_caff_credits_length.caff" />
+    <None Include="..\ParserTestFiles\bad_caff_header_num_anim.caff" />
+    <None Include="..\ParserTestFiles\bad_caff_animation_length.caff" />
   </ItemGroup>
 </Project>

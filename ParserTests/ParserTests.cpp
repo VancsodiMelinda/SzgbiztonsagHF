@@ -215,6 +215,90 @@ namespace ParserTests
 				Assert::Fail(L"expected to throw header_size_mismatch exception");
 			}
 		}
+
+		TEST_METHOD(bad_caff_credits_length)
+		{
+			char* in_file = "bad_caff_credits_length.caff";
+			unique_ptr<caff> c = make_unique<caff>();
+			ifstream f;
+			f.open(in_file, ios::in | ios::binary);
+
+			if (!f.is_open()) {
+				Assert::Fail(L"file not found");
+			}
+
+			bool exceptionThrown = false;
+
+			try
+			{
+				parse_caff_file(f, c.get());
+			}
+			catch (block_size_mismatch&) // special exception type
+			{
+				exceptionThrown = true;
+			}
+
+			if (!exceptionThrown)
+			{
+				Assert::Fail(L"expected to throw block_size_mismatch exception");
+			}
+		}
+
+		TEST_METHOD(bad_caff_header_num_anim)
+		{
+			char* in_file = "bad_caff_header_num_anim.caff";
+			unique_ptr<caff> c = make_unique<caff>();
+			ifstream f;
+			f.open(in_file, ios::in | ios::binary);
+
+			if (!f.is_open()) {
+				Assert::Fail(L"file not found");
+			}
+
+			bool exceptionThrown = false;
+
+			try
+			{
+				parse_caff_file(f, c.get());
+			}
+			catch (too_much_blocks&) // special exception type
+			{
+				exceptionThrown = true;
+			}
+
+			if (!exceptionThrown)
+			{
+				Assert::Fail(L"expected to throw too_much_blocks exception");
+			}
+		}
+
+		TEST_METHOD(bad_caff_animation_length)
+		{
+			char* in_file = "bad_caff_animation_length.caff";
+			unique_ptr<caff> c = make_unique<caff>();
+			ifstream f;
+			f.open(in_file, ios::in | ios::binary);
+
+			if (!f.is_open()) {
+				Assert::Fail(L"file not found");
+			}
+
+			bool exceptionThrown = false;
+
+			try
+			{
+				parse_caff_file(f, c.get());
+			}
+			catch (block_size_mismatch&) // special exception type
+			{
+				exceptionThrown = true;
+			}
+
+			if (!exceptionThrown)
+			{
+				Assert::Fail(L"expected to throw block_size_mismatch exception");
+			}
+		}
 	};
 
 	TEST_CLASS(CiffTests)
