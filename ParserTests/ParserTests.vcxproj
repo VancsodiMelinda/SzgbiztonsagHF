@@ -213,6 +213,9 @@
     <None Include="..\ParserTestFiles\bad_caff_magic.caff">
       <DeploymentContent>true</DeploymentContent>
     </None>
+    <None Include="..\ParserTestFiles\bad_caff_multiple_caff_credits.caff">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
     <None Include="..\ParserTestFiles\bad_ciff_caption.caff">
       <DeploymentContent>true</DeploymentContent>
     </None>

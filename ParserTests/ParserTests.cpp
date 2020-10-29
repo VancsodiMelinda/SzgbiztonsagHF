@@ -299,6 +299,28 @@ namespace ParserTests
 				Assert::Fail(L"expected to throw block_size_mismatch exception");
 			}
 		}
+
+		/*
+		TEST_METHOD(bad_caff_multiple_caff_credits)
+		{
+			char* in_file = "bad_caff_multiple_caff_credits.caff";
+			unique_ptr<caff> c = make_unique<caff>();
+			ifstream f;
+			f.open(in_file, ios::in | ios::binary);
+
+			if (!f.is_open()) {
+				Assert::Fail(L"file not found");
+			}
+
+			try
+			{
+				parse_caff_file(f, c.get());
+				std::cout << "NO exception was thrown";
+				Assert::Fail(L"was expecting an exception");
+			}
+			catch (...){}
+		}
+		*/
 	};
 
 	TEST_CLASS(CiffTests)
