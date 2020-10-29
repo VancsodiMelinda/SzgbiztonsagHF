@@ -86,7 +86,10 @@ caff::caff(void) noexcept(true) {
 
 void caff::dump_preview(string & out_file) noexcept(false) {
 
-	// TODO: throw exception before truncation?
+	if (frames[0].img.get()->width > UINT32_MAX)
+		throw size_trunc("width truncation");
+	if (frames[0].img.get()->height > UINT32_MAX)
+		throw size_trunc("height truncation");
 
 	// Warning	C4244	'argument': conversion from 'uint64_t' to 'const unsigned int', possible loss of data
 	//	higly unlikely to have such big height & width, the bitmap lib doesn't support unint64_t
@@ -186,9 +189,12 @@ void parse_caff_file(ifstream &f, caff *c) noexcept (false)
 	streamoff cpos = 0;
 	streamoff npos = 0;
 
-	while (!f.eof()) {
+	while (f.good()) {
 
 		f >> id;
+
+		if (!f.good())
+			break;
 
 		f.read(static_cast<char*>(static_cast<void*>(&length)), sizeof(length));
 
@@ -203,7 +209,7 @@ void parse_caff_file(ifstream &f, caff *c) noexcept (false)
 
 				npos = f.tellg();
 				if (length != npos - cpos)
-					throw block_size_miscmatch("credits block too long");
+					throw block_size_mismatch("credits block too long");
 
 				break;
 
@@ -212,7 +218,6 @@ void parse_caff_file(ifstream &f, caff *c) noexcept (false)
 				// exceeded number of data blocks specified in header & the creds
 				// creds thought to be optional, location not specified, could be last block
 				if (c->have_creds && c->head.num_anim == num_anim_var)
-//					break;
 					throw too_much_blocks("number of animation blocks exceeded");
 
 
@@ -223,7 +228,7 @@ void parse_caff_file(ifstream &f, caff *c) noexcept (false)
 
 				npos = f.tellg();
 				if (length != npos - cpos)
-					throw block_size_miscmatch("animation block too long");
+					throw block_size_mismatch("animation block too long");
 
 				break;
 
