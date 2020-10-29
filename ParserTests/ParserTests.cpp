@@ -552,6 +552,29 @@ namespace ParserTests
 			}
 		}
 
+		/*
+		TEST_METHOD(bad_pixel_data)
+		{
+			char* in_file = "bad_pixel_data.caff";
+			unique_ptr<caff> c = make_unique<caff>();
+			ifstream f;
+			f.open(in_file, ios::in | ios::binary);
+
+			if (!f.is_open()) {
+				Assert::Fail(L"file not found");
+			}
+
+			try
+			{
+				parse_caff_file(f, c.get());
+				//Assert::Fail(L"was expecting an exception");
+			}
+			catch (content_size_mismatch&)
+			{
+				Assert::Fail(L"good excepton was throw");
+			}
+		}
+		*/
 		
 	};
 }
