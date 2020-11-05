@@ -1,1 +1,0 @@
-This folder contains the backend code(C#) + DB(MSSQL) code.
