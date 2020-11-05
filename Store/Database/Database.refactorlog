@@ -7,4 +7,32 @@
     <Property Name="ParentElementType" Value="SqlTable" />
     <Property Name="NewName" Value="Username" />
   </Operation>
+  <Operation Name="Rename Refactor" Key="83a0694d-9c9f-4561-9eb8-e66d3b489bc9" ChangeDateTime="11/05/2020 18:49:45">
+    <Property Name="ElementName" Value="[dbo].[Comment].[Id]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Comment]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="CommentId" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="2c33e4fd-5a0b-4f6c-8675-47eccad3845d" ChangeDateTime="11/05/2020 18:49:58">
+    <Property Name="ElementName" Value="[dbo].[Comment].[CommentId]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Comment]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="CommentID" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="8fe487af-a306-4aed-b44a-189f9593ab57" ChangeDateTime="11/05/2020 18:50:02">
+    <Property Name="ElementName" Value="[dbo].[File].[Id]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[File]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="FileID" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="f696295e-2a3b-4c92-a2ce-ef6161bf147f" ChangeDateTime="11/05/2020 19:03:28">
+    <Property Name="ElementName" Value="[dbo].[FK_File_ToTable]" />
+    <Property Name="ElementType" Value="SqlForeignKeyConstraint" />
+    <Property Name="ParentElementName" Value="[dbo].[File]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="[FK_File_User]" />
+  </Operation>
 </Operations>
