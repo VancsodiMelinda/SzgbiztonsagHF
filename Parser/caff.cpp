@@ -86,6 +86,9 @@ caff::caff(void) noexcept(true) {
 
 void caff::dump_preview(string & out_file) noexcept(false) {
 
+	if(frames.empty())
+		throw empty_frames("frames is empty");
+
 	if (frames[0].img.get()->width > UINT32_MAX)
 		throw size_trunc("width truncation");
 	if (frames[0].img.get()->height > UINT32_MAX)

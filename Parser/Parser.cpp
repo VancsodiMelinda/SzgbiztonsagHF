@@ -21,6 +21,7 @@ void init_error_map() {
     error_map[type_index(typeid(ciff_header_size_mismatch))] = ECIFF_HEAD_SIZE_MISMATCH;
     error_map[type_index(typeid(out_open_fail))] = EOUT_OPEN_FAIL;
     error_map[type_index(typeid(multiple_credits))] = EMULTIPLE_CREDITS;
+    error_map[type_index(typeid(empty_frames))] = EEMPTY_FRAME;
 }
 
 
