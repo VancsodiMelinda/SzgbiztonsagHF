@@ -71,6 +71,23 @@ namespace ParserTests
 			}
 
 		}
+
+		TEST_METHOD(small_parse)
+		{
+			char* in_file = "small_3.caff";
+			unique_ptr<caff> c = make_unique<caff>();
+			ifstream f;
+			f.open(in_file, ios::in | ios::binary);
+
+			if (!f.is_open()) {
+				Assert::Fail(L"file not found");
+			}
+
+			parse_caff_file(f, c.get());
+			c->dump_preview(string("small_preview.bmp"));
+
+		}
+
 	};
 
 	TEST_CLASS(CaffTests)

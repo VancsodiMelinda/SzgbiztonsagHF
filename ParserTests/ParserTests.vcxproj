@@ -243,6 +243,15 @@
     <None Include="..\ParserTestFiles\bad_pixel_data.caff">
       <DeploymentContent>true</DeploymentContent>
     </None>
+    <None Include="..\ParserTestFiles\small.caff">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="..\ParserTestFiles\small_2.caff">
+      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</DeploymentContent>
+    </None>
+    <None Include="..\ParserTestFiles\small_3.caff">
+      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</DeploymentContent>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Parser\Parser.vcxproj">

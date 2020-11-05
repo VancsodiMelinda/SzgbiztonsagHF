@@ -59,5 +59,8 @@
     <None Include="..\ParserTestFiles\bad_ciff_tags.caff" />
     <None Include="..\ParserTestFiles\bad_caff_multiple_caff_credits.caff" />
     <None Include="..\ParserTestFiles\bad_pixel_data.caff" />
+    <None Include="..\ParserTestFiles\small.caff" />
+    <None Include="..\ParserTestFiles\small_2.caff" />
+    <None Include="..\ParserTestFiles\small_3.caff" />
   </ItemGroup>
 </Project>
