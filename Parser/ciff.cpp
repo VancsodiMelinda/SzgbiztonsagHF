@@ -93,6 +93,21 @@ ciff::ciff(ifstream& f) {
 
 	bytes_read = 0;
 
+	vector<vector<RGB>> h_test;
+	vector<RGB> w_test;
+
+	/*
+	 * with ASAN, max 0x10000000000 bytes can be allocated, max_size checks are a platform
+	 *  independent way to ensure that the vectors will be able to hold enough data
+	 *  supporting files with true 64 bit width & height is impossible
+	 */
+
+	if(height > h_test.max_size())
+		throw size_trunc("height of image is beyond allocatable");
+	
+	if(width > w_test.max_size())
+		throw size_trunc("width of image is beyond allocatable");
+
 	pixels = vector<vector<RGB>>(height);
 	fill(pixels.begin(), pixels.end(), vector<RGB>(width));
 
