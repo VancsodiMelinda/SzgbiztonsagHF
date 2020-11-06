@@ -35,4 +35,25 @@
     <Property Name="ParentElementType" Value="SqlTable" />
     <Property Name="NewName" Value="[FK_File_User]" />
   </Operation>
+  <Operation Name="Rename Refactor" Key="e01c25c2-c076-47b0-97a4-102979678510" ChangeDateTime="11/06/2020 09:19:01">
+    <Property Name="ElementName" Value="[dbo].[User].[Username]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[User]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="UserID" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="2542958a-0805-4cca-8bd2-bf441525089d" ChangeDateTime="11/06/2020 09:21:16">
+    <Property Name="ElementName" Value="[dbo].[File].[Username]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[File]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="UserID" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="8e979f9d-9809-4d64-bb18-4e8b4299477b" ChangeDateTime="11/06/2020 09:22:35">
+    <Property Name="ElementName" Value="[dbo].[Comment].[Username]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Comment]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="UserID" />
+  </Operation>
 </Operations>
