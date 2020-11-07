@@ -1,0 +1,8 @@
+C:\Users\Blaskó Gergő\Desktop\Szgbizt\MVCSzgbiztBackend\DataLibrary\obj\Debug\DataLibrary.csproj.CoreCompileInputs.cache
+C:\Users\Blaskó Gergő\Desktop\Szgbizt\MVCSzgbiztBackend\DataLibrary\bin\Debug\DataLibrary.dll
+C:\Users\Blaskó Gergő\Desktop\Szgbizt\MVCSzgbiztBackend\DataLibrary\bin\Debug\DataLibrary.pdb
+C:\Users\Blaskó Gergő\Desktop\Szgbizt\MVCSzgbiztBackend\DataLibrary\bin\Debug\Dapper.dll
+C:\Users\Blaskó Gergő\Desktop\Szgbizt\MVCSzgbiztBackend\DataLibrary\bin\Debug\Dapper.xml
+C:\Users\Blaskó Gergő\Desktop\Szgbizt\MVCSzgbiztBackend\DataLibrary\obj\Debug\DataLibrary.csproj.CopyComplete
+C:\Users\Blaskó Gergő\Desktop\Szgbizt\MVCSzgbiztBackend\DataLibrary\obj\Debug\DataLibrary.dll
+C:\Users\Blaskó Gergő\Desktop\Szgbizt\MVCSzgbiztBackend\DataLibrary\obj\Debug\DataLibrary.pdb
