@@ -5,6 +5,8 @@ VisualStudioVersion = 16.0.30320.27
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NinjaStore", "NinjaStore\NinjaStore.csproj", "{6F99F0B4-D51F-4301-9113-6D050A8834A9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NinjaStore.DAL", "NinjaStore.DAL\NinjaStore.DAL.csproj", "{7CE990C8-249E-46D4-AF1F-BD6049AE8D93}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{6F99F0B4-D51F-4301-9113-6D050A8834A9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6F99F0B4-D51F-4301-9113-6D050A8834A9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6F99F0B4-D51F-4301-9113-6D050A8834A9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7CE990C8-249E-46D4-AF1F-BD6049AE8D93}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7CE990C8-249E-46D4-AF1F-BD6049AE8D93}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7CE990C8-249E-46D4-AF1F-BD6049AE8D93}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7CE990C8-249E-46D4-AF1F-BD6049AE8D93}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
