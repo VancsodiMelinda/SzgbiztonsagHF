@@ -10,7 +10,7 @@ namespace DataLibrary.BusinessLogic
 {
     public static class UserProcessor
     {
-        public static int CreateUser(int UserId, string firstName,
+        public static int CreateUser(string UserId, string firstName,
             string emailAddress, string password, string role)
         {
             UserModel data = new UserModel
@@ -22,8 +22,8 @@ namespace DataLibrary.BusinessLogic
                 Role = role
             };
 
-            string sql = @"insert into db0.User (Username, Name, Email, PasswordHash, Role)
-                           values (@Username, @LastName, @EmailAddress, @Password, @Role);";
+            string sql = @"insert into dbo.[User] (Username, Name, Email, PasswordHash, Role)
+                           values (@UserName, @FirstName, @EmailAddress, @Password, @Role);";
 
             return SqlDataAccess.SaveData(sql, data);
         }
@@ -31,7 +31,7 @@ namespace DataLibrary.BusinessLogic
         public static List<UserModel> LoadUsers()
         {
             string sql = @"select Username, Name, Email, PasswordHash, Role
-                           from db0.User;";
+                           from dbo.[User];";
 
             return SqlDataAccess.LoadData<UserModel>(sql);
         }

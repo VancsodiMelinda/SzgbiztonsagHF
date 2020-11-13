@@ -6,3 +6,12 @@ C:\Users\Blaskó Gergő\Desktop\Szgbizt\MVCSzgbiztBackend\DataLibrary\bin\Debug\
 C:\Users\Blaskó Gergő\Desktop\Szgbizt\MVCSzgbiztBackend\DataLibrary\obj\Debug\DataLibrary.csproj.CopyComplete
 C:\Users\Blaskó Gergő\Desktop\Szgbizt\MVCSzgbiztBackend\DataLibrary\obj\Debug\DataLibrary.dll
 C:\Users\Blaskó Gergő\Desktop\Szgbizt\MVCSzgbiztBackend\DataLibrary\obj\Debug\DataLibrary.pdb
+D:\SzgbiztonsagHF\Backend+DB\MVCSzgbiztBackend\DataLibrary\bin\Debug\DataLibrary.dll
+D:\SzgbiztonsagHF\Backend+DB\MVCSzgbiztBackend\DataLibrary\bin\Debug\DataLibrary.pdb
+D:\SzgbiztonsagHF\Backend+DB\MVCSzgbiztBackend\DataLibrary\bin\Debug\Dapper.dll
+D:\SzgbiztonsagHF\Backend+DB\MVCSzgbiztBackend\DataLibrary\bin\Debug\Dapper.xml
+D:\SzgbiztonsagHF\Backend+DB\MVCSzgbiztBackend\DataLibrary\obj\Debug\DataLibrary.csprojAssemblyReference.cache
+D:\SzgbiztonsagHF\Backend+DB\MVCSzgbiztBackend\DataLibrary\obj\Debug\DataLibrary.csproj.CoreCompileInputs.cache
+D:\SzgbiztonsagHF\Backend+DB\MVCSzgbiztBackend\DataLibrary\obj\Debug\DataLibrary.csproj.CopyComplete
+D:\SzgbiztonsagHF\Backend+DB\MVCSzgbiztBackend\DataLibrary\obj\Debug\DataLibrary.dll
+D:\SzgbiztonsagHF\Backend+DB\MVCSzgbiztBackend\DataLibrary\obj\Debug\DataLibrary.pdb

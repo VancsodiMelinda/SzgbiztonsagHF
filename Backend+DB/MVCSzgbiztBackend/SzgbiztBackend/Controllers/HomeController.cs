@@ -5,7 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using SzgbiztBackend.Models;
 using DataLibrary;
-using static DataLibrary.BusinessLogic.EmployeeProcessor;
+using static DataLibrary.BusinessLogic.UserProcessor;
 
 namespace SzgbiztBackend.Controllers
 {
@@ -37,20 +37,20 @@ namespace SzgbiztBackend.Controllers
             return View();
         }
 
-        public ActionResult ViewEmployees()
+        public ActionResult ViewUsers()
         {
             ViewBag.Message = "User List";
 
-            var data = LoadEmployees();
-            List<EmployeeModel> employees = new List<EmployeeModel>();
+            var data = LoadUsers();
+            List<UserModel> employees = new List<UserModel>();
 
             foreach (var row in data)
             {
-                employees.Add(new EmployeeModel
+                employees.Add(new UserModel
                 {
-                    EmployeeId = row.EmployeeId,
+                    UserName = row.UserName,
                     FirstName = row.FirstName,
-                    LastName = row.LastName,
+                 //   LastName = row.LastName,
                     EmailAddress = row.EmailAddress,
                    // ConfirmEmail = row.EmailAddress,
                     Password = row.Password,
@@ -63,7 +63,7 @@ namespace SzgbiztBackend.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult SignUp(EmployeeModel model)
+        public ActionResult SignUp(UserModel model)
         {
             ViewBag.Message = "User Sign Up";
 
@@ -76,9 +76,9 @@ namespace SzgbiztBackend.Controllers
                         return RedirectToAction("Error");
                     }
 
-                    int recordsCreated = CreateEmployee(model.EmployeeId,
+                    int recordsCreated = CreateUser(model.UserName,
                         model.FirstName,
-                        model.LastName,
+                      //  model.LastName,
                         model.EmailAddress,
                         //A model.Password változót kellene hash-elni.
                         model.Password,

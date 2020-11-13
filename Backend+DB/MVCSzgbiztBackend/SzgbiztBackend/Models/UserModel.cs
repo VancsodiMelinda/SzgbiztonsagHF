@@ -6,11 +6,11 @@ using System.Web;
 
 namespace SzgbiztBackend.Models
 {
-    public class EmployeeModel
+    public class UserModel
     {
-       [Display(Name = "User ID")]
-        [Range(100000, 999999, ErrorMessage = "You need to enter a valid UserId")]
-        public int EmployeeId { get; set; }
+       [Display(Name = "User Name")]
+        [Required(ErrorMessage = "You need to enter a valid UserName")]
+        public string UserName { get; set; }
 
         [Display(Name = "First Name")]
         [Required(ErrorMessage = "You need to give us your first name.")]

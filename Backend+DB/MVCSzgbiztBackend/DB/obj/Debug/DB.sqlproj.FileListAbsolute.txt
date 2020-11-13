@@ -7,3 +7,13 @@ C:\Users\Blaskó Gergő\Desktop\Szgbizt\MVCSzgbiztBackend\DB\obj\Debug\Model.xml
 C:\Users\Blaskó Gergő\Desktop\Szgbizt\MVCSzgbiztBackend\DB\obj\Debug\refactor.xml
 C:\Users\Blaskó Gergő\Desktop\Szgbizt\MVCSzgbiztBackend\DB\obj\Debug\postdeploy.sql
 C:\Users\Blaskó Gergő\Desktop\Szgbizt\MVCSzgbiztBackend\DB\obj\Debug\predeploy.sql
+D:\SzgbiztonsagHF\Backend+DB\MVCSzgbiztBackend\DB\bin\Debug\DB.dacpac
+D:\SzgbiztonsagHF\Backend+DB\MVCSzgbiztBackend\DB\bin\Debug\DB.dll
+D:\SzgbiztonsagHF\Backend+DB\MVCSzgbiztBackend\DB\bin\Debug\DB.pdb
+D:\SzgbiztonsagHF\Backend+DB\MVCSzgbiztBackend\DB\obj\Debug\DB.sqlprojAssemblyReference.cache
+D:\SzgbiztonsagHF\Backend+DB\MVCSzgbiztBackend\DB\obj\Debug\DB.dll
+D:\SzgbiztonsagHF\Backend+DB\MVCSzgbiztBackend\DB\obj\Debug\DB.pdb
+D:\SzgbiztonsagHF\Backend+DB\MVCSzgbiztBackend\DB\obj\Debug\Model.xml
+D:\SzgbiztonsagHF\Backend+DB\MVCSzgbiztBackend\DB\obj\Debug\refactor.xml
+D:\SzgbiztonsagHF\Backend+DB\MVCSzgbiztBackend\DB\obj\Debug\postdeploy.sql
+D:\SzgbiztonsagHF\Backend+DB\MVCSzgbiztBackend\DB\obj\Debug\predeploy.sql
