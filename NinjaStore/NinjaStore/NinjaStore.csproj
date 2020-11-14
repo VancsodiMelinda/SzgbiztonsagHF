@@ -9,10 +9,12 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="System.Text.Json" Version="5.0.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\NinjaStore.DAL\NinjaStore.DAL.csproj" />
+    <ProjectReference Include="..\NinjaStore.Parser\NinjaStore.Parser.csproj" />
   </ItemGroup>
 
 </Project>
