@@ -1,0 +1,76 @@
+﻿@page
+@model NinjaStore.Pages.Files.DeleteModel
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h1>Delete</h1>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>CaffMetadata</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.CaffMetadata.FileName)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.CaffMetadata.FileName)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.CaffMetadata.Description)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.CaffMetadata.Description)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.CaffMetadata.Username)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.CaffMetadata.Username)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.CaffMetadata.UploadTimestamp)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.CaffMetadata.UploadTimestamp)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.CaffMetadata.FileSize)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.CaffMetadata.FileSize)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.CaffMetadata.Lenght)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.CaffMetadata.Lenght)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.CaffMetadata.DownloadCounter)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.CaffMetadata.DownloadCounter)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.CaffMetadata.Preview)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.CaffMetadata.Preview)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.CaffMetadata.File)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.CaffMetadata.File.FileId)
+        </dd>
+    </dl>
+    
+    <form method="post">
+        <input type="hidden" asp-for="CaffMetadata.FileId" />
+        <input type="submit" value="Delete" class="btn btn-danger" /> |
+        <a asp-page="./Index">Back to List</a>
+    </form>
+</div>
