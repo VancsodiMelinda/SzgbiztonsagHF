@@ -13,6 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\NinjaStore.BLL\NinjaStore.BLL.csproj" />
     <ProjectReference Include="..\NinjaStore.DAL\NinjaStore.DAL.csproj" />
     <ProjectReference Include="..\NinjaStore.Parser\NinjaStore.Parser.csproj" />
   </ItemGroup>
