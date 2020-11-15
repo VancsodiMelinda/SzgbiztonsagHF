@@ -16,5 +16,17 @@ namespace NinjaStore.DAL
 		public StoreContext(DbContextOptions options) : base(options)
 		{
 		}
+
+		protected override void OnModelCreating(ModelBuilder modelBuilder)
+		{
+			base.OnModelCreating(modelBuilder);
+
+			modelBuilder.Entity<CaffMetadata>().ToTable("Files");
+			modelBuilder.Entity<CaffFile>().ToTable("Files");
+
+			modelBuilder.Entity<Comment>()
+				.Property(c => c.CaffMetadataFileId)
+				.HasColumnName("FileId");
+		}
 	}
 }
