@@ -9,7 +9,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using NinjaStore.BLL;
 using NinjaStore.DAL;
+using NinjaStore.Parser.Services;
 
 namespace NinjaStore
 {
@@ -31,6 +33,8 @@ namespace NinjaStore
 			});
 
 			services.AddRazorPages();
+			services.AddTransient<IStoreLogic, StoreLogic>();
+			services.AddTransient<IParserService, ParserService>();
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

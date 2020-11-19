@@ -1,22 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using NinjaStore.DAL;
+using NinjaStore.BLL;
 using NinjaStore.DAL.Models;
 
 namespace NinjaStore.Pages.Files
 {
     public class DeleteModel : PageModel
     {
-        private readonly NinjaStore.DAL.StoreContext _context;
+        private readonly IStoreLogic _logic;
 
-        public DeleteModel(NinjaStore.DAL.StoreContext context)
+        public DeleteModel(IStoreLogic logic)
         {
-            _context = context;
+            _logic = logic;
         }
 
         [BindProperty]
@@ -29,8 +28,7 @@ namespace NinjaStore.Pages.Files
                 return NotFound();
             }
 
-            CaffMetadata = await _context.CaffMetadata
-                .Include(c => c.File).FirstOrDefaultAsync(m => m.FileId == id);
+            CaffMetadata = await _logic.GetMetadataWithCommentsAsync(id);
 
             if (CaffMetadata == null)
             {
@@ -46,12 +44,11 @@ namespace NinjaStore.Pages.Files
                 return NotFound();
             }
 
-            CaffMetadata = await _context.CaffMetadata.FindAsync(id);
+            CaffMetadata = await _logic.GetMetadataWithCommentsAsync(id);
 
             if (CaffMetadata != null)
             {
-                _context.CaffMetadata.Remove(CaffMetadata);
-                await _context.SaveChangesAsync();
+                await _logic.DeleteFileAsync(id);
             }
 
             return RedirectToPage("./Index");

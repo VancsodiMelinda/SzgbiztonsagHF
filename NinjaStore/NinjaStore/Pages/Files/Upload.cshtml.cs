@@ -4,23 +4,24 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using NinjaStore.DAL.Models;
+using NinjaStore.BLL;
 
 namespace NinjaStore.Pages.Files
 {
     public class UploadModel : PageModel
     {
-        private readonly NinjaStore.DAL.StoreContext _context;
+        private readonly IStoreLogic _logic;
 
-        public UploadModel(NinjaStore.DAL.StoreContext context)
+        public UploadModel(IStoreLogic logic)
         {
-            _context = context;
+            _logic = logic;
         }
 
         public IActionResult OnGet()
         {
-        ViewData["FileId"] = new SelectList(_context.CaffFiles, "FileId", "FileId");
+            // TODO Csilla: ask Dani
+            //ViewData["FileId"] = new SelectList(_context.CaffFiles, "FileId", "FileId");
+
             return Page();
         }
 
@@ -42,37 +43,17 @@ namespace NinjaStore.Pages.Files
                 return Page();
             }
 
-            string fileId = Guid.NewGuid().ToString("N");
+            //string fileId = Guid.NewGuid().ToString("N");
 
             using (var memoryStream = new MemoryStream())
             {
                 await NewFile.CopyToAsync(memoryStream);
                 byte[] preview = memoryStream.ToArray();
+                string savedFileId = await _logic.UploadFileAsync("Csilla", FileName, Description, preview);
 
-                CaffMetadata metadata = new CaffMetadata
-                {
-                    FileId = fileId,
-                    FileName = FileName,
-                    Description = Description,
-                    Username = "Csilla",
-                    UploadTimestamp = DateTimeOffset.UtcNow,
-                    DownloadCounter = 0,
-                    FileSize = 4,
-                    Lenght = 120,
-                    Preview = preview,
-                };
-
-                CaffFile file = new CaffFile
-                {
-                    FileId = fileId,
-                    Data = new byte[] { 0x00, 0xff, 0xaa, 0x80 },
-                };
-
-                metadata.File = file;
-                file.Metadata = metadata;
-
-                _context.CaffMetadata.Add(metadata);
-                await _context.SaveChangesAsync();
+                // TODO Csilla : fix file instead of metadata (ask Dani)
+                //_context.CaffMetadata.Add(metadata);
+                //await _context.SaveChangesAsync();
 
                 return RedirectToPage("./Index");
             }

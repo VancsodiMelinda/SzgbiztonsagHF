@@ -1,22 +1,20 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using NinjaStore.DAL;
+using NinjaStore.BLL;
 using NinjaStore.DAL.Models;
 
 namespace NinjaStore.Pages.Files
 {
     public class DetailsModel : PageModel
     {
-        private readonly NinjaStore.DAL.StoreContext _context;
+        private readonly IStoreLogic _logic;
 
-        public DetailsModel(NinjaStore.DAL.StoreContext context)
+        public DetailsModel(IStoreLogic logic)
         {
-            _context = context;
+            _logic = logic;
         }
 
         public CaffMetadata CaffMetadata { get; set; }
@@ -28,8 +26,7 @@ namespace NinjaStore.Pages.Files
                 return NotFound();
             }
 
-            CaffMetadata = await _context.CaffMetadata
-                .Include(c => c.File).FirstOrDefaultAsync(m => m.FileId == id);
+            CaffMetadata = await _logic.GetMetadataWithCommentsAsync(id);
 
             if (CaffMetadata == null)
             {
@@ -45,7 +42,9 @@ namespace NinjaStore.Pages.Files
                 return NotFound();
             }
 
-            CaffMetadata = await _context.CaffMetadata.FindAsync(id);
+            // TODO Csilla : fix file instead of metadata (ask Dani)
+            //await _logic.DownloadFileAsync(id);
+            CaffMetadata = await _logic.GetMetadataWithCommentsAsync(id);
 
             if (CaffMetadata != null)
             {
