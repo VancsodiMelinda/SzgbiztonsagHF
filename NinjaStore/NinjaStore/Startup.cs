@@ -35,6 +35,9 @@ namespace NinjaStore
 			services.AddRazorPages();
 			services.AddTransient<IStoreLogic, StoreLogic>();
 			services.AddTransient<IParserService, ParserService>();
+
+			//LOGGER CODE
+			services.AddSingleton<ILoggerRepo, LoggerRepo>();
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -50,6 +53,9 @@ namespace NinjaStore
 				// The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
 				app.UseHsts();
 			}
+
+			//LOGGER CODE
+			app.UseMiddleware<Logger>();
 
 			app.UseHttpsRedirection();
 			app.UseStaticFiles();
