@@ -12,6 +12,29 @@ namespace NinjaStore.Parser.Services
 {
 	public class ParserService : IParserService
 	{
+		private static Task<int> RunParserAsync(Process process)
+		{
+			var tcs = new TaskCompletionSource<int>();
+
+			process.Exited += (s, ea) => tcs.SetResult(process.ExitCode);
+			process.OutputDataReceived += (s, ea) => Console.WriteLine(ea.Data);
+			process.ErrorDataReceived += (s, ea) => Console.WriteLine("ERR: " + ea.Data);
+
+			bool started = process.Start();
+			if (!started)
+			{
+				//you may allow for the process to be re-used (started = false) 
+				//but I'm not sure about the guarantees of the Exited event in such a case
+				throw new InvalidOperationException("Could not start process: " + process);
+			}
+
+			process.BeginOutputReadLine();
+			process.BeginErrorReadLine();
+
+			return tcs.Task;
+		}
+
+
 		public async Task<ParserResult> ParseAsync(string fileId, byte[] content)
 		{
 			ParserResult result = new ParserResult();
@@ -32,7 +55,18 @@ namespace NinjaStore.Parser.Services
 				// TODO Gergo: 3. execute parser command (asynchronously)
 				// Hint: https://stackoverflow.com/a/31492250
 
-				await Task.Run(() => File.WriteAllBytes(Path.Combine(path, "content.caff"), content)); //???
+				using (var process = new Process
+				{
+					StartInfo =
+					{
+						FileName = "D:\\SzgbiztonsagHF\\Parser\\x64\\Debug\\Parser.exe", Arguments = path + "\\content.caff " + "D:\\SzgbiztonsagHF\\ParserTestFiles\\TEST",
+						UseShellExecute = false, CreateNoWindow = true,
+						RedirectStandardOutput = true, RedirectStandardError = true
+					},
+					EnableRaisingEvents = true
+				})
+
+				await RunParserAsync(process).ConfigureAwait(false);
 
 				// TODO Gergo: 5. read Parser Metadata from {fileId}/content.json (asynchronously)
 				// Hint: ParserMetadata metadata = await JsonSerializer.DeserializeAsync<ParserMetadata>(...)
