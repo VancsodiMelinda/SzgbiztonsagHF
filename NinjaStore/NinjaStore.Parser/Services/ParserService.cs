@@ -6,6 +6,7 @@ using System.IO;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
+using System.Linq;
 
 namespace NinjaStore.Parser.Services
 {
@@ -16,24 +17,50 @@ namespace NinjaStore.Parser.Services
 			ParserResult result = new ParserResult();
 
 			// TODO Gergo: 1. create a directory named {fileId}
+			string path = Path.Combine(Directory.GetCurrentDirectory(), fileId);
 
-			// TODO Gergo: 2. write the content to a file named {fileId}/content.caff (asynchronously)
+			DirectoryInfo di = Directory.CreateDirectory(path);
 
-			// TODO Gergo: 3. execute parser command (asynchronously)
-			// Hint: https://stackoverflow.com/a/31492250
+			try
+			{
 
-			// TODO Gergo: 4. throw exception for error code
+				Directory.SetCurrentDirectory(path);
 
-			// TODO Gergo: 5. read Parser Metadata from {fileId}/content.json (asynchronously)
-			// Hint: ParserMetadata metadata = await JsonSerializer.DeserializeAsync<ParserMetadata>(...)
+				// TODO Gergo: 2. write the content to a file named {fileId}/content.caff (asynchronously)
+				await Task.Run(() => File.WriteAllBytes(Path.Combine(path, "content.caff"), content));
 
-			// TODO Gergo: 6. calculate Lenght from Parser Metadata Frames (use LINQ)
-			// Hint: result.Lenght = metadata.Frames.Sum(...)
+				// TODO Gergo: 3. execute parser command (asynchronously)
+				// Hint: https://stackoverflow.com/a/31492250
+				await Task.Run(() => File.WriteAllBytes(Path.Combine(path, "content.caff"), content));
 
-			// TODO Gergo: 7. read Preview from {fileId}/content_preview.bmp (asynchronously)
-			// Hint: result.Preview = await File.ReadAllBytesAsync(...)
+				// TODO Gergo: 5. read Parser Metadata from {fileId}/content.json (asynchronously)
+				// Hint: ParserMetadata metadata = await JsonSerializer.DeserializeAsync<ParserMetadata>(...)
+				FileStream fileStream = new FileStream("content.json", FileMode.OpenOrCreate);
 
-			// TODO Gergo: 8. remove {fileId} directory
+				ParserMetadata metadata = new ParserMetadata();
+
+				metadata = await JsonSerializer.DeserializeAsync<ParserMetadata>(fileStream);
+
+				// TODO Gergo: 6. calculate Lenght from Parser Metadata Frames (use LINQ)
+				// Hint: result.Lenght = metadata.Frames.Sum(...)
+
+				result.LenghtInSeconds = metadata.ReturnSum();
+
+				// TODO Gergo: 7. read Preview from {fileId}/content_preview.bmp (asynchronously)
+				// Hint: result.Preview = await File.ReadAllBytesAsync(...)
+				result.Preview = await File.ReadAllBytesAsync(Path.Combine(path, "content_preview.bmp"));
+
+			}
+			catch (Exception e)
+			{
+				// TODO Gergo: 4. throw exception for error code
+				Console.WriteLine(e.Message);
+			}
+			finally
+			{
+				// TODO Gergo: 8. remove {fileId} directory
+				di.Delete();
+			}
 
 			return result;
 		}
