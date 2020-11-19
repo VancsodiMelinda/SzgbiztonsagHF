@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using NinjaStore.DAL;
 using NinjaStore.DAL.Models;
 
 namespace NinjaStore.Pages.Files
@@ -32,6 +30,9 @@ namespace NinjaStore.Pages.Files
         [BindProperty]
         public string Description { get; set; }
 
+        [BindProperty]
+        public IFormFile NewFile { get; set; }
+
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://aka.ms/RazorPagesCRUD.
         public async Task<IActionResult> OnPostAsync()
@@ -43,34 +44,38 @@ namespace NinjaStore.Pages.Files
 
             string fileId = Guid.NewGuid().ToString("N");
 
-            byte[] preview = new byte[] { }; //System.IO.File.ReadAllBytes(@"C:\temp\test.bmp");
-
-            CaffMetadata metadata = new CaffMetadata
+            using (var memoryStream = new MemoryStream())
             {
-                FileId = fileId,
-                FileName = FileName,
-                Description = Description,
-                Username = "Dani",
-                UploadTimestamp = DateTimeOffset.UtcNow,
-                DownloadCounter = 0,
-                FileSize = 4,
-                Lenght = 120,
-                Preview = preview,
-            };
+                await NewFile.CopyToAsync(memoryStream);
+                byte[] preview = memoryStream.ToArray();
 
-            CaffFile file = new CaffFile
-            {
-                FileId = fileId,
-                Data = new byte[] { 0x00, 0xff, 0xaa, 0x80 },
-            };
+                CaffMetadata metadata = new CaffMetadata
+                {
+                    FileId = fileId,
+                    FileName = FileName,
+                    Description = Description,
+                    Username = "Csilla",
+                    UploadTimestamp = DateTimeOffset.UtcNow,
+                    DownloadCounter = 0,
+                    FileSize = 4,
+                    Lenght = 120,
+                    Preview = preview,
+                };
 
-            metadata.File = file;
-            file.Metadata = metadata;
+                CaffFile file = new CaffFile
+                {
+                    FileId = fileId,
+                    Data = new byte[] { 0x00, 0xff, 0xaa, 0x80 },
+                };
 
-            _context.CaffMetadata.Add(metadata);
-            await _context.SaveChangesAsync();
+                metadata.File = file;
+                file.Metadata = metadata;
 
-            return RedirectToPage("./Index");
+                _context.CaffMetadata.Add(metadata);
+                await _context.SaveChangesAsync();
+
+                return RedirectToPage("./Index");
+            }
         }
     }
 }

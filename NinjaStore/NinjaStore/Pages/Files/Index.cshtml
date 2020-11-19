@@ -5,7 +5,7 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1>Files</h1>
 
 <p>
     <a asp-page="Upload">Upload</a>
@@ -37,9 +37,6 @@
             <th>
                 @Html.DisplayNameFor(model => model.CaffMetadata[0].Preview)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CaffMetadata[0].File)
-            </th>
             <th></th>
         </tr>
     </thead>
@@ -68,10 +65,7 @@
                 @Html.DisplayFor(modelItem => item.DownloadCounter)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Preview)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.File.FileId)
+                <img src="data:image;base64,@System.Convert.ToBase64String(item.Preview)" />
             </td>
             <td>
                 <a asp-page="./Edit" asp-route-id="@item.FileId">Edit</a> |
