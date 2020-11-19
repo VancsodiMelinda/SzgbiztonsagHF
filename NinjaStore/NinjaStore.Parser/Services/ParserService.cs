@@ -31,20 +31,19 @@ namespace NinjaStore.Parser.Services
 
 				// TODO Gergo: 3. execute parser command (asynchronously)
 				// Hint: https://stackoverflow.com/a/31492250
-				await Task.Run(() => File.WriteAllBytes(Path.Combine(path, "content.caff"), content));
+
+				await Task.Run(() => File.WriteAllBytes(Path.Combine(path, "content.caff"), content)); //???
 
 				// TODO Gergo: 5. read Parser Metadata from {fileId}/content.json (asynchronously)
 				// Hint: ParserMetadata metadata = await JsonSerializer.DeserializeAsync<ParserMetadata>(...)
 				FileStream fileStream = new FileStream("content.json", FileMode.OpenOrCreate);
 
-				ParserMetadata metadata = new ParserMetadata();
-
-				metadata = await JsonSerializer.DeserializeAsync<ParserMetadata>(fileStream);
+				ParserMetadata metadata = await JsonSerializer.DeserializeAsync<ParserMetadata>(fileStream);
 
 				// TODO Gergo: 6. calculate Lenght from Parser Metadata Frames (use LINQ)
 				// Hint: result.Lenght = metadata.Frames.Sum(...)
 
-				result.LenghtInSeconds = metadata.ReturnSum();
+				result.LenghtInSeconds = (int)((metadata.frames[0].duration)/1000);
 
 				// TODO Gergo: 7. read Preview from {fileId}/content_preview.bmp (asynchronously)
 				// Hint: result.Preview = await File.ReadAllBytesAsync(...)
