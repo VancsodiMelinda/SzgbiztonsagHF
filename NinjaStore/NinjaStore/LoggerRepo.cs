@@ -29,3 +29,4 @@ namespace NinjaStore
     {
         public static List<Log> Logs = new List<Log>();
     }
+}
