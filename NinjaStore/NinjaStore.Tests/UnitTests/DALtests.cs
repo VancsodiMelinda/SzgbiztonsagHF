@@ -9,18 +9,21 @@ namespace NinjaStore.Tests.UnitTests
 {
     public class DALtests
     {
+        /*
         [Fact]
         public async void Test1()
         {
+            
             using (var db = new StoreContext(Utilities.TestDbContextOptions()))
             {
 
             }
-
+            
             //var optionsBuilder = new DbContextOptionsBuilder<StoreContext>().UseInMemoryDatabase("InMemoryDb");
             //var mockStoreContext = new Mock<StoreContext>(optionsBuilder.Options);
             
             //var indexModel = new IndexModel(context);
         }
+        */
     }
 }
