@@ -105,6 +105,9 @@ namespace NinjaStore.BLL
 				.Include(cf => cf.Metadata)
 				.FirstOrDefaultAsync(cf => cf.FileId == fileId);
 
+			file.Metadata.DownloadCounter++;
+			await _storeContext.SaveChangesAsync();
+
 			return file;
 		}
 
