@@ -12,8 +12,7 @@ namespace NinjaStore.Parser.Exceptions
 
         }
 
-        public InvalidCaffFileContentException(string name)
-            : base(String.Format("UNKNOWN_ERROR: {0}", name))
+        public InvalidCaffFileContentException(string name) : base(name)
         {
 
         }
