@@ -67,10 +67,6 @@ namespace NinjaStore.BLL
 
 			ParserResult parserResult = await _parserService.ParseAsync(fileId, content);
 
-			// TODO Dani: remove
-			//parserResult.Preview = System.IO.File.ReadAllBytes(@"C:\temp\test.bmp");
-			parserResult.Preview = content;
-
 			CaffMetadata metadata = new CaffMetadata
 			{
 				FileId = fileId,
@@ -104,6 +100,9 @@ namespace NinjaStore.BLL
 			CaffFile file = await _storeContext.CaffFiles
 				.Include(cf => cf.Metadata)
 				.FirstOrDefaultAsync(cf => cf.FileId == fileId);
+
+			file.Metadata.DownloadCounter++;
+			await _storeContext.SaveChangesAsync();
 
 			return file;
 		}

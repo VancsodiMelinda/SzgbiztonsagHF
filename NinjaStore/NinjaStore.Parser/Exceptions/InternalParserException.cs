@@ -13,8 +13,7 @@ namespace NinjaStore.Parser.Exceptions
 
         }
 
-        public InternalParserException(string name)
-            : base(String.Format("UNKNOWN_ERROR: {0}", name))
+        public InternalParserException(string name) : base(name)
         {
 
         }
