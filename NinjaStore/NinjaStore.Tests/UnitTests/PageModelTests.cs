@@ -10,36 +10,75 @@ using System.Threading.Tasks;
 using NinjaStore.Pages.Files;
 using Microsoft.AspNetCore.Mvc;
 
-namespace NinjaStore.Tests.UnitTests
+namespace NinjaStore.Tests.UnitTests.Files
 {
     public class DeletePageTests
     {
+        // METHOD: OnGetAsync
         [Fact]
-        public async Task OnGetAsync_ReturnsNotFound_WhenIdIsNull()
+        public async Task OnGetAsync_ReturnsNotFoundResult_WhenIdIsNull()
         {
-            // mock store logic interface
             Mock<IStoreLogic> mockIStoreLogic = new Mock<IStoreLogic>();
-
             var deleteModel = new DeleteModel(mockIStoreLogic.Object);
 
-            string id = "valami";
+            string id = null;
             var result = await deleteModel.OnGetAsync(id);
 
             Assert.IsType<NotFoundResult>(result);
         }
 
-        /*
         [Fact]
-        public async Task OnGetAsync_ReturnsNotFound_WhenCaffMetadataIsNull()
+        public async Task OnGetAsync_ReturnsNotFoundResult_WhenCaffMetadataIsNull()
         {
-            //var optionsBuilder = new DbContextOptionsBuilder<StoreContext>().UseInMemoryDatabase("InMemoryDb");
+            Mock<IStoreLogic> mockIStoreLogic = new Mock<IStoreLogic>();
+            var deleteModel = new DeleteModel(mockIStoreLogic.Object);
 
-            //var mockAppDbContext = new Mock<StoreContext>(optionsBuilder.Options);
+            string id = "notExistingID";
+            var result = await deleteModel.OnGetAsync(id);
+
+            Assert.IsType<NotFoundResult>(result);
         }
-        */
+
+        [Fact]
+        public async Task OnGetAsync_ReturnsPageResult_WhenCaffMetadataExistsWithId()
+        {
+            throw new NotImplementedException();
+        }
+
+        // METHOD: OnPostAsync
+        [Fact]
+        public async Task OnPostAsync_ReturnsNotFoundResult_WhenIdIsNull()
+        {
+            Mock<IStoreLogic> mockIStoreLogic = new Mock<IStoreLogic>();
+            var deleteModel = new DeleteModel(mockIStoreLogic.Object);
+
+            string id = null;
+            var result = await deleteModel.OnPostAsync(id);
+
+            Assert.IsType<NotFoundResult>(result);
+        }
+
+
+        [Fact]
+        public async Task OnPostAsync_ReturnsRedirectToPageResult_WhenFileIsDeleted()
+        {
+            Mock<IStoreLogic> mockIStoreLogic = new Mock<IStoreLogic>();
+            var deleteModel = new DeleteModel(mockIStoreLogic.Object);
+
+            string id = "someID";
+            var result = await deleteModel.OnPostAsync(id);
+
+            Assert.IsType<RedirectToPageResult>(result);
+        }
+
     }
 
     public class DetailsPageTests
+    {
+
+    }
+
+    public class DownloadPageTests
     {
 
     }
@@ -50,6 +89,19 @@ namespace NinjaStore.Tests.UnitTests
     }
 
     public class UploadPageTests
+    {
+
+    }
+}
+
+namespace NinjaStore.Tests.UnitTests.Comments
+{
+    public class CreatePageTests
+    {
+
+    }
+
+    public class DeletePageTests
     {
 
     }
