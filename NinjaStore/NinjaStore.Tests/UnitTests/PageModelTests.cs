@@ -42,6 +42,12 @@ namespace NinjaStore.Tests.UnitTests.Files
         [Fact]
         public async Task OnGetAsync_ReturnsPageResult_WhenCaffMetadataExistsWithId()
         {
+            // mock database
+
+            // mock parser service interface
+
+            //StoreLogic storeLogic = new StoreLogic()
+
             throw new NotImplementedException();
         }
 
@@ -80,7 +86,23 @@ namespace NinjaStore.Tests.UnitTests.Files
 
     public class DownloadPageTests
     {
+        [Fact]
+        public async Task OnGetAsync_ReturnsNotFoundResult_WhenIdIsNullOrWhiteSpace()
+        {
+            throw new NotImplementedException();
+        }
 
+        [Fact]
+        public async Task OnGetAsync_ReturnsFileResult_WhenFileExists()
+        {
+            throw new NotImplementedException();
+        }
+
+        [Fact]
+        public async Task OnGetAsync_ReturnsNotFoundResult_WhenFileDoesNotExists()
+        {
+            throw new NotImplementedException();
+        }
     }
 
     public class IndexPageTests

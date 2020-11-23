@@ -31,6 +31,7 @@ namespace NinjaStore.Parser.Services
 
 				// TODO: Dani: resolve Parser.exe path
 				string parserCommand = @"C:\Users\Csilla\source\repos\SzgbiztonsagHF\Parser\x64\Release\Parser.exe";
+				//string parserCommand = @"C:\Users\user\Desktop\what\SzgbiztonsagHF\Parser\x64\Release\Parser.exe";
 
 				// TODO Gergo: 3. execute parser command (asynchronously)
 				// Hint: https://stackoverflow.com/a/31492250
