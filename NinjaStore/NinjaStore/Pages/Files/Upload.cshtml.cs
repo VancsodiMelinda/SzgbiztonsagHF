@@ -1,5 +1,4 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -19,9 +18,6 @@ namespace NinjaStore.Pages.Files
 
         public IActionResult OnGet()
         {
-            // TODO Csilla: ask Dani
-            //ViewData["FileId"] = new SelectList(_context.CaffFiles, "FileId", "FileId");
-
             return Page();
         }
 
@@ -34,8 +30,6 @@ namespace NinjaStore.Pages.Files
         [BindProperty]
         public IFormFile NewFile { get; set; }
 
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for
-        // more details, see https://aka.ms/RazorPagesCRUD.
         public async Task<IActionResult> OnPostAsync()
         {
             if (!ModelState.IsValid)
@@ -43,18 +37,13 @@ namespace NinjaStore.Pages.Files
                 return Page();
             }
 
-            //string fileId = Guid.NewGuid().ToString("N");
-
             using (var memoryStream = new MemoryStream())
             {
                 await NewFile.CopyToAsync(memoryStream);
                 byte[] preview = memoryStream.ToArray();
+                
+                // TODO Csilla: username
                 string savedFileId = await _logic.UploadFileAsync("Csilla", FileName, Description, preview);
-
-                // TODO Csilla : fix file instead of metadata (ask Dani)
-                //_context.CaffMetadata.Add(metadata);
-                //await _context.SaveChangesAsync();
-
                 return RedirectToPage("./Index");
             }
         }

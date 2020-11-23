@@ -2,70 +2,189 @@
 for details on configuring this project to bundle and minify static web assets. */
 
 a.navbar-brand {
-  white-space: normal;
-  text-align: center;
-  word-break: break-all;
+    white-space: normal;
+    text-align: center;
+    word-break: break-all;
 }
 
 /* Provide sufficient contrast against white background */
 a {
-  color: #0366d6;
+    color: #22B14C;
 }
 
 .btn-primary {
-  color: #fff;
-  background-color: #1b6ec2;
-  border-color: #1861ac;
+    color: #fff;
+    background-color: #1b6ec2;
+    border-color: #1861ac;
 }
 
 .nav-pills .nav-link.active, .nav-pills .show > .nav-link {
-  color: #fff;
-  background-color: #1b6ec2;
-  border-color: #1861ac;
+    color: #fff;
+    background-color: #1b6ec2;
+    border-color: #1861ac;
 }
+
+.card {
+    display: inline; /* the default for span */
+    padding: 5px;
+    margin: 5px;
+    background-color: transparent;
+    border: none;
+}
+
+.card-body {
+    margin: 0px;
+    padding: 10px;
+}
+
+.video {
+    position: relative;
+}
+
+    .video h6 {
+        position: absolute;
+        bottom: 0px;
+        right: 5px;
+    }
+
+.navbar {
+    background-color: #90EE02;
+}
+
+.circle-icon {
+    background: white;
+    width: 45px;
+    height: 45px;
+    padding: 5px;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 45px;
+    vertical-align: middle;
+}
+
+.filter {
+    display: block;
+    margin-left: 15%;
+    margin-right: 15%;
+    text-align:center;
+}
+
+.search-container {
+    display: inline-block;
+    width: 94%;
+}
+    .search-container input[type=text] {
+        width: 95%;
+    }
+
+    .search-container button {
+        padding: 6px 10px;
+        background: #ddd;
+        font-size: 17px;
+        border: none;
+        cursor: pointer;
+    }
+
+    .search-container button:hover {
+        background: #ccc;
+    }
+
+@media screen and (max-width: 600px) {
+    .search-container {
+        float: none;
+    }
+
+        .search-container input[type=text], .search-container button {
+            float: none;
+            display: block;
+            text-align: left;
+            width: 100%;
+            margin: 0;
+            padding: 14px;
+        }
+
+    .search-container input[type=text] {
+        border: 1px solid #ccc;
+    }
+}
+
+h4 {
+    display: inline-block;
+    padding: 0px;
+    margin: 10px;
+}
+
+.center {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.content {
+    position: relative;
+}
+
+    .content input[type=submit] {
+        position: absolute;
+        bottom: 0px;
+        right: 10px;
+    }
+
+    .content a {
+        position: absolute;
+        bottom: 0px;
+        right: 10px;
+    }
+
 
 /* Sticky footer styles
 -------------------------------------------------- */
 html {
-  font-size: 14px;
+    font-size: 14px;
 }
+
 @media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
+    html {
+        font-size: 16px;
+    }
 }
 
 .border-top {
-  border-top: 1px solid #e5e5e5;
+    border-top: 1px solid #e5e5e5;
 }
+
 .border-bottom {
-  border-bottom: 1px solid #e5e5e5;
+    border-bottom: 1px solid #e5e5e5;
 }
 
 .box-shadow {
-  box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
+    box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
 }
 
 button.accept-policy {
-  font-size: 1rem;
-  line-height: inherit;
+    font-size: 1rem;
+    line-height: inherit;
 }
 
 /* Sticky footer styles
 -------------------------------------------------- */
 html {
-  position: relative;
-  min-height: 100%;
+    position: relative;
+    min-height: 100%;
 }
 
 body {
-  /* Margin bottom by footer height */
-  margin-bottom: 60px;
+    /* Margin bottom by footer height */
+    margin-bottom: 60px;
+    width: 100%;
+    background-color: #F2FDE4;
 }
+
 .footer {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  white-space: nowrap;
-  line-height: 60px; /* Vertically center the text there */
+    background-color: #90EE02;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    white-space: nowrap;
+    line-height: 60px; /* Vertically center the text there */
 }

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -16,7 +15,7 @@ namespace NinjaStore.Pages.Files
             _logic = logic;
         }
 
-        [BindProperty(Name = "filter", SupportsGet = true)]
+        [BindProperty(SupportsGet = true)]
         public string Filter { get; set; }
 
 		public IList<CaffMetadata> CaffMetadata { get;set; }

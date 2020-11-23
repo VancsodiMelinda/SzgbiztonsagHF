@@ -3,74 +3,98 @@
 
 @{
     ViewData["Title"] = "Details";
+    ViewData["ShowUser"] = true;
 }
 
-<h1>Details</h1>
+<div class="container">
+    <h1>File details</h1>
 
-<div>
-    <h4>CaffMetadata</h4>
+    <div class="content">
+        <img class="center" src="data:image;base64,@System.Convert.ToBase64String(Model.CaffMetadata.Preview)" />
+        <a asp-page="./Download" asp-route-id="@Model.CaffMetadata.FileId" class="btn btn-success">Download</a>
+    </div>
+
     <hr />
-    <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.CaffMetadata.FileName)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.CaffMetadata.FileName)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.CaffMetadata.Description)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.CaffMetadata.Description)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.CaffMetadata.Username)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.CaffMetadata.Username)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.CaffMetadata.UploadTimestamp)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.CaffMetadata.UploadTimestamp)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.CaffMetadata.FileSize)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.CaffMetadata.FileSize)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.CaffMetadata.Lenght)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.CaffMetadata.Lenght)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.CaffMetadata.DownloadCounter)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.CaffMetadata.DownloadCounter)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.CaffMetadata.Preview)
-        </dt>
-        <dd class="col-sm-10">
-            <img src="data:image;base64,@System.Convert.ToBase64String(Model.CaffMetadata.Preview)" />
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.CaffMetadata.File)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.CaffMetadata.File.FileId)
-        </dd>
-    </dl>
-</div>
-<div>
-    <form method="post">
-        <input type="hidden" asp-for="CaffMetadata.FileId" />
-        <input type="submit" value="Download" class="btn btn-danger" />
+    <div class="content">
+        <dl class="row">
+            <dt class="col-sm-2">
+                Uploader
+            </dt>
+            <dd class="col-sm-4">
+                @Html.DisplayFor(model => model.CaffMetadata.Username)
+            </dd>
+
+            <dt class="col-sm-2">
+                Duration time
+            </dt>
+            <dd class="col-sm-4">
+                @Html.DisplayFor(model => model.CaffMetadata.Duration)
+            </dd>
+
+            <dt class="col-sm-2">
+                File name
+            </dt>
+            <dd class="col-sm-4">
+                @Html.DisplayFor(model => model.CaffMetadata.FileName)
+            </dd>
+            <dt class="col-sm-2">
+                File size
+            </dt>
+            <dd class="col-sm-4">
+                @Html.DisplayFor(model => model.CaffMetadata.FileSize)
+            </dd>
+
+            <dt class="col-sm-2">
+                Description
+            </dt>
+            <dd class="col-sm-4">
+                @Html.DisplayFor(model => model.CaffMetadata.Description)
+            </dd>
+
+            <dt class="col-sm-2">
+                Download counter
+            </dt>
+            <dd class="col-sm-4">
+                @Html.DisplayFor(model => model.CaffMetadata.DownloadCounter)
+            </dd>
+        </dl>
+        <!-- TODO if admin -->
+        <a class="btn btn-danger" asp-page="./Delete" asp-route-id="@Model.CaffMetadata.FileId">Delete file</a>
+    </div>
+
+    <hr />
+    <h3>Comments</h3>
+    <table class="table" style="width:100%;">
+        <tbody>
+            @foreach (var item in Model.CaffMetadata.Comments)
+            {
+                <tr>
+                    <td style="width:10%;">
+                        @Html.DisplayFor(modelItem => item.Username)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Text)
+                    </td>
+                    <!-- TODO if admin or own comment-->
+                    <td style="text-align:right; width:5%;">
+                        <form method="post" asp-page="../Comments/Delete">
+                            <div style="width:100%;">
+                                <input type="hidden" asp-for="@item.Id" name="id" id="id" />
+                                <input type="submit" value="Delete" class="btn btn-danger text-light" />
+                            </div>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <form method="post" asp-page="../Comments/Create">
+        <div class="content" style="width:100%;">
+            <input type="hidden" asp-for="@Model.CaffMetadata.FileId" name="fileId" id="fileId"/>
+            <input style="display:inline-block; width:88%;" type="text" name="commentText" class="form-control" placeholder="Write new comment.." />
+            <input style="display:inline-block; width:10%;" type="submit" value="Create" class="btn btn-success" />
+        </div>
     </form>
+    <br />
     <a asp-page="./Index">Back to List</a>
 </div>
