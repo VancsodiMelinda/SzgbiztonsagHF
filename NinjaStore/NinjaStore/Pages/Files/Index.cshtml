@@ -3,75 +3,25 @@
 
 @{
     ViewData["Title"] = "Index";
+    ViewData["ShowUser"] = true;
+    ViewData["ShowButtons"] = false;
 }
 
-<h1>Files</h1>
+<h1>Image store</h1>
 
-<p>
-    <a asp-page="Upload">Upload</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.CaffMetadata[0].FileName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CaffMetadata[0].Description)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CaffMetadata[0].Username)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CaffMetadata[0].UploadTimestamp)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CaffMetadata[0].FileSize)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CaffMetadata[0].Lenght)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CaffMetadata[0].DownloadCounter)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CaffMetadata[0].Preview)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model.CaffMetadata) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.FileName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Username)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.UploadTimestamp)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.FileSize)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Lenght)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DownloadCounter)
-            </td>
-            <td>
-                <img src="data:image;base64,@System.Convert.ToBase64String(item.Preview)" />
-            </td>
-            <td>
-                <a asp-page="./Details" asp-route-id="@item.FileId">Details</a> |
-                <a asp-page="./Delete" asp-route-id="@item.FileId">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+<div class="filter">
+    <h4 style="display: inline;">Filter</h4>
+    <div class="search-container">
+        <form action="?">
+            <input type="text" placeholder="Search.." asp-for="Filter">
+            <button type="submit"><i class="fa fa-search"></i></button>
+        </form>
+    </div>
+</div>
+
+<div>
+    @foreach (var item in Model.CaffMetadata)
+    {
+        <partial name="_DisplayFilePartial" model="item" view-data="ViewData" />
+    }
+</div>

@@ -6,30 +6,27 @@ using NinjaStore.DAL.Models;
 
 namespace NinjaStore.Pages.Files
 {
-    public class DetailsModel : PageModel
+    public class DownloadModel : PageModel
     {
         private readonly IStoreLogic _logic;
 
-        public DetailsModel(IStoreLogic logic)
+        public DownloadModel(IStoreLogic logic)
         {
             _logic = logic;
         }
-
-        public CaffMetadata CaffMetadata { get; set; }
-
         public async Task<IActionResult> OnGetAsync(string id)
         {
-            if (id == null)
+            if (string.IsNullOrWhiteSpace(id))
             {
                 return NotFound();
             }
+            CaffFile file = await _logic.DownloadFileAsync(id);
 
-            CaffMetadata = await _logic.GetMetadataWithCommentsAsync(id);
-            if (CaffMetadata == null)
+            if (file != null)
             {
-                return NotFound();
+                return File(file.Data, "application/octet-stream", file.Metadata.FileName + ".caff");
             }
-            return Page();
+            return NotFound();
         }
     }
 }
