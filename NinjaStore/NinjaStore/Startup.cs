@@ -5,12 +5,14 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using NinjaStore.BLL;
 using NinjaStore.DAL;
+using NinjaStore.DAL.Models;
 using NinjaStore.Parser.Services;
 
 namespace NinjaStore
@@ -31,6 +33,10 @@ namespace NinjaStore
 			{
 				options.UseSqlServer(Configuration.GetConnectionString("NinjaStoreDB"));
 			});
+
+			services.AddIdentity<User, IdentityRole>()
+				.AddEntityFrameworkStores<StoreContext>()
+				.AddDefaultTokenProviders();
 
 			services.AddRazorPages();
 			services.AddTransient<IStoreLogic, StoreLogic>();
@@ -62,6 +68,7 @@ namespace NinjaStore
 
 			app.UseRouting();
 
+			app.UseAuthentication();
 			app.UseAuthorization();
 
 			app.UseEndpoints(endpoints =>

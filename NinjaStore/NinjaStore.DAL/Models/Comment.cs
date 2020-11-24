@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
 namespace NinjaStore.DAL.Models
@@ -14,9 +15,11 @@ namespace NinjaStore.DAL.Models
 		[MaxLength(32)]
 		public string CaffMetadataFileId { get; set; }
 
+		[ForeignKey("User")]
 		[Required]
-		[MaxLength(16)]
 		public string Username { get; set; }
+
+		public User User { get; set; }
 
 		[Required]
 		[MaxLength(100)]
