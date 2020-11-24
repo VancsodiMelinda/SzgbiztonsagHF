@@ -30,7 +30,7 @@ namespace NinjaStore.Parser.Services
 				await File.WriteAllBytesAsync(file, content);
 
 				// TODO: Dani: resolve Parser.exe path
-				string parserCommand = @"C:\Users\Csilla\source\repos\SzgbiztonsagHF\Parser\x64\Release\Parser.exe";
+				string parserCommand = @"..\\Parser.exe";
 				//string parserCommand = @"C:\Users\user\Desktop\what\SzgbiztonsagHF\Parser\x64\Release\Parser.exe";
 
 				// TODO Gergo: 3. execute parser command (asynchronously)
