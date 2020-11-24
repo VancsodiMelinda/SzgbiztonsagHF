@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
 namespace NinjaStore.DAL.Models
@@ -18,9 +19,10 @@ namespace NinjaStore.DAL.Models
 		[MaxLength(200)]
 		public string Description { get; set; }
 
-		[Required]
-		[MaxLength(16)]
+		[ForeignKey("User")]
 		public string Username { get; set; }
+
+		public User User { get; set; }
 
 		[Required]
 		public DateTimeOffset UploadTimestamp { get; set; }
