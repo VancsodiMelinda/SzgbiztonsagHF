@@ -58,9 +58,7 @@ namespace NinjaStore.Tests.UnitTests
                 string fileID = "testFileID";
                 CaffMetadata result = await storeLogic.GetMetadataWithCommentsAsync(fileID);
 
-                //CaffMetadata expectedResult = testData.Metadata;
-
-                Assert.Equal("testFileID", result.FileId);
+                Assert.Equal(fileID, result.FileId);
             }
         }
 
@@ -84,12 +82,105 @@ namespace NinjaStore.Tests.UnitTests
                     result.Add(metadata.FileName.Contains(filter));
                 }
 
-                //List<CaffMetadata> expectedResult = new List<CaffMetadata>();
-                //expectedResult.Add(testData.Metadata);
+                Assert.Equal(expectedResult, result);
+            }
+        }
+
+        /*
+        [Fact]
+        public async Task UploadFileAsync_ReturnFileId()
+        {
+            // mock parser service interface
+            Mock<IParserService> mockIParserService = new Mock<IParserService>();
+
+            // test
+            using (var context = new StoreContext(options))
+            {
+                StoreLogic storeLogic = new StoreLogic(context, mockIParserService.Object);
+                string username = "new user name";
+                string fileName = "new file name";
+                string description = "new description";
+                byte[] content = { 10, 20, 30, 40 };
+
+                string tempResult = await storeLogic.UploadFileAsync(username, fileName, description, content);
+
+                Guid guid;
+                bool result = Guid.TryParse(tempResult, out guid);
+                bool expectedResult = true;
 
                 Assert.Equal(expectedResult, result);
             }
         }
+        */
+        
+        [Fact]
+        public async Task DownloadFileAsync_ReturnCaffFile()
+        {
+            // mock parser service interface
+            Mock<IParserService> mockIParserService = new Mock<IParserService>();
+
+            // test
+            using (var context = new StoreContext(options))
+            {
+                StoreLogic storeLogic = new StoreLogic(context, mockIParserService.Object);
+                string fileID = "testFileID";
+                CaffFile result = await storeLogic.DownloadFileAsync(fileID);
+
+                Assert.Equal(fileID, result.FileId);
+            }
+        }
+
+        
+        [Fact]
+        public async Task GetCommentAsync_ReturnCommentById()
+        {
+            // mock parser service interface
+            Mock<IParserService> mockIParserService = new Mock<IParserService>();
+
+            // test
+            using (var context = new StoreContext(options))
+            {
+                StoreLogic storeLogic = new StoreLogic(context, mockIParserService.Object);
+                int id = 1;
+                Comment result = await storeLogic.GetCommentAsync(id);
+
+                Assert.Equal(id, result.Id);
+            }
+        }
+
+        [Fact]
+        public async Task InsertCommentAsync_ReturnNewCommentId()
+        {
+            // mock parser service interface
+            Mock<IParserService> mockIParserService = new Mock<IParserService>();
+
+            // test
+            using (var context = new StoreContext(options))
+            {
+                StoreLogic storeLogic = new StoreLogic(context, mockIParserService.Object);
+                string fileID = "testFileID";
+                string username = "user name of commenter";
+                string comment = "this is a new comment";
+                int result = await storeLogic.InsertCommentAsync(fileID, username, comment);
+
+                Assert.Equal(3, result);
+            }
+        }
+
+        /*
+        [Fact]
+        public async Task MethodName_ReturnSomething()
+        {
+            // mock parser service interface
+            Mock<IParserService> mockIParserService = new Mock<IParserService>();
+
+            // test
+            using (var context = new StoreContext(options))
+            {
+                StoreLogic storeLogic = new StoreLogic(context, mockIParserService.Object);
+            }
+        }
+        */
 
         static CaffFile generateCaffFile()
         {
@@ -107,6 +198,7 @@ namespace NinjaStore.Tests.UnitTests
 
             Comment comment_1 = new Comment
             {
+                Id = 1,
                 CaffMetadataFileId = fileID,
                 Username = "Test User 1",
                 Text = "This is a test comment by Test User 1.",
@@ -115,6 +207,7 @@ namespace NinjaStore.Tests.UnitTests
 
             Comment comment_2 = new Comment
             {
+                Id = 2,
                 CaffMetadataFileId = fileID,
                 Username = "Test User 2",
                 Text = "This is a test comment by Test User 2.",
