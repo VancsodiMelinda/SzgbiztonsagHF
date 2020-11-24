@@ -6,47 +6,29 @@
     ViewData["ShowUser"] = true;
 }
 
-<h1>Upload</h1>
-
-<h4>CaffMetadata</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form method="post" enctype="multipart/form-data">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="FileName" class="control-label"></label>
-                <input asp-for="FileName" class="form-control" placeholder="The name of your file" />
-                <span asp-validation-for="FileName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Description" class="control-label"></label>
-                <input asp-for="Description" class="form-control" />
-                <span asp-validation-for="Description" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="NewFile" class="control-label"></label>
-                <input type="file" asp-for="NewFile" onchange="loadFile(event)" />
-                <img id="output" />
-                <script>
-                    var loadFile = function (event) {
-                        var output = document.getElementById('output');
-                        output.src = URL.createObjectURL(event.target.files[0]);
-                        output.onload = function () {
-                            URL.revokeObjectURL(output.src) // free memory
-                        }
-                    };
-                </script>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Upload" class="btn btn-primary" />
-            </div>
-        </form>
-    </div>
-</div>
-
-<div>
-    <a asp-page="Index">Back to List</a>
+<div class="container">
+    <h1>Upload</h1>
+    <form method="post" enctype="multipart/form-data">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="form-group row">
+            <label class="control-label col-md-2">Name of the file</label>
+            <input asp-for="FileName" class="form-control col-md-6" placeholder="The name of your file" />
+            <span asp-validation-for="FileName" class="text-danger"></span>
+        </div>
+        <div class="form-group row">
+            <label asp-for="Description" class="control-label col-md-2"></label>
+            <input asp-for="Description" class="form-control col-md-6" />
+            <span asp-validation-for="Description" class="text-danger"></span>
+        </div>
+        <div class="form-group row">
+            <label class="control-label col-md-2">Select a file</label>
+            <input type="file" asp-for="NewFile" onchange="loadFile(event)" class="col-md-6" />
+        </div>
+        <div class="form-group row">
+            <p class="control-label col-md-2"></p>
+            <input type="submit" value="Upload" class="btn btn-success col-md-3" />
+        </div>
+    </form>
 </div>
 
 @section Scripts {
