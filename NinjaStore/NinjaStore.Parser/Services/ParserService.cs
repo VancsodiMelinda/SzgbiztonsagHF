@@ -21,7 +21,8 @@ namespace NinjaStore.Parser.Services
 
 		public async Task<ParserResult> ParseAsync(string fileId, byte[] content)
 		{
-			string tempFileDirectory = Path.Combine(Path.GetTempPath(), fileId);
+			string tempDirectory = Path.GetTempPath();
+			string tempFileDirectory = Path.Combine(tempDirectory, fileId);
 
 			try
 			{
@@ -32,7 +33,9 @@ namespace NinjaStore.Parser.Services
 
 				string applicationDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 				string parserCommand = Path.Combine(applicationDirectory, EXE_DIRECTORY, PARSER_EXE);
-				int resultCode = await CommandLine.ExecuteAsync(parserCommand, file, tempFileDirectory + Path.DirectorySeparatorChar);
+				string fileParameter = Path.GetRelativePath(tempDirectory, file);
+				string outputParameter = Path.GetRelativePath(tempDirectory, tempFileDirectory) + Path.DirectorySeparatorChar;
+				int resultCode = await CommandLine.ExecuteAsync(parserCommand, tempDirectory, fileParameter, outputParameter);
 
 				switch ((ErrorCodes)resultCode)
 				{
