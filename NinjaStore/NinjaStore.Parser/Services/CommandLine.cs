@@ -18,6 +18,7 @@ namespace NinjaStore.Parser.Services
 				{
                     FileName = command,
                     Arguments = args.Length == 0 ? "" : string.Join(" ", args),
+                    UseShellExecute = false,
                 },
                 EnableRaisingEvents = true,
             };

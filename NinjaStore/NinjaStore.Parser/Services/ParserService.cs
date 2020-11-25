@@ -7,11 +7,14 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using System.Linq;
 using NinjaStore.Parser.Exceptions;
+using System.Reflection;
 
 namespace NinjaStore.Parser.Services
 {
 	public class ParserService : IParserService
 	{
+		private const string EXE_DIRECTORY = "Executable";
+		private const string PARSER_EXE = "Parser.exe";
 		private const string CAFF_FILE_NAME = "content.caff";
 		private const string METADATA_FILE_NAME = "content.json";
 		private const string PREVIEW_FILE_NAME = "content_preview.bmp";
@@ -22,25 +25,15 @@ namespace NinjaStore.Parser.Services
 
 			try
 			{
-				// TODO Gergo: 1. create a directory named {fileId}
 				Directory.CreateDirectory(tempFileDirectory);
 
-				// TODO Gergo: 2. write the content to a file named {fileId}/content.caff (asynchronously)
 				string file = Path.Combine(tempFileDirectory, CAFF_FILE_NAME);
 				await File.WriteAllBytesAsync(file, content);
 
-				// TODO: Dani: resolve Parser.exe path
-				string parserCommand = @"..\\Parser.exe";
-				//ABSOLUTE PATH BACKUP:
-				//string parserCommand = @"D:\SzgbiztonsagHF\Parser\x64\Release\Parser.exe";
-				//string parserCommand = @"C:\Users\Csilla\source\repos\SzgbiztonsagHF\Parser\x64\Release\Parser.exe";
-				//string parserCommand = @"C:\Users\user\Desktop\what\SzgbiztonsagHF\Parser\x64\Release\Parser.exe";
-
-				// TODO Gergo: 3. execute parser command (asynchronously)
-				// Hint: https://stackoverflow.com/a/31492250
+				string applicationDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+				string parserCommand = Path.Combine(applicationDirectory, EXE_DIRECTORY, PARSER_EXE);
 				int resultCode = await CommandLine.ExecuteAsync(parserCommand, file, tempFileDirectory + Path.DirectorySeparatorChar);
 
-				// TODO Gergo: 4. throw exception for error code
 				switch ((ErrorCodes)resultCode)
 				{
 					case ErrorCodes.SUCCESS:
@@ -95,20 +88,13 @@ namespace NinjaStore.Parser.Services
 
 				ParserResult result = new ParserResult();
 
-				// TODO Gergo: 5. read Parser Metadata from {fileId}/content.json (asynchronously)
-				// Hint: ParserMetadata metadata = await JsonSerializer.DeserializeAsync<ParserMetadata>(...)
 				string metadataFile = Path.Combine(tempFileDirectory, METADATA_FILE_NAME);
 				using (FileStream fileStream = new FileStream(metadataFile, FileMode.Open))
 				{
 					ParserMetadata metadata = await JsonSerializer.DeserializeAsync<ParserMetadata>(fileStream);
-
-					// TODO Gergo: 6. calculate Lenght from Parser Metadata Frames (use LINQ)
-					// Hint: result.Lenght = metadata.Frames.Sum(...)
 					result.LenghtInSeconds = metadata.frames.Sum(f => f.duration) / 1000;
 				}
 
-				// TODO Gergo: 7. read Preview from {fileId}/content_preview.bmp (asynchronously)
-				// Hint: result.Preview = await File.ReadAllBytesAsync(...)
 				string previewFile = Path.Combine(tempFileDirectory, PREVIEW_FILE_NAME);
 				result.Preview = await File.ReadAllBytesAsync(previewFile);
 
@@ -116,7 +102,6 @@ namespace NinjaStore.Parser.Services
 			}
 			finally
 			{
-				// TODO Gergo: 8. remove {fileId} directory
 				if (Directory.Exists(tempFileDirectory)) Directory.Delete(tempFileDirectory, true);
 			}
 		}
