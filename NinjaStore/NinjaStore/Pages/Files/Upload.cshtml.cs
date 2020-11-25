@@ -46,7 +46,7 @@ namespace NinjaStore.Pages.Files
                 byte[] preview = memoryStream.ToArray();
                 
                 // TODO Csilla: username
-                string savedFileId = await _logic.UploadFileAsync("Csilla", FileName, Description, preview);
+                string savedFileId = await _logic.UploadFileAsync(null, FileName, Description, preview);
                 return RedirectToPage("./Details", new { id = savedFileId });
             }
         }
