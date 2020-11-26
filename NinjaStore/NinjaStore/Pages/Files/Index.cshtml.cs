@@ -20,9 +20,10 @@ namespace NinjaStore.Pages.Files
 
 		public IList<CaffMetadata> CaffMetadata { get;set; }
 
-        public async Task OnGetAsync()
+        public async Task<IActionResult> OnGetAsync()
         {
             CaffMetadata = await _logic.QueryMetadataByFreeTextAsync(Filter);
+            return Page();
         }
     }
 }

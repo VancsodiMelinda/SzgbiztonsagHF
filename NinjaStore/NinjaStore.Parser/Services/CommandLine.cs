@@ -6,18 +6,20 @@ using System.Threading.Tasks;
 
 namespace NinjaStore.Parser.Services
 {
-	public static class CommandLine
-	{
-        public static Task<int> ExecuteAsync(string command, params string[] args)
-		{
-            var taskCompletionSource  = new TaskCompletionSource<int>();
+    public static class CommandLine
+    {
+        public static Task<int> ExecuteAsync(string command, string workingDirectory, params string[] args)
+        {
+            var taskCompletionSource = new TaskCompletionSource<int>();
 
             var process = new Process
             {
                 StartInfo = new ProcessStartInfo
-				{
+                {
                     FileName = command,
                     Arguments = args.Length == 0 ? "" : string.Join(" ", args),
+                    WorkingDirectory = workingDirectory,
+                    UseShellExecute = false,
                 },
                 EnableRaisingEvents = true,
             };
@@ -32,5 +34,5 @@ namespace NinjaStore.Parser.Services
 
             return taskCompletionSource.Task;
         }
-	}
+    }
 }

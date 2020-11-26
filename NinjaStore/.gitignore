@@ -12,6 +12,8 @@
 *.Development.json
 Database.dbmdl
 *.jfm
+# Include imported executables
+!/*/Executable/*.exe
 # Include dlls if they’re in the NuGet packages directory
 !/packages/*/lib/*.dll
 !/packages/*/lib/*/*.dll
@@ -72,8 +74,6 @@ Thumbs.db
 packages
 NuGet.exe
 _[Ss]cripts
-*.exe
-*.dll
 *.nupkg
 *.ncrunchsolution
 *.dot[Cc]over

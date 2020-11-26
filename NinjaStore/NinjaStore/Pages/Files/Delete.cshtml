@@ -61,6 +61,8 @@
         <h5 style="text-align:center">Are you sure you want to delete file - @Model.CaffMetadata.FileName?</h5>
         <input type="hidden" asp-for="CaffMetadata.FileId" />
         <input type="submit" value="Delete" class="btn btn-danger" style="margin-left:34%; width:15%; height:50px;"/>
-        <a class="btn btn-light" style="margin-right:34%; width:15%; height:50px;" asp-page="./Index">Back to images</a>
+        <a asp-page="./Details" asp-route-id="@Model.CaffMetadata.FileId">
+            <input value="Cancel" class="btn btn-light" style="margin-right:34%; width:15%; height:50px;"/>
+        </a>
     </form>
 </div>

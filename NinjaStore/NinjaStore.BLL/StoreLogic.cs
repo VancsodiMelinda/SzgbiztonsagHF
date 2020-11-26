@@ -100,10 +100,13 @@ namespace NinjaStore.BLL
 			CaffFile file = await _storeContext.CaffFiles
 				.Include(cf => cf.Metadata)
 				.FirstOrDefaultAsync(cf => cf.FileId == fileId);
-			// TODO Dani: null validation
-			file.Metadata.DownloadCounter++;
-			await _storeContext.SaveChangesAsync();
 
+			if (file != null)
+			{
+				file.Metadata.DownloadCounter++;
+				await _storeContext.SaveChangesAsync();
+			}
+			
 			return file;
 		}
 
