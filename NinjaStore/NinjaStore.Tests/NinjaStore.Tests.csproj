@@ -19,4 +19,9 @@
     <ProjectReference Include="..\NinjaStore\NinjaStore.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="UnitTests\Comments\" />
+    <Folder Include="UnitTests\Account\" />
+  </ItemGroup>
+
 </Project>
