@@ -4,4 +4,8 @@
     <LocalDebuggerCommandArguments>D:\SzgbiztonsagHF\ParserTestFiles\1.caff D:\\SzgbiztonsagHF\\ParserTestFiles\\TEST\\</LocalDebuggerCommandArguments>
     <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <LocalDebuggerCommandArguments>D:\SzgbiztonsagHF\ParserTestFiles\2.caff D:\SzgbiztonsagHF\ParserTestFiles\TEST\</LocalDebuggerCommandArguments>
+    <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
+  </PropertyGroup>
 </Project>

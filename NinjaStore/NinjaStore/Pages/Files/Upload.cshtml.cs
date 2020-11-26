@@ -1,9 +1,11 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.Extensions.Logging;
 using NinjaStore.BLL;
 
 namespace NinjaStore.Pages.Files
@@ -12,13 +14,18 @@ namespace NinjaStore.Pages.Files
     {
         private readonly IStoreLogic _logic;
 
-        public UploadModel(IStoreLogic logic)
+        private readonly ILogger<UploadModel> _logger;
+
+        public UploadModel(IStoreLogic logic, ILogger<UploadModel> logger)
         {
             _logic = logic;
+            _logger = logger;
         }
 
         public IActionResult OnGet()
         {
+            string Message = $"GET Upload page visited at {DateTime.UtcNow.ToLongTimeString()}";
+            _logger.LogInformation(Message);
             return Page();
         }
 

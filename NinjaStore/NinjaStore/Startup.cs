@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using NinjaStore.BLL;
 using NinjaStore.DAL;
 using NinjaStore.DAL.Models;
@@ -42,13 +43,27 @@ namespace NinjaStore
 			services.AddTransient<IStoreLogic, StoreLogic>();
 			services.AddTransient<IParserService, ParserService>();
 
-			//LOGGER CODE
-			services.AddSingleton<ILoggerRepo, LoggerRepo>();
+			//OLD LOGGER CODE
+			//services.AddSingleton<ILoggerRepo, LoggerRepo>();
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-		public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+		public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILogger<Startup> logger)
 		{
+			/* LOGGER CODE */
+			if (env.IsDevelopment())
+			{
+				logger.LogInformation("In Development.");
+				app.UseDeveloperExceptionPage();
+			}
+			else
+			{
+				logger.LogInformation("Not Development.");
+				app.UseExceptionHandler("/Error");
+				app.UseHsts();
+			}
+			/* LOGGER CODE END */
+
 			if (env.IsDevelopment())
 			{
 				app.UseDeveloperExceptionPage();
@@ -60,8 +75,8 @@ namespace NinjaStore
 				app.UseHsts();
 			}
 
-			//LOGGER CODE
-			app.UseMiddleware<Logger>();
+			//OLD LOGGER CODE
+			//app.UseMiddleware<Logger>();
 
 			app.UseHttpsRedirection();
 			app.UseStaticFiles();

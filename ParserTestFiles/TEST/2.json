@@ -1,0 +1,65 @@
+{
+	"anim_count": 4,
+	"date": {
+		"year": 2020,
+		"month": 7,
+		"day": 2,
+		"hour": 14,
+		"minute": 50
+	},
+	"creator": "Second_Creator",
+	"frames": [
+		{
+			"duration": 1000,
+			"image": {
+				"width": 1000,
+				"height": 667,
+				"caption": "Beautiful scenery",
+				"tags": [
+					"landscape",
+					"sunset",
+					"mountains"
+				]
+			}
+		},
+		{
+			"duration": 1000,
+			"image": {
+				"width": 1000,
+				"height": 667,
+				"caption": "Beautiful scenery",
+				"tags": [
+					"landscape",
+					"sunset",
+					"mountains"
+				]
+			}
+		},
+		{
+			"duration": 1000,
+			"image": {
+				"width": 1000,
+				"height": 667,
+				"caption": "Beautiful scenery",
+				"tags": [
+					"landscape",
+					"sunset",
+					"mountains"
+				]
+			}
+		},
+		{
+			"duration": 1000,
+			"image": {
+				"width": 1000,
+				"height": 667,
+				"caption": "Beautiful scenery",
+				"tags": [
+					"landscape",
+					"sunset",
+					"mountains"
+				]
+			}
+		}
+	]
+}

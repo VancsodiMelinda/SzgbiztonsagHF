@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.Extensions.Logging;
 using NinjaStore.DAL;
 using NinjaStore.DAL.Models;
 
@@ -39,14 +40,19 @@ namespace NinjaStore.Pages.Account
         [BindProperty]
 		public InputModel Input { get; set; }
 
-		public RegisterModel(UserManager<User> userManager, SignInManager<User> signInManager)
+        private readonly ILogger<RegisterModel> _logger;
+
+        public RegisterModel(UserManager<User> userManager, SignInManager<User> signInManager, ILogger<RegisterModel> logger)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _logger = logger;
         }
 
         public IActionResult OnGet()
         {
+            string Message = $"GET Register Page {DateTime.UtcNow.ToLongTimeString()}";
+            _logger.LogInformation(Message);
             return Page();
         }
 
@@ -67,6 +73,8 @@ namespace NinjaStore.Pages.Account
 
             if (result.Succeeded)
 			{
+                string Message = $"POST User created at {DateTime.UtcNow.ToLongTimeString()}";
+                _logger.LogInformation(Message);
                 await _signInManager.SignInAsync(user, false);
                 return RedirectToPage("../Index");
             }
@@ -74,7 +82,8 @@ namespace NinjaStore.Pages.Account
 			foreach (var error in result.Errors)
 			{
                 ModelState.AddModelError("", error.Description);
-			}
+                _logger.LogInformation(error.Description);
+            }
             return Page();
         }
     }
