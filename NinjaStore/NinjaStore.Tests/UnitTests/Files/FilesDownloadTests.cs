@@ -65,8 +65,6 @@ namespace NinjaStore.Tests.UnitTests.Files.Download
             }
         }
 
-        /*
-        // this test will fail because the DownloadFileAsync method in StoreLogic.cs doesn't check if the query gives back null
         [Fact]
         public async Task OnGetAsync_ReturnsNotFoundResult_WhenFileDoesNotExists()
         {
@@ -84,6 +82,6 @@ namespace NinjaStore.Tests.UnitTests.Files.Download
                 Assert.IsType<NotFoundResult>(result);
             }
         }
-        */
+        
     }
 }
