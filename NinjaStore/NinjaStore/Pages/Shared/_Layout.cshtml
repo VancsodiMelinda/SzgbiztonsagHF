@@ -1,6 +1,8 @@
-﻿@{
-    var showUser = (bool)ViewData["ShowUser"];
-}
+﻿@using Microsoft.AspNetCore.Identity;
+@using NinjaStore.DAL.Models;
+
+@inject SignInManager<User> signInManager;
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -36,8 +38,12 @@
                     </ul>
                 </div>
 
-                @if (showUser)
+                @if (signInManager.IsSignedIn(User))
                 {
+                    <form method="post" asp-page="/Account/Logout">
+                        <input type="submit" value="Logout" class="nav-link text-light" />
+                    </form>
+                    <p>@User.Identity.Name</p>
                     <a asp-page="/Index">
                         <img class="fa fa-bicycle fa-5x circle-icon" src="~/ninjauser.png">
                     </a>
@@ -45,6 +51,7 @@
                 else
                 {
                     <a class="nav-link text-light" asp-area="" asp-page="/Account/Register">Registration</a>
+                    <a class="nav-link text-light" asp-area="" asp-page="/Account/Login">Login</a>
                 }
 
             </div>

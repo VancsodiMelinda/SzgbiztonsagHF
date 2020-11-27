@@ -56,6 +56,8 @@ namespace NinjaStore.Pages.Account
 
         public IActionResult OnGet()
         {
+            bool isSignedIn = _signInManager.IsSignedIn(User);
+
             string Message = $"GET Register Page {DateTime.UtcNow.ToLongTimeString()}";
             _log.LogInformation(Message);
            // _logger.LogInformation(Message);
