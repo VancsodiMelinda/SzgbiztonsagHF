@@ -42,13 +42,11 @@ namespace NinjaStore
 			services.AddRazorPages();
 			services.AddTransient<IStoreLogic, StoreLogic>();
 			services.AddTransient<IParserService, ParserService>();
-
-			//OLD LOGGER CODE
-			//services.AddSingleton<ILoggerRepo, LoggerRepo>();
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-		public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILogger<Startup> logger)
+		public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILogger<Startup> logger,
+						  ILoggerFactory loggerFactory)
 		{
 			/* LOGGER CODE */
 			if (env.IsDevelopment())
@@ -63,6 +61,9 @@ namespace NinjaStore
 				app.UseHsts();
 			}
 			/* LOGGER CODE END */
+
+			//LOGGER FILE CODE
+			loggerFactory.AddFile("Logs/Ninjas-{Date}.txt");
 
 			if (env.IsDevelopment())
 			{

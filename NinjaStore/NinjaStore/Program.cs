@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
@@ -31,7 +32,7 @@ namespace NinjaStore
 				.ConfigureLogging(logging =>
 				{
 					logging.ClearProviders();
-					logging.AddConsole();
+					//logging.AddConsole();
 				})
 				/* LOGGER CODE END */
 				.ConfigureWebHostDefaults(webBuilder =>

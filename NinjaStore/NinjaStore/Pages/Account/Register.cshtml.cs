@@ -40,19 +40,25 @@ namespace NinjaStore.Pages.Account
         [BindProperty]
 		public InputModel Input { get; set; }
 
-        private readonly ILogger<RegisterModel> _logger;
+        //LOG CONSOLE
+        //private readonly ILogger<RegisterModel> _logger;
 
-        public RegisterModel(UserManager<User> userManager, SignInManager<User> signInManager, ILogger<RegisterModel> logger)
+        //LOG FILE
+        readonly ILogger<RegisterModel> _log;
+
+        public RegisterModel(UserManager<User> userManager, SignInManager<User> signInManager, ILogger<RegisterModel> logger, ILogger<RegisterModel> log)
         {
             _userManager = userManager;
             _signInManager = signInManager;
-            _logger = logger;
+           // _logger = logger;
+            _log = log;
         }
 
         public IActionResult OnGet()
         {
             string Message = $"GET Register Page {DateTime.UtcNow.ToLongTimeString()}";
-            _logger.LogInformation(Message);
+            _log.LogInformation(Message);
+           // _logger.LogInformation(Message);
             return Page();
         }
 
@@ -74,7 +80,8 @@ namespace NinjaStore.Pages.Account
             if (result.Succeeded)
 			{
                 string Message = $"POST User created at {DateTime.UtcNow.ToLongTimeString()}";
-                _logger.LogInformation(Message);
+                _log.LogInformation(Message);
+              //  _logger.LogInformation(Message);
                 await _signInManager.SignInAsync(user, false);
                 return RedirectToPage("../Index");
             }
@@ -82,7 +89,8 @@ namespace NinjaStore.Pages.Account
 			foreach (var error in result.Errors)
 			{
                 ModelState.AddModelError("", error.Description);
-                _logger.LogInformation(error.Description);
+                _log.LogInformation(error.Description);
+                //_logger.LogInformation(error.Description);
             }
             return Page();
         }

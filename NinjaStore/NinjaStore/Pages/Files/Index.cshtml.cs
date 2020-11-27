@@ -13,12 +13,17 @@ namespace NinjaStore.Pages.Files
     {
         private readonly IStoreLogic _logic;
 
-        private readonly ILogger<IndexModel> _logger;
+        //LOG CONSOLE
+        //private readonly ILogger<UploadModel> _logger;
 
-        public IndexModel(IStoreLogic logic, ILogger<IndexModel> logger)
+        //LOG FILE
+        readonly ILogger<IndexModel> _log;
+
+        public IndexModel(IStoreLogic logic, ILogger<IndexModel> logger, ILogger<IndexModel> log)
         {
             _logic = logic;
-            _logger = logger;
+            _log = log;
+            // _logger = logger;
         }
 
         [BindProperty(SupportsGet = true)]
@@ -30,7 +35,8 @@ namespace NinjaStore.Pages.Files
         {
             CaffMetadata = await _logic.QueryMetadataByFreeTextAsync(Filter);
             string Message = $"GET MetaData Query at {DateTime.UtcNow.ToLongTimeString()}";
-            _logger.LogInformation(Message);
+            _log.LogInformation(Message);
+            //_logger.LogInformation(Message);
             return Page();
         }
     }

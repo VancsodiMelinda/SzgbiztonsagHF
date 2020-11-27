@@ -11,13 +11,19 @@ namespace NinjaStore.Pages.Comments
     {
         private readonly IStoreLogic _logic;
 
-        private readonly ILogger<CreateModel> _logger;
+        //LOG CONSOLE
+        //private readonly ILogger<DeleteModel> _logger;
 
-        public CreateModel(IStoreLogic logic, ILogger<CreateModel> logger)
+        //LOG FILE
+        readonly ILogger<CreateModel> _log;
+
+        public CreateModel(IStoreLogic logic, ILogger<CreateModel> logger, ILogger<CreateModel> log)
         {
             _logic = logic;
-            _logger = logger;
+            _log = log;
+            // _logger = logger;
         }
+
         public async Task<IActionResult> OnPostAsync(string fileId, string commentText)
         {
             if (!ModelState.IsValid)
@@ -27,9 +33,11 @@ namespace NinjaStore.Pages.Comments
 
             // TODO Csilla: username
             string Message = $"POST Comment added to file {DateTime.UtcNow.ToLongTimeString()}";
-            _logger.LogInformation(Message);
+            _log.LogInformation(Message);
+          //  _logger.LogInformation(Message);
             string Message2 = $"POST File ID is {fileId}";
-            _logger.LogInformation(Message2);
+            _log.LogInformation(Message2);
+           // _logger.LogInformation(Message2);
             await _logic.InsertCommentAsync(fileId, "Csilla", commentText);
             return RedirectToPage("../Files/Details", new {id = fileId });
         }

@@ -14,18 +14,24 @@ namespace NinjaStore.Pages.Files
     {
         private readonly IStoreLogic _logic;
 
-        private readonly ILogger<UploadModel> _logger;
+        //LOG CONSOLE
+        //private readonly ILogger<UploadModel> _logger;
 
-        public UploadModel(IStoreLogic logic, ILogger<UploadModel> logger)
+        //LOG FILE
+        readonly ILogger<UploadModel> _log;
+
+        public UploadModel(IStoreLogic logic, ILogger<UploadModel> logger, ILogger<UploadModel> log)
         {
             _logic = logic;
-            _logger = logger;
+            _log = log;
+            // _logger = logger;
         }
 
         public IActionResult OnGet()
         {
             string Message = $"GET Upload page visited at {DateTime.UtcNow.ToLongTimeString()}";
-            _logger.LogInformation(Message);
+            _log.LogInformation(Message);
+            // _logger.LogInformation(Message);
             return Page();
         }
 
