@@ -14,20 +14,13 @@ namespace NinjaStore.Pages.Comments
     public class CreateModel : PageModel
     {
         private readonly IStoreLogic _logic;
-        private readonly UserManager<User> _userManager;
 
-        //LOG CONSOLE
-        //private readonly ILogger<DeleteModel> _logger;
-
-        //LOG FILE
         readonly ILogger<CreateModel> _log;
 
-        public CreateModel(IStoreLogic logic, UserManager<User> userManager, ILogger<CreateModel> logger, ILogger<CreateModel> log)
+        public CreateModel(IStoreLogic logic, ILogger<CreateModel> log)
         {
             _logic = logic;
-            _userManager = userManager;
             _log = log;
-            // _logger = logger;
         }
 
         public async Task<IActionResult> OnPostAsync(string fileId, string commentText)
@@ -39,20 +32,12 @@ namespace NinjaStore.Pages.Comments
 
             string Message = $"POST Comment added to file {DateTime.UtcNow.ToLongTimeString()}";
             _log.LogInformation(Message);
-          //  _logger.LogInformation(Message);
             string Message2 = $"POST File ID is {fileId}";
             _log.LogInformation(Message2);
-            // _logger.LogInformation(Message2);
 
             
             // TODO Csilla:  SQL Exception
-            /*var user = await _userManager.GetUserAsync(User);
-            if (user == null)
-            {
-                // TODO Gergő log
-            }
-            await _logic.InsertCommentAsync(fileId, user.UserName, commentText);*/
-            await _logic.InsertCommentAsync(fileId, "Csilla", commentText);
+            await _logic.InsertCommentAsync(fileId, User.Identity.Name, commentText);
             return RedirectToPage("../Files/Details", new {id = fileId });
         }
     }

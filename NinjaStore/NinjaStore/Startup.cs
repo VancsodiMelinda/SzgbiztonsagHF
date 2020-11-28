@@ -50,24 +50,10 @@ namespace NinjaStore
 			IWebHostEnvironment env,
 			UserManager<User> userManager,
 			RoleManager<IdentityRole> roleManager,
-			ILogger<Startup> logger,
 			ILoggerFactory loggerFactory)
 		{
-			/* LOGGER CODE */
-			if (env.IsDevelopment())
-			{
-				logger.LogInformation("In Development.");
-				app.UseDeveloperExceptionPage();
-			}
-			else
-			{
-				logger.LogInformation("Not Development.");
-				app.UseExceptionHandler("/Error");
-				app.UseHsts();
-			}
-			/* LOGGER CODE END */
-
-			//LOGGER FILE CODE
+		
+			//LOGGER
 			loggerFactory.AddFile("Logs/Ninjas-{Date}.log");
 
 			if (env.IsDevelopment())

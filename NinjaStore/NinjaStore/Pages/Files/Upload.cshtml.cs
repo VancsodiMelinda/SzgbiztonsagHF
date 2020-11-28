@@ -17,24 +17,18 @@ namespace NinjaStore.Pages.Files
     {
         private readonly IStoreLogic _logic;
 
-        //LOG CONSOLE
-        //private readonly ILogger<UploadModel> _logger;
-
-        //LOG FILE
         readonly ILogger<UploadModel> _log;
 
-        public UploadModel(IStoreLogic logic, ILogger<UploadModel> logger, ILogger<UploadModel> log)
+        public UploadModel(IStoreLogic logic, ILogger<UploadModel> log)
         {
             _logic = logic;
             _log = log;
-            // _logger = logger;
         }
 
         public IActionResult OnGet()
         {
             string Message = $"GET Upload page visited at {DateTime.UtcNow.ToLongTimeString()}";
             _log.LogInformation(Message);
-            // _logger.LogInformation(Message);
             return Page();
         }
 
@@ -62,8 +56,7 @@ namespace NinjaStore.Pages.Files
                 byte[] preview = memoryStream.ToArray();
 
                 // TODO Csilla:  SQL Exception
-                //string savedFileId = await _logic.UploadFileAsync(User.Identity.Name, FileName, Description, preview);
-                string savedFileId = await _logic.UploadFileAsync("Csilla", FileName, Description, preview);
+                string savedFileId = await _logic.UploadFileAsync(User.Identity.Name, FileName, Description, preview);
                 return RedirectToPage("./Details", new { id = savedFileId });
             }
         }

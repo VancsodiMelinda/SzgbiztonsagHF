@@ -48,11 +48,10 @@ namespace NinjaStore.Pages.Account
         //LOG FILE
         readonly ILogger<RegisterModel> _log;
 
-        public RegisterModel(UserManager<User> userManager, SignInManager<User> signInManager, ILogger<RegisterModel> logger, ILogger<RegisterModel> log)
+        public RegisterModel(UserManager<User> userManager, SignInManager<User> signInManager, ILogger<RegisterModel> log)
         {
             _userManager = userManager;
             _signInManager = signInManager;
-           // _logger = logger;
             _log = log;
         }
 
@@ -60,7 +59,6 @@ namespace NinjaStore.Pages.Account
         {
             string Message = $"GET Register Page {DateTime.UtcNow.ToLongTimeString()}";
             _log.LogInformation(Message);
-           // _logger.LogInformation(Message);
             return Page();
         }
 
@@ -87,7 +85,6 @@ namespace NinjaStore.Pages.Account
 				{
                     string Message = $"POST User created at {DateTime.UtcNow.ToLongTimeString()}";
                     _log.LogInformation(Message);
-                    //  _logger.LogInformation(Message);
 
                     await _signInManager.SignInAsync(user, false);
 
@@ -103,7 +100,6 @@ namespace NinjaStore.Pages.Account
 			{
                 ModelState.AddModelError("", error.Description);
                 _log.LogInformation(error.Description);
-                //_logger.LogInformation(error.Description);
             }
 
             return Page();

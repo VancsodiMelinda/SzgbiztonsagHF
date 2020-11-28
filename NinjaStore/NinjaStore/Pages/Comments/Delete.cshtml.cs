@@ -14,17 +14,12 @@ namespace NinjaStore.Pages.Comments
     {
         private readonly IStoreLogic _logic;
 
-        //LOG CONSOLE
-        //private readonly ILogger<DeleteModel> _logger;
-
-        //LOG FILE
         readonly ILogger<DeleteModel> _log;
 
-        public DeleteModel(IStoreLogic logic, ILogger<DeleteModel> logger, ILogger<DeleteModel> log)
+        public DeleteModel(IStoreLogic logic, ILogger<DeleteModel> log)
         {
             _logic = logic;
             _log = log;
-            // _logger = logger;
         }
 
         public async Task<IActionResult> OnPostAsync(int? id)
@@ -33,7 +28,6 @@ namespace NinjaStore.Pages.Comments
             {
                 string Message = $"POST ERROR: Comment ID not found {DateTime.UtcNow.ToLongTimeString()}";
                 _log.LogInformation(Message);
-                //_logger.LogInformation(Message);
                 return NotFound();
             } else
             {
@@ -42,13 +36,11 @@ namespace NinjaStore.Pages.Comments
                 {
                     string Message2 = $"POST ERROR: Comment value is null {DateTime.UtcNow.ToLongTimeString()}";
                     _log.LogInformation(Message2);
-                   // _logger.LogInformation(Message2);
                     return NotFound();
                 }
                 await _logic.DeleteCommentAsync((int)id);
                 string Message3 = $"POST Comment is deleted {DateTime.UtcNow.ToLongTimeString()}";
                 _log.LogInformation(Message3);
-                //_logger.LogInformation(Message3);
                 return RedirectToPage("../Files/Details", new { id = comment.CaffMetadataFileId });
             }
         }
