@@ -13,8 +13,14 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using NinjaStore.DAL.Models;
 using NinjaStore.Tests.Helper;
 using NinjaStore.Parser.Services;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Options;
+using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Authentication;
+using System.Security.Claims;
 
-namespace NinjaStore.Tests.UnitTests.Account
+namespace NinjaStore.Tests.UnitTests.Account.Register
 {
     public class AccountRegisterTests
     {
@@ -30,25 +36,59 @@ namespace NinjaStore.Tests.UnitTests.Account
 
         // METHOD: OnGet
         [Fact]
-        public async Task OnGet_ReturnsPageResult()
+        public void OnGet_ReturnsPageResult()
         {
-            /*
-            Mock<IStoreLogic> mockIStoreLogic = new Mock<IStoreLogic>();
-            var registerModel = new RegisterModel(mockIStoreLogic.Object);
+            // mock
+            Mock<IParserService> mockIParserService = new Mock<IParserService>();
+            Mock<ILogger<RegisterModel>> mockILogger = new Mock<ILogger<RegisterModel>>();
 
-            string id = null;
-            var result = await deleteModel.OnGetAsync(id);
+            var store = new Mock<IUserStore<User>>();
+            var userManager = new UserManager<User>(store.Object, null, null, null, null, null, null, null, null);
+            var mockSignInManager = new Mock<SignInManager<User>>(
+                userManager,
+                new HttpContextAccessor(),
+                new Mock<IUserClaimsPrincipalFactory<User>>().Object,
+                new Mock<IOptions<IdentityOptions>>().Object,
+                new Mock<ILogger<SignInManager<User>>>().Object,
+                new Mock<IAuthenticationSchemeProvider>().Object,
+                new Mock<IUserConfirmation<User>>().Object
+            );
 
-            Assert.IsType<NotFoundResult>(result);
-            */
+            // test
+            var registerModel = new RegisterModel(userManager, mockSignInManager.Object, mockILogger.Object);
+            var result = registerModel.OnGet();
 
-            throw new NotImplementedException();
+            Assert.IsType<PageResult>(result);
         }
 
         // METHOD: OnPostAsync
         [Fact]
         public async Task OnPostAsync_ReturnsPageResult_WhenModelIsInvalid()
         {
+            /*
+            // mock
+            Mock<IParserService> mockIParserService = new Mock<IParserService>();
+            Mock<ILogger<RegisterModel>> mockILogger = new Mock<ILogger<RegisterModel>>();
+
+            var store = new Mock<IUserStore<User>>();
+            var userManager = new UserManager<User>(store.Object, null, null, null, null, null, null, null, null);
+            var mockSignInManager = new Mock<SignInManager<User>>(
+                userManager,
+                new HttpContextAccessor(),
+                new Mock<IUserClaimsPrincipalFactory<User>>().Object,
+                new Mock<IOptions<IdentityOptions>>().Object,
+                new Mock<ILogger<SignInManager<User>>>().Object,
+                new Mock<IAuthenticationSchemeProvider>().Object,
+                new Mock<IUserConfirmation<User>>().Object
+            );
+
+            // test
+            var registerModel = new RegisterModel(userManager, mockSignInManager.Object, mockILogger.Object);
+            registerModel.ModelState.AddModelError("test", "test");
+            var result = registerModel.OnPostAsync();
+
+            Assert.IsType<PageResult>(result);
+            */
             throw new NotImplementedException();
         }
 
