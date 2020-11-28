@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -10,10 +12,9 @@ using NinjaStore.DAL.Models;
 
 namespace NinjaStore.Pages.Account
 {
-    [Authorize(Roles = Roles.ADMIN + "," + Roles.USER)]
-    public class DetailsModel : PageModel
+    [Authorize(Roles = Roles.ADMIN)]
+    public class DetailsAdminModel : PageModel
     {
-        private readonly SignInManager<User> _signInManager;
         private readonly UserManager<User> _userManager;
         private readonly ILogger<DetailsModel> _logger;
 
@@ -28,11 +29,6 @@ namespace NinjaStore.Pages.Account
             [DataType(DataType.EmailAddress)]
             public string Email { get; set; }
 
-            [Required]
-            [DataType(DataType.Password)]
-            [Display(Name = "Current password")]
-            public string OldPassword { get; set; }
-
             [DataType(DataType.Password)]
             [Display(Name = "New password")]
             public string NewPassword { get; set; }
@@ -46,16 +42,19 @@ namespace NinjaStore.Pages.Account
         [BindProperty]
         public InputModel Input { get; set; }
 
-        public DetailsModel(UserManager<User> userManager, SignInManager<User> signInManager, ILogger<DetailsModel> logger)
+        public DetailsAdminModel(UserManager<User> userManager, ILogger<DetailsModel> logger)
         {
-            _signInManager = signInManager;
             _userManager = userManager;
             _logger = logger;
         }
 
-        public async Task<IActionResult> OnGetAsync()
+        public async Task<IActionResult> OnGetAsync(string id)
         {
-            var user = await _userManager.GetUserAsync(User);
+            if (string.IsNullOrWhiteSpace(id))
+            {
+                id = User.Identity.Name;
+            }
+            var user = await _userManager.FindByNameAsync(id);
             if (user == null)
             {
                 string Message = $"GET User not found at {DateTime.UtcNow.ToLongTimeString()}";
@@ -73,37 +72,34 @@ namespace NinjaStore.Pages.Account
             {
                 return Page();
             }
-            
-            
-            var user = await _userManager.GetUserAsync(User);
+
+            var user = await _userManager.FindByNameAsync(Username);
             if (user == null)
             {
                 string Message = $"GET User not found at {DateTime.UtcNow.ToLongTimeString()}";
                 _logger.LogInformation(Message);
             }
-            bool oldPassIsValid = await _userManager.CheckPasswordAsync(user, Input.OldPassword);
-            if (oldPassIsValid) {
-                // change email
-                user.Email = Input.Email;
-                var result = await _userManager.UpdateAsync(user);
-                if (!result.Succeeded)
-                {
-                    foreach (var error in result.Errors)
-                    {
-                        ModelState.AddModelError(string.Empty, error.Description);
-                    }
-                }
 
-                // change password
-                if (!string.IsNullOrWhiteSpace(Input.NewPassword))
+            // change email
+            user.Email = Input.Email;
+            var result = await _userManager.UpdateAsync(user);
+            if (!result.Succeeded)
+            {
+                foreach (var error in result.Errors)
                 {
-                    result = await _userManager.ChangePasswordAsync(user, Input.OldPassword, Input.NewPassword);
+                    ModelState.AddModelError(string.Empty, error.Description);
+                }
+            }
+            TempData["Success"] = "User email is successfully changed.";
+            // change password
+            if (!string.IsNullOrWhiteSpace(Input.NewPassword))
+                {
+                    await _userManager.RemovePasswordAsync(user);
+                    result = await _userManager.AddPasswordAsync(user, Input.NewPassword);
 
                     if (result.Succeeded)
                     {
-                        // Upon successfully changing the password refresh sign-in cookie
-                        await _signInManager.RefreshSignInAsync(user);
-                        TempData["Success"] = "Your password is successfully changed.";
+                        TempData["Success"] = "User password is successfully changed.";
                         return Page();
                     }
 
@@ -112,9 +108,6 @@ namespace NinjaStore.Pages.Account
                         ModelState.AddModelError(string.Empty, error.Description);
                     }
                 }
-            } else ModelState.AddModelError(string.Empty, "Incorrect password.Cs");
-
-
             return Page();
         }
     }
