@@ -63,7 +63,7 @@ namespace NinjaStore
 			/* LOGGER CODE END */
 
 			//LOGGER FILE CODE
-			loggerFactory.AddFile("Logs/Ninjas-{Date}.txt");
+			loggerFactory.AddFile("Logs/Ninjas-{Date}.log");
 
 			if (env.IsDevelopment())
 			{
