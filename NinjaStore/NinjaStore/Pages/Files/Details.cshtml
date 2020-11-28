@@ -26,7 +26,7 @@
                 Uploader
             </dt>
             <dd class="col-sm-4">
-                @Html.DisplayFor(model => model.CaffMetadata.Username)
+                @Html.DisplayFor(model => model.CaffMetadata.User.UserName)
             </dd>
 
             <dt class="col-sm-2">
@@ -77,7 +77,7 @@
             {
                 <tr>
                     <td style="width:10%;">
-                        @Html.DisplayFor(modelItem => item.Username)
+                        @Html.DisplayFor(modelItem => item.User.UserName)
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.Text)
