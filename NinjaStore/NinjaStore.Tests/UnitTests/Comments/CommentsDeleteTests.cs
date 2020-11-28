@@ -33,19 +33,58 @@ namespace NinjaStore.Tests.UnitTests.Comments.Delete
         [Fact]
         public async Task OnPostAsync_ReturnsNotFoundResult_WhenIdIsNull()
         {
-            throw new NotImplementedException();
+            // mock parser service interface
+            Mock<IParserService> mockIParserService = new Mock<IParserService>();
+            Mock<ILogger<DeleteModel>> mockILogger = new Mock<ILogger<DeleteModel>>();
+
+            // test
+            using (var context = new StoreContext(options))
+            {
+                StoreLogic storeLogic = new StoreLogic(context, mockIParserService.Object);
+                var deleteModel = new DeleteModel(storeLogic, mockILogger.Object);
+                int? id = null;
+                var result = await deleteModel.OnPostAsync(id);
+
+                Assert.IsType<NotFoundResult>(result);
+            }
         }
 
         [Fact]
         public async Task OnPostAsync_ReturnsNotFoundResult_WhenCommentIsNull()
         {
-            throw new NotImplementedException();
+            // mock parser service interface
+            Mock<IParserService> mockIParserService = new Mock<IParserService>();
+            Mock<ILogger<DeleteModel>> mockILogger = new Mock<ILogger<DeleteModel>>();
+
+            // test
+            using (var context = new StoreContext(options))
+            {
+                StoreLogic storeLogic = new StoreLogic(context, mockIParserService.Object);
+                var deleteModel = new DeleteModel(storeLogic, mockILogger.Object);
+                int id = 72;
+                var result = await deleteModel.OnPostAsync(id);
+
+                Assert.IsType<NotFoundResult>(result);
+            }
         }
 
         [Fact]
         public async Task OnPostAsync_ReturnsRedirectToPageResult_WhenCommentIsDeleted()
         {
-            throw new NotImplementedException();
+            // mock parser service interface
+            Mock<IParserService> mockIParserService = new Mock<IParserService>();
+            Mock<ILogger<DeleteModel>> mockILogger = new Mock<ILogger<DeleteModel>>();
+
+            // test
+            using (var context = new StoreContext(options))
+            {
+                StoreLogic storeLogic = new StoreLogic(context, mockIParserService.Object);
+                var deleteModel = new DeleteModel(storeLogic, mockILogger.Object);
+                int id = 1;
+                var result = await deleteModel.OnPostAsync(id);
+
+                Assert.IsType<RedirectToPageResult>(result);
+            }
         }
     }
 }
