@@ -11,19 +11,9 @@ using NinjaStore.Pages.Account;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using NinjaStore.DAL.Models;
-using NinjaStore.Tests.Helper;
-using NinjaStore.Parser.Services;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Options;
-using Microsoft.Extensions.Logging;
-using Microsoft.AspNetCore.Authentication;
-using System.Security.Claims;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
-using Microsoft.AspNetCore.Routing;
-using Microsoft.AspNetCore.Mvc.ViewFeatures;
-using Microsoft.AspNetCore.Mvc.Routing;
 using NinjaStore.Tests.Utilities;
+using Microsoft.Extensions.Logging;
 
 namespace NinjaStore.Tests.UnitTests.Account
 {
@@ -45,12 +35,13 @@ namespace NinjaStore.Tests.UnitTests.Account
         {
             // mock
             MockHelper mockHelper = new MockHelper();
+            Mock<ILogger<RegisterModel>> mockILogger = new Mock<ILogger<RegisterModel>>();
 
             // test
             var registerModel = new RegisterModel(
                 mockHelper.mockUserManager.Object,
                 mockHelper.mockSignInManager.Object,
-                mockHelper.mockILogger.Object
+                mockILogger.Object
             );
 
             var result = registerModel.OnGet();
@@ -64,12 +55,13 @@ namespace NinjaStore.Tests.UnitTests.Account
         {
             //mock
             MockHelper mockHelper = new MockHelper();
+            Mock<ILogger<RegisterModel>> mockILogger = new Mock<ILogger<RegisterModel>>();
 
             // test
             var registerModel = new RegisterModel(
                 mockHelper.mockUserManager.Object,
                 mockHelper.mockSignInManager.Object,
-                mockHelper.mockILogger.Object
+                mockILogger.Object
             );
             registerModel.ModelState.AddModelError("test", "test");
             var result = await registerModel.OnPostAsync();
@@ -83,6 +75,7 @@ namespace NinjaStore.Tests.UnitTests.Account
         {
             // mock
             MockHelper mockHelper = new MockHelper();
+            Mock<ILogger<RegisterModel>> mockILogger = new Mock<ILogger<RegisterModel>>();
 
             mockHelper.mockSignInManager.Setup(x => x.SignInAsync(It.IsAny<User>(), It.IsAny<bool>(), It.IsAny<string>())).Returns(Task.CompletedTask);
 
@@ -94,7 +87,7 @@ namespace NinjaStore.Tests.UnitTests.Account
             var registerModel = new RegisterModel(
                 mockHelper.mockUserManager.Object,
                 mockHelper.mockSignInManager.Object,
-                mockHelper.mockILogger.Object)
+                mockILogger.Object)
             {
                 Input = new RegisterModel.InputModel {
                     Username = "Meli",
@@ -114,6 +107,7 @@ namespace NinjaStore.Tests.UnitTests.Account
         {
             // mock
             MockHelper mockHelper = new MockHelper();
+            Mock<ILogger<RegisterModel>> mockILogger = new Mock<ILogger<RegisterModel>>();
 
             mockHelper.mockSignInManager.Setup(x => x.SignInAsync(It.IsAny<User>(), It.IsAny<bool>(), It.IsAny<string>())).Returns(Task.CompletedTask);
 
@@ -125,7 +119,7 @@ namespace NinjaStore.Tests.UnitTests.Account
             var registerModel = new RegisterModel(
                 mockHelper.mockUserManager.Object,
                 mockHelper.mockSignInManager.Object,
-                mockHelper.mockILogger.Object)
+                mockILogger.Object)
             {
                 Input = new RegisterModel.InputModel {
                     Username = "Meli",

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using Moq;
 using NinjaStore.DAL.Models;
@@ -14,7 +15,7 @@ namespace NinjaStore.Tests.Utilities
     public class MockHelper
     {
         public Mock<IParserService> mockIParserService;
-        public Mock<ILogger<RegisterModel>> mockILogger;
+        //public Mock<ILogger<Object>> mockILogger;
         public Mock<UserManager<User>> mockUserManager;
         public Mock<SignInManager<User>> mockSignInManager;
 
@@ -22,7 +23,7 @@ namespace NinjaStore.Tests.Utilities
         public MockHelper()
         {
             mockIParserService = new Mock<IParserService>();
-            mockILogger = new Mock<ILogger<RegisterModel>>();
+            //mockILogger = new Mock<ILogger<Object>> ();
 
             Mock<IUserStore<User>> mockIUserStore = new Mock<IUserStore<User>>();
             mockUserManager = new Mock<UserManager<User>>(
