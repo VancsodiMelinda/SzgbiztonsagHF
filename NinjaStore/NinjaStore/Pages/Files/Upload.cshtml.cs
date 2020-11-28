@@ -2,14 +2,17 @@
 using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using NinjaStore.BLL;
+using NinjaStore.DAL.Models;
 
 namespace NinjaStore.Pages.Files
 {
+    [Authorize(Roles = Roles.USER)]
     public class UploadModel : PageModel
     {
         private readonly IStoreLogic _logic;

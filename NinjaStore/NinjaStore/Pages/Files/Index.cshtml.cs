@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
@@ -9,6 +10,7 @@ using NinjaStore.DAL.Models;
 
 namespace NinjaStore.Pages.Files
 {
+    [Authorize(Roles = Roles.ADMIN + "," + Roles.USER)]
     public class IndexModel : PageModel
     {
         private readonly IStoreLogic _logic;
