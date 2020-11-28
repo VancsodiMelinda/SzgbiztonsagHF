@@ -67,9 +67,6 @@ namespace NinjaStore
 				app.UseHsts();
 			}
 
-			//OLD LOGGER CODE
-			//app.UseMiddleware<Logger>();
-
 			SeedIdentity(userManager, roleManager);
 
 			app.UseHttpsRedirection();

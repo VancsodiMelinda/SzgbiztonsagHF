@@ -60,7 +60,8 @@ namespace NinjaStore.Pages.Account
             var user = await _userManager.FindByNameAsync(id);
             if (user == null)
             {
-                // TODO Gergő log - user not found
+                string Message = $"GET User not found at {DateTime.UtcNow.ToLongTimeString()}";
+                _logger.LogInformation(Message);
             }
             Input = new InputModel();
             Input.Email = user.Email;
@@ -79,7 +80,8 @@ namespace NinjaStore.Pages.Account
             {
                 if (string.IsNullOrWhiteSpace(Input.OldPassword))
                 {
-                    // TODO Gergő: log
+                    string Message = $"GET password only contains whitespaces or is empty or is null : {DateTime.UtcNow.ToLongTimeString()}";
+                    _logger.LogInformation(Message);
                     // TODO Dani: exception -> old pass is required when user want to change pass
                 }
                 else
@@ -88,7 +90,8 @@ namespace NinjaStore.Pages.Account
                     var user = await _userManager.GetUserAsync(User);
                     if (user == null)
                     {
-                        // TODO Gergő log - user not found
+                        string Message = $"GET User not found at {DateTime.UtcNow.ToLongTimeString()}";
+                        _logger.LogInformation(Message);
                     }
                     user.Email = Input.Email;
                     var result = await _userManager.UpdateAsync(user);
