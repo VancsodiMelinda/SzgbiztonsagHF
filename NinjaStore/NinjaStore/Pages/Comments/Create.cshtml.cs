@@ -34,8 +34,6 @@ namespace NinjaStore.Pages.Comments
             string Message2 = $"POST File ID is {fileId}";
             _logger.LogInformation(Message2);
 
-            
-            // TODO Csilla:  SQL Exception
             await _logic.InsertCommentAsync(fileId, User.Identity.Name, commentText);
             return RedirectToPage("../Files/Details", new {id = fileId });
         }

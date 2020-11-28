@@ -79,7 +79,7 @@
                     <td>
                         @Html.DisplayFor(modelItem => item.Text)
                     </td>
-                    @if (User.IsInRole(Roles.ADMIN) || item.User.UserName == User.Identity.Name)
+                    @if (User.IsInRole(Roles.ADMIN) || item.User?.UserName == User.Identity.Name)
                     {
                         <td style="text-align:right; width:5%;">
                             <form method="post" asp-page="../Comments/Delete">
