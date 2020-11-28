@@ -116,7 +116,7 @@ namespace NinjaStore
 				roleManager.CreateAsync(new IdentityRole
 				{
 					Name = role,
-				});
+				}).Wait();
 			}
 		}
 
@@ -130,13 +130,13 @@ namespace NinjaStore
 					UserName = username,
 					Email = $"{username}@ninjas.com",
 				};
-				userManager.CreateAsync(user, password);
+				userManager.CreateAsync(user, password).Wait();
 			}
 
 			bool isAdmin = userManager.IsInRoleAsync(user, Roles.ADMIN).Result;
 			if (!isAdmin)
 			{
-				userManager.AddToRoleAsync(user, Roles.ADMIN);
+				userManager.AddToRoleAsync(user, Roles.ADMIN).Wait();
 			}
 		}
 	}
