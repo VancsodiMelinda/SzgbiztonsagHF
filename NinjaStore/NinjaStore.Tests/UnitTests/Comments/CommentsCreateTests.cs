@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using NinjaStore.DAL.Models;
 using NinjaStore.Tests.Helper;
 using NinjaStore.Parser.Services;
+using Microsoft.Extensions.Logging;
 
 namespace NinjaStore.Tests.UnitTests.Comments.Create
 {

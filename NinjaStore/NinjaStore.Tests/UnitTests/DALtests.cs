@@ -9,7 +9,6 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using NinjaStore.BLL;
 using NinjaStore.Parser.Services;
-using System.Diagnostics;
 
 namespace NinjaStore.Tests.UnitTests.DALtests
 {

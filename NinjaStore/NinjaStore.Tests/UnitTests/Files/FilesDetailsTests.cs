@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using NinjaStore.DAL.Models;
 using NinjaStore.Tests.Helper;
 using NinjaStore.Parser.Services;
+using Microsoft.Extensions.Logging;
 
 namespace NinjaStore.Tests.UnitTests.Files.Details
 {
@@ -33,7 +34,8 @@ namespace NinjaStore.Tests.UnitTests.Files.Details
         public async Task OnGetAsync_ReturnsNotFoundResult_WhenIdIsNull()
         {
             Mock<IStoreLogic> mockIStoreLogic = new Mock<IStoreLogic>();
-            var detailsModel = new DetailsModel(mockIStoreLogic.Object);
+            Mock<ILogger<DetailsModel>> mockILogger = new Mock<ILogger<DetailsModel>>();
+            var detailsModel = new DetailsModel(mockIStoreLogic.Object, mockILogger.Object, mockILogger.Object);
 
             string id = null;
             var result = await detailsModel.OnGetAsync(id);
@@ -46,12 +48,13 @@ namespace NinjaStore.Tests.UnitTests.Files.Details
         {
             // mock parser service interface
             Mock<IParserService> mockIParserService = new Mock<IParserService>();
+            Mock<ILogger<DetailsModel>> mockILogger = new Mock<ILogger<DetailsModel>>();
 
             // test
             using (var context = new StoreContext(options))
             {
                 StoreLogic storeLogic = new StoreLogic(context, mockIParserService.Object);
-                var detailsModel = new DetailsModel(storeLogic);
+                var detailsModel = new DetailsModel(storeLogic, mockILogger.Object, mockILogger.Object);
                 string id = "notExistingID";
                 var result = await detailsModel.OnGetAsync(id);
 
@@ -64,12 +67,13 @@ namespace NinjaStore.Tests.UnitTests.Files.Details
         {
             // mock parser service interface
             Mock<IParserService> mockIParserService = new Mock<IParserService>();
+            Mock<ILogger<DetailsModel>> mockILogger = new Mock<ILogger<DetailsModel>>();
 
             // test
             using (var context = new StoreContext(options))
             {
                 StoreLogic storeLogic = new StoreLogic(context, mockIParserService.Object);
-                var detailsModel = new DetailsModel(storeLogic);
+                var detailsModel = new DetailsModel(storeLogic, mockILogger.Object, mockILogger.Object);
                 string id = "testFileID";
                 var result = await detailsModel.OnGetAsync(id);
 

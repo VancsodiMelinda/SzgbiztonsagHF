@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using NinjaStore.DAL.Models;
 using NinjaStore.Tests.Helper;
 using NinjaStore.Parser.Services;
+using Microsoft.Extensions.Logging;
 
 namespace NinjaStore.Tests.UnitTests.Files.Delete
 {
@@ -33,7 +34,8 @@ namespace NinjaStore.Tests.UnitTests.Files.Delete
         public async Task OnGetAsync_ReturnsNotFoundResult_WhenIdIsNull()
         {
             Mock<IStoreLogic> mockIStoreLogic = new Mock<IStoreLogic>();
-            var deleteModel = new DeleteModel(mockIStoreLogic.Object);
+            Mock<ILogger<DeleteModel>> mockILogger = new Mock<ILogger<DeleteModel>>();
+            var deleteModel = new DeleteModel(mockIStoreLogic.Object, mockILogger.Object, mockILogger.Object);
 
             string id = null;
             var result = await deleteModel.OnGetAsync(id);
@@ -56,12 +58,13 @@ namespace NinjaStore.Tests.UnitTests.Files.Delete
 
             // mock parser service interface
             Mock<IParserService> mockIParserService = new Mock<IParserService>();
+            Mock<ILogger<DeleteModel>> mockILogger = new Mock<ILogger<DeleteModel>>();
 
             // test
             using (var context = new StoreContext(options))
             {
                 StoreLogic storeLogic = new StoreLogic(context, mockIParserService.Object);
-                var deleteModel = new DeleteModel(storeLogic);
+                var deleteModel = new DeleteModel(storeLogic, mockILogger.Object, mockILogger.Object);
                 string id = "notExistingID";
                 var result = await deleteModel.OnGetAsync(id);
 
@@ -74,12 +77,13 @@ namespace NinjaStore.Tests.UnitTests.Files.Delete
         {
             // mock parser service interface
             Mock<IParserService> mockIParserService = new Mock<IParserService>();
+            Mock<ILogger<DeleteModel>> mockILogger = new Mock<ILogger<DeleteModel>>();
 
             // test
             using (var context = new StoreContext(options))
             {
                 StoreLogic storeLogic = new StoreLogic(context, mockIParserService.Object);
-                var deleteModel = new DeleteModel(storeLogic);
+                var deleteModel = new DeleteModel(storeLogic, mockILogger.Object, mockILogger.Object);
                 string id = "testFileID";
                 var result = await deleteModel.OnGetAsync(id);
 
@@ -92,7 +96,9 @@ namespace NinjaStore.Tests.UnitTests.Files.Delete
         public async Task OnPostAsync_ReturnsNotFoundResult_WhenIdIsNull()
         {
             Mock<IStoreLogic> mockIStoreLogic = new Mock<IStoreLogic>();
-            var deleteModel = new DeleteModel(mockIStoreLogic.Object);
+            Mock<ILogger<DeleteModel>> mockILogger = new Mock<ILogger<DeleteModel>>();
+
+            var deleteModel = new DeleteModel(mockIStoreLogic.Object, mockILogger.Object, mockILogger.Object);
 
             string id = null;
             var result = await deleteModel.OnPostAsync(id);
@@ -116,12 +122,13 @@ namespace NinjaStore.Tests.UnitTests.Files.Delete
             
             // mock parser service interface
             Mock<IParserService> mockIParserService = new Mock<IParserService>();
+            Mock<ILogger<DeleteModel>> mockILogger = new Mock<ILogger<DeleteModel>>();
 
             // test
             using (var context = new StoreContext(options))
             {
                 StoreLogic storeLogic = new StoreLogic(context, mockIParserService.Object);
-                var deleteModel = new DeleteModel(storeLogic);
+                var deleteModel = new DeleteModel(storeLogic, mockILogger.Object, mockILogger.Object);
                 string id = "testFileID";
                 var result = await deleteModel.OnPostAsync(id);
 

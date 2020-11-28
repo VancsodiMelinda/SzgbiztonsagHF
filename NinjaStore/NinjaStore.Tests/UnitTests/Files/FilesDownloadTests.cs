@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using NinjaStore.DAL.Models;
 using NinjaStore.Tests.Helper;
 using NinjaStore.Parser.Services;
+using Microsoft.Extensions.Logging;
 
 namespace NinjaStore.Tests.UnitTests.Files.Download
 {
@@ -34,12 +35,13 @@ namespace NinjaStore.Tests.UnitTests.Files.Download
         {
             // mock parser service interface
             Mock<IParserService> mockIParserService = new Mock<IParserService>();
+            Mock<ILogger<DownloadModel>> mockILogger = new Mock<ILogger<DownloadModel>>();
 
             // test
             using (var context = new StoreContext(options))
             {
                 StoreLogic storeLogic = new StoreLogic(context, mockIParserService.Object);
-                var downloadModel = new DownloadModel(storeLogic);
+                var downloadModel = new DownloadModel(storeLogic, mockILogger.Object, mockILogger.Object);
                 string id = null;
                 var result = await downloadModel.OnGetAsync(id);
 
@@ -52,12 +54,13 @@ namespace NinjaStore.Tests.UnitTests.Files.Download
         {
             // mock parser service interface
             Mock<IParserService> mockIParserService = new Mock<IParserService>();
+            Mock<ILogger<DownloadModel>> mockILogger = new Mock<ILogger<DownloadModel>>();
 
             // test
             using (var context = new StoreContext(options))
             {
                 StoreLogic storeLogic = new StoreLogic(context, mockIParserService.Object);
-                var downloadModel = new DownloadModel(storeLogic);
+                var downloadModel = new DownloadModel(storeLogic, mockILogger.Object, mockILogger.Object);
                 string id = "testFileID";
                 var result = await downloadModel.OnGetAsync(id);
 
@@ -70,12 +73,13 @@ namespace NinjaStore.Tests.UnitTests.Files.Download
         {
             // mock parser service interface
             Mock<IParserService> mockIParserService = new Mock<IParserService>();
+            Mock<ILogger<DownloadModel>> mockILogger = new Mock<ILogger<DownloadModel>>();
 
             // test
             using (var context = new StoreContext(options))
             {
                 StoreLogic storeLogic = new StoreLogic(context, mockIParserService.Object);
-                var downloadModel = new DownloadModel(storeLogic);
+                var downloadModel = new DownloadModel(storeLogic, mockILogger.Object, mockILogger.Object);
                 string id = "notExistingFileID";
                 var result = await downloadModel.OnGetAsync(id);
 

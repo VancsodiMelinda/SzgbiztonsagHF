@@ -14,6 +14,7 @@ using NinjaStore.DAL.Models;
 using NinjaStore.Tests.Helper;
 using NinjaStore.Parser.Services;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.Extensions.Logging;
 
 namespace NinjaStore.Tests.UnitTests.Files.Index
 {
@@ -35,12 +36,13 @@ namespace NinjaStore.Tests.UnitTests.Files.Index
         {
             // mock parser service interface
             Mock<IParserService> mockIParserService = new Mock<IParserService>();
+            Mock<ILogger<IndexModel>> mockILogger = new Mock<ILogger<IndexModel>>();
 
             // test
             using (var context = new StoreContext(options))
             {
                 StoreLogic storeLogic = new StoreLogic(context, mockIParserService.Object);
-                var indexModel = new IndexModel(storeLogic);
+                var indexModel = new IndexModel(storeLogic, mockILogger.Object, mockILogger.Object);
                 indexModel.ModelState.SetModelValue("Filter", new ValueProviderResult("test"));
                 var result = await indexModel.OnGetAsync();
 
