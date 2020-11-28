@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using NinjaStore.Parser.Exceptions;
 
 namespace NinjaStore.BLL
 {
@@ -46,21 +47,22 @@ namespace NinjaStore.BLL
 		{
 			if (string.IsNullOrWhiteSpace(fileName))
 			{
-				// TODO Dani: throw exception
+				throw new InternalParserException("Input file name contains '.'");
 			}
 
-			// TODO Dani: validate file name with regex
-
-			// TODO Dani: check if file name already exists for user
+			if (fileName.IndexOfAny(System.IO.Path.GetInvalidFileNameChars()) != -1)
+			{
+				throw new InternalParserException("Regex failure for filename.");
+			}
 
 			if (content == null || content.Length == 0)
 			{
-				// TODO Dani: throw exception
+				throw new InvalidCaffFileContentException("File is null.");
 			}
 
 			if (content.Length > MAX_FILE_SIZE)
 			{
-				// TODO Dani: throw exception
+				throw new InvalidCaffFileContentException("Too much blocks");
 			}
 
 			string fileId = Guid.NewGuid().ToString("N");
@@ -130,14 +132,14 @@ namespace NinjaStore.BLL
 		{
 			if (string.IsNullOrWhiteSpace(comment))
 			{
-				// TODO Dani: throw exception
+				throw new InvalidCaffFileContentException("Input file name contains '.'");
 			}
 
 			CaffMetadata metadata = await GetMetadataWithCommentsAsync(fileId);
 
 			if (metadata == null)
 			{
-				// TODO Dani: throw exception
+				throw new InvalidCaffFileContentException("Metadata null.");
 			}
 
 			Comment newComment = new Comment
