@@ -15,10 +15,7 @@ namespace NinjaStore.DAL.Models
 		[MaxLength(32)]
 		public string CaffMetadataFileId { get; set; }
 
-		[ForeignKey("User")]
 		[Required]
-		public string Username { get; set; }
-
 		public User User { get; set; }
 
 		[Required]
