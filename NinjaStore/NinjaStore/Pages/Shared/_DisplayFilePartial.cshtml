@@ -14,7 +14,7 @@
         </div>
         <div class="card-body">
             <h5>@Html.DisplayFor(modelItem => Model.FileName)</h5>
-            <p class="card-subtitle text-left">@Html.DisplayFor(modelItem => Model.User.UserName)</p>
+            <p class="card-subtitle text-left">Uploader: @Html.DisplayFor(modelItem => Model.User.UserName)</p>
             <p class="card-subtitle text-left">Downloaded: @Html.DisplayFor(modelItem => Model.DownloadCounter)</p>
         </div>
 

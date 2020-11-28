@@ -51,6 +51,7 @@ namespace NinjaStore.Pages.Account
                 }
                 else
                 {
+                    // TODO Dani: Delete user's comment too
                     var result = await _userManager.DeleteAsync(user);
                     if (result.Succeeded)
                     {

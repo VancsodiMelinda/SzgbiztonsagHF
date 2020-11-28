@@ -3,13 +3,13 @@
 @using NinjaStore.DAL.Models;
 
 @inject SignInManager<User> signInManager;
-@model NinjaStore.Pages.Account.DetailsModel
+@model NinjaStore.Pages.Account.DetailsAdminModel
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "DetailsAdmin";
 }
 
 <div class="container">
-    <h1>Own user details</h1>
+    <h1>User details</h1>
     <hr />
     <form method="post">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
@@ -25,13 +25,6 @@
             <div class="col-md-10">
                 <input asp-for="Input.Email" class="form-control" />
                 <span asp-validation-for="Input.Email" class="text-danger"></span>
-            </div>
-        </div>
-        <div class="form-group row">
-            <label asp-for="Input.OldPassword" class="control-label col-md-2"></label>
-            <div class="col-md-10">
-                <input asp-for="Input.OldPassword" class="form-control" />
-                <span asp-validation-for="Input.OldPassword" class="text-danger"></span>
             </div>
         </div>
         <div class="form-group row">

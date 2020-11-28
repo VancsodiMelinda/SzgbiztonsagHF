@@ -15,7 +15,7 @@
     @if (showButtons)
     {
         <div class="card-footer text-center row" style="margin: 10px">
-            <a class="btn btn-primary" style="margin-right: 2px" asp-page="./Details" asp-route-id="@Model.Username">Details</a>
+            <a class="btn btn-primary" style="margin-right: 2px" asp-page="./DetailsAdmin" asp-route-id="@Model.Username">Details</a>
             <form method="post" asp-page="../Account/Delete">
 
                 <input type="hidden" asp-for="@Model.Username" name="username" id="username" />
