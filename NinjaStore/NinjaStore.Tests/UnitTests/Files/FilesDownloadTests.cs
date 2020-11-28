@@ -41,7 +41,7 @@ namespace NinjaStore.Tests.UnitTests.Files.Download
             using (var context = new StoreContext(options))
             {
                 StoreLogic storeLogic = new StoreLogic(context, mockIParserService.Object);
-                var downloadModel = new DownloadModel(storeLogic, mockILogger.Object, mockILogger.Object);
+                var downloadModel = new DownloadModel(storeLogic, mockILogger.Object);
                 string id = null;
                 var result = await downloadModel.OnGetAsync(id);
 
@@ -60,7 +60,7 @@ namespace NinjaStore.Tests.UnitTests.Files.Download
             using (var context = new StoreContext(options))
             {
                 StoreLogic storeLogic = new StoreLogic(context, mockIParserService.Object);
-                var downloadModel = new DownloadModel(storeLogic, mockILogger.Object, mockILogger.Object);
+                var downloadModel = new DownloadModel(storeLogic, mockILogger.Object);
                 string id = "testFileID";
                 var result = await downloadModel.OnGetAsync(id);
 
@@ -79,7 +79,7 @@ namespace NinjaStore.Tests.UnitTests.Files.Download
             using (var context = new StoreContext(options))
             {
                 StoreLogic storeLogic = new StoreLogic(context, mockIParserService.Object);
-                var downloadModel = new DownloadModel(storeLogic, mockILogger.Object, mockILogger.Object);
+                var downloadModel = new DownloadModel(storeLogic, mockILogger.Object);
                 string id = "notExistingFileID";
                 var result = await downloadModel.OnGetAsync(id);
 

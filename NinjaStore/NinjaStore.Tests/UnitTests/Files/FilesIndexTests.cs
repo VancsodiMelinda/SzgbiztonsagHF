@@ -42,7 +42,7 @@ namespace NinjaStore.Tests.UnitTests.Files.Index
             using (var context = new StoreContext(options))
             {
                 StoreLogic storeLogic = new StoreLogic(context, mockIParserService.Object);
-                var indexModel = new IndexModel(storeLogic, mockILogger.Object, mockILogger.Object);
+                var indexModel = new IndexModel(storeLogic, mockILogger.Object);
                 indexModel.ModelState.SetModelValue("Filter", new ValueProviderResult("test"));
                 var result = await indexModel.OnGetAsync();
 

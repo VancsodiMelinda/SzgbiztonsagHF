@@ -35,7 +35,7 @@ namespace NinjaStore.Tests.UnitTests.Files.Details
         {
             Mock<IStoreLogic> mockIStoreLogic = new Mock<IStoreLogic>();
             Mock<ILogger<DetailsModel>> mockILogger = new Mock<ILogger<DetailsModel>>();
-            var detailsModel = new DetailsModel(mockIStoreLogic.Object, mockILogger.Object, mockILogger.Object);
+            var detailsModel = new DetailsModel(mockIStoreLogic.Object, mockILogger.Object);
 
             string id = null;
             var result = await detailsModel.OnGetAsync(id);
@@ -54,7 +54,7 @@ namespace NinjaStore.Tests.UnitTests.Files.Details
             using (var context = new StoreContext(options))
             {
                 StoreLogic storeLogic = new StoreLogic(context, mockIParserService.Object);
-                var detailsModel = new DetailsModel(storeLogic, mockILogger.Object, mockILogger.Object);
+                var detailsModel = new DetailsModel(storeLogic, mockILogger.Object);
                 string id = "notExistingID";
                 var result = await detailsModel.OnGetAsync(id);
 
@@ -73,7 +73,7 @@ namespace NinjaStore.Tests.UnitTests.Files.Details
             using (var context = new StoreContext(options))
             {
                 StoreLogic storeLogic = new StoreLogic(context, mockIParserService.Object);
-                var detailsModel = new DetailsModel(storeLogic, mockILogger.Object, mockILogger.Object);
+                var detailsModel = new DetailsModel(storeLogic, mockILogger.Object);
                 string id = "testFileID";
                 var result = await detailsModel.OnGetAsync(id);
 

@@ -15,6 +15,11 @@ using NinjaStore.Tests.Helper;
 using NinjaStore.Parser.Services;
 using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Identity;
+using System.Security.Principal;
+using System.Threading;
+using System.Web;
+using Microsoft.AspNetCore.Http;
+using System.Security.Claims;
 
 namespace NinjaStore.Tests.UnitTests.Comments.Create
 {
@@ -38,21 +43,14 @@ namespace NinjaStore.Tests.UnitTests.Comments.Create
             Mock<IParserService> mockIParserService = new Mock<IParserService>();
             Mock<ILogger<CreateModel>> mockILogger = new Mock<ILogger<CreateModel>>();
 
-            List<User> usersList = new List<User> { new User() };
-            var mockUserManager = MockUserManager<User>(usersList);
-
-            //var yourMockOfUserManager = new Mock<UserManager<User>>();
-            //yourMockOfUserManager.Setup(x => x.FindByIdAsync(It.IsAny<string>())).Returns(() => null);
-
-            //Mock<IUserStore<User>> mockIUserStore = new Mock<IUserStore<User>>();
-            //var userManager = new UserManager(mockIUserStore.Object, null, null, null, null, null, null, null, null);
-            //Mock<UserManager<User>> mockUserManager = new Mock<UserManager<User>>();
+            //List<User> usersList = new List<User> { new User() };
+            //var mockUserManager = MockUserManager<User>(usersList);
 
             // test
             using (var context = new StoreContext(options))
             {
                 StoreLogic storeLogic = new StoreLogic(context, mockIParserService.Object);
-                var createModel = new CreateModel(storeLogic, mockUserManager.Object, mockILogger.Object, mockILogger.Object);
+                var createModel = new CreateModel(storeLogic, mockILogger.Object);
                 createModel.ModelState.AddModelError("test", "test");
                 string fileID = "testFileID";
                 string commentText = "this is a new comment";
@@ -60,28 +58,52 @@ namespace NinjaStore.Tests.UnitTests.Comments.Create
 
                 Assert.IsType<PageResult>(result);
             }
-            
-            //throw new NotImplementedException();
         }
-
+        
         [Fact]
-        public async Task OnPostAsync_ReturnsRedirectToPageResult_WhenModelIsInvalid()
+        public async Task OnPostAsync_ReturnsRedirectToPageResult_WhenCommentIsAdded()
         {
-            /*
             // mock
             Mock<IParserService> mockIParserService = new Mock<IParserService>();
             Mock<ILogger<CreateModel>> mockILogger = new Mock<ILogger<CreateModel>>();
-            Mock<UserManager<User>> mockUserManager = new Mock<UserManager<User>>();
+
+            //var identity = new GenericIdentity("generic user");
+            //Thread.CurrentPrincipal = new GenericPrincipal(identity, null);
+
+            // add value to User.Identity.Name
+            User user = new User() { UserName = "Meli" };
+
+            var claims = new List<Claim>()
+            {
+                new Claim(ClaimTypes.Name, user.UserName),
+                new Claim("name", user.UserName),
+            };
+            var identity = new ClaimsIdentity(claims, "Test");
+            var claimsPrincipal = new ClaimsPrincipal(identity);
+
+            var mockPrincipal = new Mock<IPrincipal>();
+            mockPrincipal.Setup(x => x.Identity).Returns(identity);
+            mockPrincipal.Setup(x => x.IsInRole(It.IsAny<string>())).Returns(true);
+
+            var mockHttpContext = new Mock<HttpContext>();
+            mockHttpContext.Setup(m => m.User).Returns(claimsPrincipal);
+
+            Mock<UserManager<User>> userMgr = new Mock<UserManager<User>>();
+            userMgr.Setup(x => x.FindByNameAsync(It.IsAny<string>())).ReturnsAsync(user);
 
             // test
             using (var context = new StoreContext(options))
             {
                 StoreLogic storeLogic = new StoreLogic(context, mockIParserService.Object);
-                var createModel = new CreateModel(storeLogic, mockUserManager.Object, mockILogger.Object, mockILogger.Object);
+                var createModel = new CreateModel(storeLogic, mockILogger.Object);
+                string fileID = "testFileID";
+                string commentText = "this is a new comment";
+                var result = await createModel.OnPostAsync(fileID, commentText);
+
+                Assert.IsType<RedirectToPageResult>(result);
             }
-            */
-            throw new NotImplementedException();
         }
+        
 
         public static Mock<UserManager<TUser>> MockUserManager<TUser>(List<TUser> ls) where TUser : class
         {

@@ -41,7 +41,7 @@ namespace NinjaStore.Tests.UnitTests.Files.Upload
             using (var context = new StoreContext(options))
             {
                 StoreLogic storeLogic = new StoreLogic(context, mockIParserService.Object);
-                var uploadModel = new UploadModel(storeLogic, mockILogger.Object, mockILogger.Object);
+                var uploadModel = new UploadModel(storeLogic, mockILogger.Object);
                 uploadModel.ModelState.AddModelError("test", "test");
                 var result = await uploadModel.OnPostAsync();
 

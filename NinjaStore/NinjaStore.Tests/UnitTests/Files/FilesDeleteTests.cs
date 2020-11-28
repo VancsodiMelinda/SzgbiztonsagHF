@@ -35,7 +35,7 @@ namespace NinjaStore.Tests.UnitTests.Files.Delete
         {
             Mock<IStoreLogic> mockIStoreLogic = new Mock<IStoreLogic>();
             Mock<ILogger<DeleteModel>> mockILogger = new Mock<ILogger<DeleteModel>>();
-            var deleteModel = new DeleteModel(mockIStoreLogic.Object, mockILogger.Object, mockILogger.Object);
+            var deleteModel = new DeleteModel(mockIStoreLogic.Object, mockILogger.Object);
 
             string id = null;
             var result = await deleteModel.OnGetAsync(id);
@@ -64,7 +64,7 @@ namespace NinjaStore.Tests.UnitTests.Files.Delete
             using (var context = new StoreContext(options))
             {
                 StoreLogic storeLogic = new StoreLogic(context, mockIParserService.Object);
-                var deleteModel = new DeleteModel(storeLogic, mockILogger.Object, mockILogger.Object);
+                var deleteModel = new DeleteModel(storeLogic, mockILogger.Object);
                 string id = "notExistingID";
                 var result = await deleteModel.OnGetAsync(id);
 
@@ -83,7 +83,7 @@ namespace NinjaStore.Tests.UnitTests.Files.Delete
             using (var context = new StoreContext(options))
             {
                 StoreLogic storeLogic = new StoreLogic(context, mockIParserService.Object);
-                var deleteModel = new DeleteModel(storeLogic, mockILogger.Object, mockILogger.Object);
+                var deleteModel = new DeleteModel(storeLogic, mockILogger.Object);
                 string id = "testFileID";
                 var result = await deleteModel.OnGetAsync(id);
 
@@ -98,7 +98,7 @@ namespace NinjaStore.Tests.UnitTests.Files.Delete
             Mock<IStoreLogic> mockIStoreLogic = new Mock<IStoreLogic>();
             Mock<ILogger<DeleteModel>> mockILogger = new Mock<ILogger<DeleteModel>>();
 
-            var deleteModel = new DeleteModel(mockIStoreLogic.Object, mockILogger.Object, mockILogger.Object);
+            var deleteModel = new DeleteModel(mockIStoreLogic.Object, mockILogger.Object);
 
             string id = null;
             var result = await deleteModel.OnPostAsync(id);
@@ -128,7 +128,7 @@ namespace NinjaStore.Tests.UnitTests.Files.Delete
             using (var context = new StoreContext(options))
             {
                 StoreLogic storeLogic = new StoreLogic(context, mockIParserService.Object);
-                var deleteModel = new DeleteModel(storeLogic, mockILogger.Object, mockILogger.Object);
+                var deleteModel = new DeleteModel(storeLogic, mockILogger.Object);
                 string id = "testFileID";
                 var result = await deleteModel.OnPostAsync(id);
 
