@@ -19,6 +19,10 @@ using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Authentication;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.AspNetCore.Routing;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
+using Microsoft.AspNetCore.Mvc.Routing;
 
 namespace NinjaStore.Tests.UnitTests.Account.Register
 {
@@ -65,7 +69,6 @@ namespace NinjaStore.Tests.UnitTests.Account.Register
         [Fact]
         public async Task OnPostAsync_ReturnsPageResult_WhenModelIsInvalid()
         {
-            /*
             // mock
             Mock<IParserService> mockIParserService = new Mock<IParserService>();
             Mock<ILogger<RegisterModel>> mockILogger = new Mock<ILogger<RegisterModel>>();
@@ -85,24 +88,106 @@ namespace NinjaStore.Tests.UnitTests.Account.Register
             // test
             var registerModel = new RegisterModel(userManager, mockSignInManager.Object, mockILogger.Object);
             registerModel.ModelState.AddModelError("test", "test");
-            var result = registerModel.OnPostAsync();
+            var result = await registerModel.OnPostAsync();
 
             Assert.IsType<PageResult>(result);
-            */
-            throw new NotImplementedException();
         }
 
+        
         [Fact]
         public async Task OnPostAsync_ReturnsRedirectToPageResult_WhenUserCreationSucceeded()
         {
-            throw new NotImplementedException();
+            // mock
+            Mock<IParserService> mockIParserService = new Mock<IParserService>();
+            Mock<ILogger<RegisterModel>> mockILogger = new Mock<ILogger<RegisterModel>>();
+
+            var mockIUserStore = new Mock<IUserStore<User>>();
+            var mockUserManager = new Mock<UserManager<User>>(mockIUserStore.Object, null, null, null, null, null, null, null, null);
+            var mockSignInManager = new Mock<SignInManager<User>>(
+                mockUserManager.Object,
+                new HttpContextAccessor(),
+                new Mock<IUserClaimsPrincipalFactory<User>>().Object,
+                new Mock<IOptions<IdentityOptions>>().Object,
+                new Mock<ILogger<SignInManager<User>>>().Object,
+                new Mock<IAuthenticationSchemeProvider>().Object,
+                new Mock<IUserConfirmation<User>>().Object
+            );
+
+            User user = new User
+            {
+                UserName = "Meli",
+                Email = "testemail@gmail.com",
+            };
+
+            mockSignInManager.Setup(x => x.SignInAsync(It.IsAny<User>(), It.IsAny<bool>(), It.IsAny<string>())).Returns(Task.CompletedTask);
+
+            mockUserManager.Setup(x => x.CreateAsync(It.IsAny<User>(), It.IsAny<string>())).ReturnsAsync(IdentityResult.Success);
+            mockUserManager.Setup(x => x.AddToRoleAsync(It.IsAny<User>(), It.IsAny<string>())).ReturnsAsync(IdentityResult.Success);
+            mockUserManager.Setup(x => x.DeleteAsync(It.IsAny<User>())).ReturnsAsync(IdentityResult.Success);
+
+            // test
+            var registerModel = new RegisterModel(mockUserManager.Object, mockSignInManager.Object, mockILogger.Object)
+            {
+                Input = new RegisterModel.InputModel {
+                    Username = user.UserName,
+                    Email = user.Email,
+                    Password = "Super_SECRETpassword123?",
+                    ConfirmPassword = "Super_SECRETpassword123?"
+                }
+            };
+
+            var result = await registerModel.OnPostAsync();
+
+            Assert.IsType<RedirectToPageResult>(result);
         }
 
         [Fact]
         public async Task OnPostAsync_ReturnsPageResult_WhenUserCreatonFailed()
         {
-            // ezt egyáltalán lehet tesztelni?
-            throw new NotImplementedException();
+            // mock
+            Mock<IParserService> mockIParserService = new Mock<IParserService>();
+            Mock<ILogger<RegisterModel>> mockILogger = new Mock<ILogger<RegisterModel>>();
+
+            var mockIUserStore = new Mock<IUserStore<User>>();
+            var mockUserManager = new Mock<UserManager<User>>(mockIUserStore.Object, null, null, null, null, null, null, null, null);
+            var mockSignInManager = new Mock<SignInManager<User>>(
+                mockUserManager.Object,
+                new HttpContextAccessor(),
+                new Mock<IUserClaimsPrincipalFactory<User>>().Object,
+                new Mock<IOptions<IdentityOptions>>().Object,
+                new Mock<ILogger<SignInManager<User>>>().Object,
+                new Mock<IAuthenticationSchemeProvider>().Object,
+                new Mock<IUserConfirmation<User>>().Object
+            );
+
+            User user = new User
+            {
+                UserName = "Meli",
+                Email = "testemail@gmail.com",
+            };
+
+            mockSignInManager.Setup(x => x.SignInAsync(It.IsAny<User>(), It.IsAny<bool>(), It.IsAny<string>())).Returns(Task.CompletedTask);
+
+            //IdentityError[] errors = new IdentityError[];
+            mockUserManager.Setup(x => x.CreateAsync(It.IsAny<User>(), It.IsAny<string>())).ReturnsAsync(IdentityResult.Failed());
+            mockUserManager.Setup(x => x.AddToRoleAsync(It.IsAny<User>(), It.IsAny<string>())).ReturnsAsync(IdentityResult.Success);
+            mockUserManager.Setup(x => x.DeleteAsync(It.IsAny<User>())).ReturnsAsync(IdentityResult.Success);
+
+            // test
+            var registerModel = new RegisterModel(mockUserManager.Object, mockSignInManager.Object, mockILogger.Object)
+            {
+                Input = new RegisterModel.InputModel {
+                    Username = user.UserName,
+                    Email = user.Email,
+                    Password = "Super_SECRETpassword123?",
+                    ConfirmPassword = "Super_SECRETpassword123?"
+                }
+            };
+
+            var result = await registerModel.OnPostAsync();
+
+            Assert.IsType<PageResult>(result);
         }
+        
     }
 }

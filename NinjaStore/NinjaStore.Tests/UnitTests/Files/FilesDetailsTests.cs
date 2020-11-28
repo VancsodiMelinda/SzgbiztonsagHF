@@ -15,7 +15,7 @@ using NinjaStore.Tests.Helper;
 using NinjaStore.Parser.Services;
 using Microsoft.Extensions.Logging;
 
-namespace NinjaStore.Tests.UnitTests.Files.Details
+namespace NinjaStore.Tests.UnitTests.Files
 {
     public class FilesDetailsTests
     {

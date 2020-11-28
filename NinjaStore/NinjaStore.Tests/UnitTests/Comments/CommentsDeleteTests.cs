@@ -15,7 +15,7 @@ using NinjaStore.Tests.Helper;
 using NinjaStore.Parser.Services;
 using Microsoft.Extensions.Logging;
 
-namespace NinjaStore.Tests.UnitTests.Comments.Delete
+namespace NinjaStore.Tests.UnitTests.Comments
 {
     public class CommentsDeleteTests
     {

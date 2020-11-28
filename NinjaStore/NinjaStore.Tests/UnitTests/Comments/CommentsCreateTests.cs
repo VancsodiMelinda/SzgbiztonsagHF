@@ -22,7 +22,7 @@ using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 
-namespace NinjaStore.Tests.UnitTests.Comments.Create
+namespace NinjaStore.Tests.UnitTests.Comments
 {
     public class CommentsCreateTests
     {
