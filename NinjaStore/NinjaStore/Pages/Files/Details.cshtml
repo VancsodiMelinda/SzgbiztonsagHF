@@ -9,7 +9,7 @@
 }
 
 <div class="container">
-    <h1>File details</h1>
+    <h1>@Html.DisplayFor(model => model.CaffMetadata.FileName)</h1>
 
     <div class="content">
         <img class="center" src="data:image;base64,@System.Convert.ToBase64String(Model.CaffMetadata.Preview)" />
@@ -20,10 +20,10 @@
     <div class="content">
         <dl class="row">
             <dt class="col-sm-2">
-                Uploader
+                Description
             </dt>
             <dd class="col-sm-4">
-                @Html.DisplayFor(model => model.CaffMetadata.User.UserName)
+                @Html.DisplayFor(model => model.CaffMetadata.Description)
             </dd>
 
             <dt class="col-sm-2">
@@ -34,10 +34,10 @@
             </dd>
 
             <dt class="col-sm-2">
-                File name
+                Uploader
             </dt>
             <dd class="col-sm-4">
-                @Html.DisplayFor(model => model.CaffMetadata.FileName)
+                @Html.DisplayFor(model => model.CaffMetadata.User.UserName)
             </dd>
             <dt class="col-sm-2">
                 File size
@@ -47,10 +47,10 @@
             </dd>
 
             <dt class="col-sm-2">
-                Description
+                Upload time
             </dt>
             <dd class="col-sm-4">
-                @Html.DisplayFor(model => model.CaffMetadata.Description)
+                @Html.DisplayFor(model => model.CaffMetadata.UploadTimestamp)
             </dd>
 
             <dt class="col-sm-2">
