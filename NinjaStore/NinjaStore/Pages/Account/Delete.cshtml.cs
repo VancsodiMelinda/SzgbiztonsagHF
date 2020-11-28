@@ -27,7 +27,8 @@ namespace NinjaStore.Pages.Account
         {
             if (string.IsNullOrWhiteSpace(username))
             {
-                // TODO Gergő: log
+                string Message = $"POST Username is empty null or only consists of whitespaces : {DateTime.UtcNow.ToLongTimeString()}";
+                _logger.LogInformation(Message);
                 return NotFound();
             }
             else
@@ -36,12 +37,15 @@ namespace NinjaStore.Pages.Account
                 bool isAdmin = _userManager.IsInRoleAsync(user, Roles.ADMIN).Result;
                 if (user == null)
                 {
-                    // TODO Gergő: log
+                    string Message = $"POST User not found {DateTime.UtcNow.ToLongTimeString()}";
+                    _logger.LogInformation(Message);
                     return NotFound();
                 } 
                 else if(isAdmin)
-                {
-                    // TODO Gergő: log
+                { 
+                    string Message = $"POST Can not delete admin. {DateTime.UtcNow.ToLongTimeString()}";
+                    _logger.LogInformation(Message);
+
                     // TODO Dani: Exception - can not delete admin
 
                 }
