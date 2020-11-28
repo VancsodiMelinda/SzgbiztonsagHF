@@ -3,10 +3,7 @@
 @using NinjaStore.DAL.Models;
 
 @inject SignInManager<User> signInManager;
-
-
 @model NinjaStore.Pages.Files.DetailsModel
-
 @{
     ViewData["Title"] = "Details";
 }
@@ -82,7 +79,6 @@
                     <td>
                         @Html.DisplayFor(modelItem => item.Text)
                     </td>
-                    <!-- TODO Csilla: if admin or own comment-->
                     @if (User.IsInRole(Roles.ADMIN) || item.User.UserName == User.Identity.Name)
                     {
                         <td style="text-align:right; width:5%;">

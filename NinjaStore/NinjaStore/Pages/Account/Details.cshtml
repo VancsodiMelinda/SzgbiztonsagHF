@@ -1,4 +1,8 @@
 ﻿@page
+@using Microsoft.AspNetCore.Identity;
+@using NinjaStore.DAL.Models;
+
+@inject SignInManager<User> signInManager;
 @model NinjaStore.Pages.Account.DetailsModel
 @{
     ViewData["Title"] = "Details";
@@ -11,10 +15,7 @@
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <div class="form-group row">
             <label asp-for="Username" class="control-label col-md-2"></label>
-            <div class="col-md-10">
-                <input asp-for="Username" class="form-control" />
-                <span asp-validation-for="Username" class="text-danger"></span>
-            </div>
+            <label asp-for="Username" class="control-label  col-md-10">@Html.DisplayFor(modelItem => Model.Username)</label>
         </div>
         <div class="form-group row">
             <label asp-for="Input.Email" class="control-label col-md-2"></label>
@@ -23,13 +24,16 @@
                 <span asp-validation-for="Input.Email" class="text-danger"></span>
             </div>
         </div>
-        <div class="form-group row">
-            <label asp-for="Input.OldPassword" class="control-label col-md-2"></label>
-            <div class="col-md-10">
-                <input asp-for="Input.OldPassword" class="form-control" />
-                <span asp-validation-for="Input.OldPassword" class="text-danger"></span>
+        @if (Model.Username == User.Identity.Name)
+        {
+            <div class="form-group row">
+                <label asp-for="Input.OldPassword" class="control-label col-md-2"></label>
+                <div class="col-md-10">
+                    <input asp-for="Input.OldPassword" class="form-control" />
+                    <span asp-validation-for="Input.OldPassword" class="text-danger"></span>
+                </div>
             </div>
-        </div>
+        }
         <div class="form-group row">
             <label asp-for="Input.NewPassword" class="control-label col-md-2"></label>
             <div class="col-md-10">

@@ -51,16 +51,20 @@ namespace NinjaStore.Pages.Account
             _logger = logger;
         }
 
-        public async Task<IActionResult> OnGetAsync()
+        public async Task<IActionResult> OnGetAsync(string id)
         {
-            var user = await _userManager.GetUserAsync(User);
+            if (string.IsNullOrWhiteSpace(id))
+            {
+                id = User.Identity.Name;
+            }
+            var user = await _userManager.FindByNameAsync(id);
             if (user == null)
             {
                 // TODO Gergő log - user not found
             }
             Input = new InputModel();
             Input.Email = user.Email;
-            
+            Username = user.UserName;
             return Page();
         }
 
@@ -70,40 +74,54 @@ namespace NinjaStore.Pages.Account
             {
                 return Page();
             }
-            //TODO Csilla: check oldPass
-            // change email
-            var user = await _userManager.GetUserAsync(User);
-            if (user == null)
-            {
-                // TODO Gergő log - user not found
-            }
-            user.Email = Input.Email;
-            var result = await _userManager.UpdateAsync(user);
-            if (!result.Succeeded)
-            {
-                foreach (var error in result.Errors)
-                {
-                    ModelState.AddModelError(string.Empty, error.Description);
-                }
-            }
 
-            // change password
-            if (!string.IsNullOrWhiteSpace(Input.NewPassword))
+            if (User.IsInRole(Roles.USER))
             {
-                var resultP = await _userManager.ChangePasswordAsync(user, Input.OldPassword, Input.NewPassword);
-
-                if (resultP.Succeeded)
+                if (string.IsNullOrWhiteSpace(Input.OldPassword))
                 {
-                    // Upon successfully changing the password refresh sign-in cookie
-                    await _signInManager.RefreshSignInAsync(user);
-                    TempData["Success"] = "Your password is successfully changed.";
-                    return Page();
+                    // TODO Gergő: log
+                    // TODO Dani: exception -> old pass is required when user want to change pass
                 }
-
-                foreach (var error in resultP.Errors)
+                else
                 {
-                    ModelState.AddModelError(string.Empty, error.Description);
+                    // change email
+                    var user = await _userManager.GetUserAsync(User);
+                    if (user == null)
+                    {
+                        // TODO Gergő log - user not found
+                    }
+                    user.Email = Input.Email;
+                    var result = await _userManager.UpdateAsync(user);
+                    if (!result.Succeeded)
+                    {
+                        foreach (var error in result.Errors)
+                        {
+                            ModelState.AddModelError(string.Empty, error.Description);
+                        }
+                    }
+
+                    // change password
+                    if (!string.IsNullOrWhiteSpace(Input.NewPassword))
+                    {
+                        var resultP = await _userManager.ChangePasswordAsync(user, Input.OldPassword, Input.NewPassword);
+
+                        if (resultP.Succeeded)
+                        {
+                            // Upon successfully changing the password refresh sign-in cookie
+                            await _signInManager.RefreshSignInAsync(user);
+                            TempData["Success"] = "Your password is successfully changed.";
+                            return Page();
+                        }
+
+                        foreach (var error in resultP.Errors)
+                        {
+                            ModelState.AddModelError(string.Empty, error.Description);
+                        }
+                    }
                 }
+            } else
+            {
+                
             }
             return Page();
         }
