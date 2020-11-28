@@ -27,30 +27,35 @@ namespace NinjaStore.Pages.Account
         {
             if (string.IsNullOrWhiteSpace(username))
             {
-                // TODO Gergő log
+                // TODO Gergő: log
                 return NotFound();
             }
             else
             {
                 var user = await _userManager.FindByNameAsync(username);
+                bool isAdmin = _userManager.IsInRoleAsync(user, Roles.ADMIN).Result;
                 if (user == null)
                 {
-                    // TODO Gergő log
+                    // TODO Gergő: log
                     return NotFound();
                 } 
-                else if(User.IsInRole("Admin"))
+                else if(isAdmin)
                 {
-
+                    // TODO Gergő: log
+                    // TODO Dani: Exception - can not delete admin
                 }
-                var result = await _userManager.DeleteAsync(user);
-                if (result.Succeeded)
+                else
                 {
-                    return RedirectToPage("./List");
-                }
+                    var result = await _userManager.DeleteAsync(user);
+                    if (result.Succeeded)
+                    {
+                        return RedirectToPage("./List");
+                    }
 
-                foreach (var error in result.Errors)
-                {
-                    ModelState.AddModelError(string.Empty, error.Description);
+                    foreach (var error in result.Errors)
+                    {
+                        ModelState.AddModelError(string.Empty, error.Description);
+                    }
                 }
 
                 return RedirectToPage("./List");

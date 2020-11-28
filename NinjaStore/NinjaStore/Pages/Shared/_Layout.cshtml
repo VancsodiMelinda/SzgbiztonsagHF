@@ -1,6 +1,5 @@
 ﻿@using Microsoft.AspNetCore.Identity;
 @using NinjaStore.DAL.Models;
-
 @inject SignInManager<User> signInManager;
 
 <!DOCTYPE html>
@@ -35,13 +34,13 @@
                                 <a class="nav-link text-light" asp-area="" asp-page="/Files/Index">File store</a>
                             </li>
                         }
-                        @if (signInManager.IsSignedIn(User) && User.IsInRole("User"))
+                        @if (signInManager.IsSignedIn(User) && User.IsInRole(Roles.USER))
                         {
                             <li class="nav-item">
                                 <a class="nav-link text-light" asp-area="" asp-page="/Files/Upload">Upload</a>
                             </li>
                         }
-                        @if (signInManager.IsSignedIn(User) && User.IsInRole("Admin"))
+                        @if (signInManager.IsSignedIn(User) && User.IsInRole(Roles.ADMIN))
                         {
                             <li class="nav-item">
                                 <a class="nav-link text-light" asp-area="" asp-page="/Account/List">User list</a>

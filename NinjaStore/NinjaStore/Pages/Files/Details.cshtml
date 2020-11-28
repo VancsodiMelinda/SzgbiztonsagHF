@@ -63,7 +63,7 @@
                 @Html.DisplayFor(model => model.CaffMetadata.DownloadCounter)
             </dd>
         </dl>
-        @if (User.IsInRole("Admin"))
+        @if (User.IsInRole(Roles.ADMIN))
         {
             <a class="btn btn-danger" asp-page="./Delete" asp-route-id="@Model.CaffMetadata.FileId">Delete file</a>
         }
@@ -83,7 +83,7 @@
                         @Html.DisplayFor(modelItem => item.Text)
                     </td>
                     <!-- TODO Csilla: if admin or own comment-->
-                    @if (User.IsInRole("Admin") || item.User.UserName == User.Identity.Name)
+                    @if (User.IsInRole(Roles.ADMIN) || item.User.UserName == User.Identity.Name)
                     {
                         <td style="text-align:right; width:5%;">
                             <form method="post" asp-page="../Comments/Delete">
