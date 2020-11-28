@@ -11,6 +11,7 @@ using NinjaStore.DAL.Models;
 
 namespace NinjaStore.Pages.Account
 {
+    [ResponseCache(CacheProfileName = "Default30")]
     [AllowAnonymous]
     public class LogoutModel : PageModel
     {

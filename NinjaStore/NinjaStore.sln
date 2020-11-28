@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NinjaStore.Parser", "NinjaS
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NinjaStore.BLL", "NinjaStore.BLL\NinjaStore.BLL.csproj", "{40F7FCB8-5846-4F4E-85FD-1C1D75648598}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NinjaStore.Tests", "NinjaStore.Tests\NinjaStore.Tests.csproj", "{C1D7FECC-069F-4488-A793-25434199FEBB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NinjaStore.Tests", "NinjaStore.Tests\NinjaStore.Tests.csproj", "{C1D7FECC-069F-4488-A793-25434199FEBB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
