@@ -69,6 +69,9 @@ namespace NinjaStore
 
 			SeedIdentity(userManager, roleManager);
 
+			//HTTPS
+			//app.UseHttpsRedirection();
+
 			app.UseHttpsRedirection();
 			app.UseStaticFiles();
 

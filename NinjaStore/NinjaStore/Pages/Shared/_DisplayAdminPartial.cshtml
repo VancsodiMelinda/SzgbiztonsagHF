@@ -13,8 +13,8 @@
         <a class="btn btn-primary" style="margin-right: 2px" asp-page="./DetailsAdmin" asp-route-id="@Model.Username">Details</a>
         <form method="post" asp-page="../Account/Delete">
             <input type="hidden" asp-for="@Model.Username" name="username" id="username" />
-            <input type="submit" value="Delete" class="btn btn-danger text-light"
-                   onclick="return confirm('Are you sure you want to delete this user?');" />
+            <input type="submit" value="Delete" class="btn btn-danger text-light" disabled />
         </form>
     </div>
+
 </div>
