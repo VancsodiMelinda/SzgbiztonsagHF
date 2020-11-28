@@ -15,17 +15,12 @@ namespace NinjaStore.Pages.Comments
     {
         private readonly IStoreLogic _logic;
 
-        //LOG CONSOLE
-        //private readonly ILogger<DeleteModel> _logger;
-
-        //LOG FILE
         readonly ILogger<CreateModel> _log;
 
-        public CreateModel(IStoreLogic logic, ILogger<CreateModel> logger, ILogger<CreateModel> log)
+        public CreateModel(IStoreLogic logic, ILogger<CreateModel> log)
         {
             _logic = logic;
             _log = log;
-            // _logger = logger;
         }
 
         public async Task<IActionResult> OnPostAsync(string fileId, string commentText)
@@ -37,10 +32,8 @@ namespace NinjaStore.Pages.Comments
 
             string Message = $"POST Comment added to file {DateTime.UtcNow.ToLongTimeString()}";
             _log.LogInformation(Message);
-          //  _logger.LogInformation(Message);
             string Message2 = $"POST File ID is {fileId}";
             _log.LogInformation(Message2);
-            // _logger.LogInformation(Message2);
 
             
             // TODO Csilla:  SQL Exception
