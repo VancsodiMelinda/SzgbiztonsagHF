@@ -5,7 +5,7 @@ using System.Text;
 namespace NinjaStore.Parser.Exceptions
 {
     [Serializable]
-    class InternalParserException : Exception
+    public class InternalParserException : Exception
     {
 
         public InternalParserException()

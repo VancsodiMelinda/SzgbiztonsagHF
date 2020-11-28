@@ -3,15 +3,18 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.Extensions.Logging;
 using NinjaStore.DAL;
 using NinjaStore.DAL.Models;
 
 namespace NinjaStore.Pages.Account
 {
+    [AllowAnonymous]
     public class RegisterModel : PageModel
     {
         private readonly UserManager<User> _userManager;
@@ -39,14 +42,25 @@ namespace NinjaStore.Pages.Account
         [BindProperty]
 		public InputModel Input { get; set; }
 
-		public RegisterModel(UserManager<User> userManager, SignInManager<User> signInManager)
+        //LOG CONSOLE
+        //private readonly ILogger<RegisterModel> _logger;
+
+        //LOG FILE
+        readonly ILogger<RegisterModel> _log;
+
+        public RegisterModel(UserManager<User> userManager, SignInManager<User> signInManager, ILogger<RegisterModel> logger, ILogger<RegisterModel> log)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+           // _logger = logger;
+            _log = log;
         }
 
         public IActionResult OnGet()
         {
+            string Message = $"GET Register Page {DateTime.UtcNow.ToLongTimeString()}";
+            _log.LogInformation(Message);
+           // _logger.LogInformation(Message);
             return Page();
         }
 
@@ -67,14 +81,31 @@ namespace NinjaStore.Pages.Account
 
             if (result.Succeeded)
 			{
-                await _signInManager.SignInAsync(user, false);
-                return RedirectToPage("../Index");
+                var roleResult = await _userManager.AddToRoleAsync(user, Roles.USER);
+
+                if (roleResult.Succeeded)
+				{
+                    string Message = $"POST User created at {DateTime.UtcNow.ToLongTimeString()}";
+                    _log.LogInformation(Message);
+                    //  _logger.LogInformation(Message);
+
+                    await _signInManager.SignInAsync(user, false);
+
+                    return RedirectToPage("../Index");
+                }
+                else
+				{
+                    await _userManager.DeleteAsync(user);
+				}
             }
 
 			foreach (var error in result.Errors)
 			{
                 ModelState.AddModelError("", error.Description);
-			}
+                _log.LogInformation(error.Description);
+                //_logger.LogInformation(error.Description);
+            }
+
             return Page();
         }
     }

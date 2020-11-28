@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using NinjaStore.BLL;
 using NinjaStore.DAL;
 using NinjaStore.DAL.Models;
@@ -41,14 +42,34 @@ namespace NinjaStore
 			services.AddRazorPages();
 			services.AddTransient<IStoreLogic, StoreLogic>();
 			services.AddTransient<IParserService, ParserService>();
-
-			//LOGGER CODE
-			services.AddSingleton<ILoggerRepo, LoggerRepo>();
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-		public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+		public void Configure(
+			IApplicationBuilder app,
+			IWebHostEnvironment env,
+			UserManager<User> userManager,
+			RoleManager<IdentityRole> roleManager,
+			ILogger<Startup> logger,
+			ILoggerFactory loggerFactory)
 		{
+			/* LOGGER CODE */
+			if (env.IsDevelopment())
+			{
+				logger.LogInformation("In Development.");
+				app.UseDeveloperExceptionPage();
+			}
+			else
+			{
+				logger.LogInformation("Not Development.");
+				app.UseExceptionHandler("/Error");
+				app.UseHsts();
+			}
+			/* LOGGER CODE END */
+
+			//LOGGER FILE CODE
+			loggerFactory.AddFile("Logs/Ninjas-{Date}.log");
+
 			if (env.IsDevelopment())
 			{
 				app.UseDeveloperExceptionPage();
@@ -60,8 +81,10 @@ namespace NinjaStore
 				app.UseHsts();
 			}
 
-			//LOGGER CODE
-			app.UseMiddleware<Logger>();
+			//OLD LOGGER CODE
+			//app.UseMiddleware<Logger>();
+
+			SeedIdentity(userManager, roleManager);
 
 			app.UseHttpsRedirection();
 			app.UseStaticFiles();
@@ -75,6 +98,46 @@ namespace NinjaStore
 			{
 				endpoints.MapRazorPages();
 			});
+		}
+
+		private static void SeedIdentity(UserManager<User> userManager, RoleManager<IdentityRole> roleManager)
+		{
+			CreateRoleIfNotExists(roleManager, Roles.ADMIN);
+			CreateRoleIfNotExists(roleManager, Roles.USER);
+
+			CreateAdminIfNotExists(userManager, "admin", "NinjAdmin_01");
+		}
+
+		private static void CreateRoleIfNotExists(RoleManager<IdentityRole> roleManager, string role)
+		{
+			bool roleExists = roleManager.RoleExistsAsync(role).Result;
+			if (!roleExists)
+			{
+				roleManager.CreateAsync(new IdentityRole
+				{
+					Name = role,
+				}).Wait();
+			}
+		}
+
+		private static void CreateAdminIfNotExists(UserManager<User> userManager, string username, string password)
+		{
+			var user = userManager.FindByNameAsync(username).Result;
+			if (user == null)
+			{
+				user = new User
+				{
+					UserName = username,
+					Email = $"{username}@ninjas.com",
+				};
+				userManager.CreateAsync(user, password).Wait();
+			}
+
+			bool isAdmin = userManager.IsInRoleAsync(user, Roles.ADMIN).Result;
+			if (!isAdmin)
+			{
+				userManager.AddToRoleAsync(user, Roles.ADMIN).Wait();
+			}
 		}
 	}
 }

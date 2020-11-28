@@ -5,7 +5,7 @@ using System.Text;
 namespace NinjaStore.Parser.Exceptions
 {
     [Serializable]
-    class InvalidCaffFileContentException : Exception
+    public class InvalidCaffFileContentException : Exception
     {
         public InvalidCaffFileContentException()
         {
