@@ -4,7 +4,6 @@ using System.Text;
 
 namespace NinjaStore.Parser.Exceptions
 {
-	// TODO Gergo: create exception for each error code
 
 	public enum ErrorCodes
 	{

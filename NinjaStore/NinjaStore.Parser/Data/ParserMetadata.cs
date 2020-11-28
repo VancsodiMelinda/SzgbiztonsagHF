@@ -14,10 +14,8 @@ namespace NinjaStore.Parser.Data
 		public string creator { get; set; }
 		public IList<Frame> frames { get; set; }
 
-		// TODO Gergo: add properties for serializing parser metadata (see JSON file)
 	}
 
-	// TODO Gergo: create additional classes for serializing parser metadata (etc. Frame)
 	public class Frame
 	{
 		public int duration { get; set; }
