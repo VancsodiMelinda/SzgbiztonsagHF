@@ -14,7 +14,6 @@ namespace NinjaStore.Pages.Account
     [Authorize(Roles = Roles.ADMIN)]
     public class ListModel : PageModel
     {
-        private readonly SignInManager<User> _signInManager;
         private readonly UserManager<User> _userManager;
         private readonly ILogger<ListModel> _logger;
 
@@ -27,15 +26,15 @@ namespace NinjaStore.Pages.Account
         [BindProperty]
         public IList<UserModel> List { get; set; }
 
-        public ListModel(UserManager<User> userManager, SignInManager<User> signInManager, ILogger<ListModel> logger)
+        public ListModel(UserManager<User> userManager, ILogger<ListModel> logger)
 		{
-            _signInManager = signInManager;
             _userManager = userManager;
             _logger = logger;
         }
 
         public async Task<IActionResult> OnGetAsync()
         {
+            // TODO Gergő: log
             List = new List<UserModel>();
             foreach (var user in _userManager.Users)
             {

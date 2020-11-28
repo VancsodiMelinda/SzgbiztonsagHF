@@ -62,8 +62,7 @@ namespace NinjaStore.Pages.Files
                 byte[] preview = memoryStream.ToArray();
 
                 // TODO Csilla:  SQL Exception
-                //string savedFileId = await _logic.UploadFileAsync(User.Identity.Name, FileName, Description, preview);
-                string savedFileId = await _logic.UploadFileAsync("Csilla", FileName, Description, preview);
+                string savedFileId = await _logic.UploadFileAsync(User.Identity.Name, FileName, Description, preview);
                 return RedirectToPage("./Details", new { id = savedFileId });
             }
         }

@@ -14,13 +14,11 @@ namespace NinjaStore.Pages.Account
     [Authorize(Roles = Roles.ADMIN)]
     public class DeleteModel : PageModel
     {
-        private readonly SignInManager<User> _signInManager;
         private readonly UserManager<User> _userManager;
         private readonly ILogger<DeleteModel> _logger;
 
-        public DeleteModel(UserManager<User> userManager, SignInManager<User> signInManager, ILogger<DeleteModel> logger)
+        public DeleteModel(UserManager<User> userManager, ILogger<DeleteModel> logger)
 		{
-            _signInManager = signInManager;
             _userManager = userManager;
             _logger = logger;
         }
@@ -45,6 +43,7 @@ namespace NinjaStore.Pages.Account
                 {
                     // TODO Gergő: log
                     // TODO Dani: Exception - can not delete admin
+
                 }
                 else
                 {

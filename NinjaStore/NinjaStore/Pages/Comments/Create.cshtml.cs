@@ -14,7 +14,6 @@ namespace NinjaStore.Pages.Comments
     public class CreateModel : PageModel
     {
         private readonly IStoreLogic _logic;
-        private readonly UserManager<User> _userManager;
 
         //LOG CONSOLE
         //private readonly ILogger<DeleteModel> _logger;
@@ -22,10 +21,9 @@ namespace NinjaStore.Pages.Comments
         //LOG FILE
         readonly ILogger<CreateModel> _log;
 
-        public CreateModel(IStoreLogic logic, UserManager<User> userManager, ILogger<CreateModel> logger, ILogger<CreateModel> log)
+        public CreateModel(IStoreLogic logic, ILogger<CreateModel> logger, ILogger<CreateModel> log)
         {
             _logic = logic;
-            _userManager = userManager;
             _log = log;
             // _logger = logger;
         }
@@ -46,13 +44,7 @@ namespace NinjaStore.Pages.Comments
 
             
             // TODO Csilla:  SQL Exception
-            /*var user = await _userManager.GetUserAsync(User);
-            if (user == null)
-            {
-                // TODO Gergő log
-            }
-            await _logic.InsertCommentAsync(fileId, user.UserName, commentText);*/
-            await _logic.InsertCommentAsync(fileId, "Csilla", commentText);
+            await _logic.InsertCommentAsync(fileId, User.Identity.Name, commentText);
             return RedirectToPage("../Files/Details", new {id = fileId });
         }
     }

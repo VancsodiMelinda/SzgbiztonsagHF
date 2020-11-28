@@ -19,13 +19,14 @@ namespace NinjaStore.Pages.Account
         private readonly UserManager<User> _userManager;
         private readonly ILogger<DetailsModel> _logger;
 
+        public string Username { get; set; }
+
         public class InputModel
         {
             [Required]
             [DataType(DataType.EmailAddress)]
             public string Email { get; set; }
 
-            [Required]
             [DataType(DataType.Password)]
             [Display(Name = "Current password")]
             public string OldPassword { get; set; }
@@ -69,7 +70,7 @@ namespace NinjaStore.Pages.Account
             {
                 return Page();
             }
-
+            //TODO Csilla: check oldPass
             // change email
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
