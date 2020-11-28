@@ -65,6 +65,13 @@ namespace NinjaStore.BLL
 				throw new InvalidCaffFileContentException("Too much blocks");
 			}
 
+			User user = await _storeContext.Users.FirstOrDefaultAsync(u => u.UserName == username);
+
+			if (user == null)
+			{
+				// TODO Dani: throw exception
+			}
+
 			string fileId = Guid.NewGuid().ToString("N");
 
 			ParserResult parserResult = await _parserService.ParseAsync(fileId, content);
@@ -74,7 +81,7 @@ namespace NinjaStore.BLL
 				FileId = fileId,
 				FileName = fileName,
 				Description = description,
-				Username = username,
+				User = user,
 				UploadTimestamp = DateTimeOffset.UtcNow,
 				FileSize = content.Length,
 				Lenght = parserResult.LenghtInSeconds,
@@ -142,10 +149,17 @@ namespace NinjaStore.BLL
 				throw new InvalidCaffFileContentException("Metadata null.");
 			}
 
+			User user = await _storeContext.Users.FirstOrDefaultAsync(u => u.UserName == username);
+
+			if(user == null)
+			{
+				// TODO Dani: throw exception
+			}
+
 			Comment newComment = new Comment
 			{
 				CaffMetadataFileId = metadata.FileId,
-				Username = username,
+				User = user,
 				Text = comment,
 				PostingTimestamp = DateTimeOffset.UtcNow,
 			};

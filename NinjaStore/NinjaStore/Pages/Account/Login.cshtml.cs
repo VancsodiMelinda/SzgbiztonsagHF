@@ -16,7 +16,7 @@ namespace NinjaStore.Pages.Account
     public class LoginModel : PageModel
     {
         private readonly SignInManager<User> _signInManager;
-        private readonly ILogger<RegisterModel> _logger;
+        private readonly ILogger<LoginModel> _logger;
 
         [BindProperty]
         [Required]
@@ -27,7 +27,7 @@ namespace NinjaStore.Pages.Account
         [DataType(DataType.Password)]
         public string Password { get; set; }
 
-        public LoginModel(SignInManager<User> signInManager, ILogger<RegisterModel> logger)
+        public LoginModel(SignInManager<User> signInManager, ILogger<LoginModel> logger)
 		{
             _signInManager = signInManager;
             _logger = logger;

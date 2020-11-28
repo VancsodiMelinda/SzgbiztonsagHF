@@ -19,9 +19,6 @@ namespace NinjaStore.DAL.Models
 		[MaxLength(200)]
 		public string Description { get; set; }
 
-		[ForeignKey("User")]
-		public string Username { get; set; }
-
 		public User User { get; set; }
 
 		[Required]

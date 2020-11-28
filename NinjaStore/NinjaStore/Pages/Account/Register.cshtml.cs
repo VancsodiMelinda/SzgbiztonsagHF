@@ -19,6 +19,7 @@ namespace NinjaStore.Pages.Account
     {
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
+        private readonly ILogger<RegisterModel> _logger;
 
         public class InputModel
 		{
@@ -42,25 +43,17 @@ namespace NinjaStore.Pages.Account
         [BindProperty]
 		public InputModel Input { get; set; }
 
-        //LOG CONSOLE
-        //private readonly ILogger<RegisterModel> _logger;
-
-        //LOG FILE
-        readonly ILogger<RegisterModel> _log;
-
-        public RegisterModel(UserManager<User> userManager, SignInManager<User> signInManager, ILogger<RegisterModel> logger, ILogger<RegisterModel> log)
+        public RegisterModel(UserManager<User> userManager, SignInManager<User> signInManager, ILogger<RegisterModel> logger)
         {
             _userManager = userManager;
             _signInManager = signInManager;
-           // _logger = logger;
-            _log = log;
+            _logger = logger;
         }
 
         public IActionResult OnGet()
         {
             string Message = $"GET Register Page {DateTime.UtcNow.ToLongTimeString()}";
-            _log.LogInformation(Message);
-           // _logger.LogInformation(Message);
+            _logger.LogInformation(Message);
             return Page();
         }
 
@@ -86,8 +79,7 @@ namespace NinjaStore.Pages.Account
                 if (roleResult.Succeeded)
 				{
                     string Message = $"POST User created at {DateTime.UtcNow.ToLongTimeString()}";
-                    _log.LogInformation(Message);
-                    //  _logger.LogInformation(Message);
+                    _logger.LogInformation(Message);
 
                     await _signInManager.SignInAsync(user, false);
 
@@ -102,8 +94,7 @@ namespace NinjaStore.Pages.Account
 			foreach (var error in result.Errors)
 			{
                 ModelState.AddModelError("", error.Description);
-                _log.LogInformation(error.Description);
-                //_logger.LogInformation(error.Description);
+                _logger.LogInformation(error.Description);
             }
 
             return Page();

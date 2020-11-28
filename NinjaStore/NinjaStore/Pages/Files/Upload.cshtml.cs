@@ -12,29 +12,22 @@ using NinjaStore.DAL.Models;
 
 namespace NinjaStore.Pages.Files
 {
-    [Authorize(Roles = Roles.USER)]
+    [Authorize(Roles = Roles.ADMIN + "," + Roles.USER)]
     public class UploadModel : PageModel
     {
         private readonly IStoreLogic _logic;
+        private readonly ILogger<UploadModel> _logger;
 
-        //LOG CONSOLE
-        //private readonly ILogger<UploadModel> _logger;
-
-        //LOG FILE
-        readonly ILogger<UploadModel> _log;
-
-        public UploadModel(IStoreLogic logic, ILogger<UploadModel> logger, ILogger<UploadModel> log)
+        public UploadModel(IStoreLogic logic, ILogger<UploadModel> logger)
         {
             _logic = logic;
-            _log = log;
-            // _logger = logger;
+            _logger = logger;
         }
 
         public IActionResult OnGet()
         {
             string Message = $"GET Upload page visited at {DateTime.UtcNow.ToLongTimeString()}";
-            _log.LogInformation(Message);
-            // _logger.LogInformation(Message);
+            _logger.LogInformation(Message);
             return Page();
         }
 
