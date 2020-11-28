@@ -23,9 +23,11 @@ namespace NinjaStore.Tests.UnitTests.DALtests
             testData = generateCaffFile();
 
             // create in memory database
+            
             options = new DbContextOptionsBuilder<StoreContext>()
                 .UseInMemoryDatabase(databaseName: "inMemoryDbForTesting")
                 .Options;
+            
 
             // fill up in memoy database with test data
             using (var context = new StoreContext(options))
@@ -129,7 +131,6 @@ namespace NinjaStore.Tests.UnitTests.DALtests
             }
         }
 
-        
         [Fact]
         public async Task GetCommentAsync_ReturnCommentById()
         {
@@ -189,6 +190,8 @@ namespace NinjaStore.Tests.UnitTests.DALtests
             string fileID = "testFileID";
             string userName = "Test User";
 
+            User user = new User() { UserName = userName };
+
             CaffFile caffFile = new CaffFile
             {
                 FileId = fileID,
@@ -199,7 +202,8 @@ namespace NinjaStore.Tests.UnitTests.DALtests
             {
                 Id = 1,
                 CaffMetadataFileId = fileID,
-                Username = "Test User 1",
+                //Username = "Test User 1",
+                User = user,
                 Text = "This is a test comment by Test User 1.",
                 PostingTimestamp = new DateTimeOffset(dateTime)
             };
@@ -208,7 +212,8 @@ namespace NinjaStore.Tests.UnitTests.DALtests
             {
                 Id = 2,
                 CaffMetadataFileId = fileID,
-                Username = "Test User 2",
+                //Username = "Test User 2",
+                User = user,
                 Text = "This is a test comment by Test User 2.",
                 PostingTimestamp = new DateTimeOffset(dateTime)
             };
@@ -222,7 +227,8 @@ namespace NinjaStore.Tests.UnitTests.DALtests
                 FileId = fileID,
                 FileName = "testFileName",
                 Description = "test description",
-                Username = userName,
+                //Username = userName,
+                User = user,
                 UploadTimestamp = new DateTimeOffset(dateTime),
                 FileSize = 1,
                 Lenght = 7,

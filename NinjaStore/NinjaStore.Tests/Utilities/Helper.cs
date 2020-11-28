@@ -18,8 +18,14 @@ namespace NinjaStore.Tests.Helper
             testData = generateCaffFile();
 
             // create in memory database
+            /*
             options = new DbContextOptionsBuilder<StoreContext>()
                 .UseInMemoryDatabase(databaseName: "inMemoryDbForTesting")
+                .Options;
+            */
+
+            options = new DbContextOptionsBuilder<StoreContext>()
+                .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
                 .Options;
 
             // fill up in memoy database with test data
@@ -47,6 +53,8 @@ namespace NinjaStore.Tests.Helper
             string fileID = "testFileID";
             string userName = "Test User";
 
+            User user = new User() { UserName = userName };
+
             CaffFile caffFile = new CaffFile
             {
                 FileId = fileID,
@@ -57,7 +65,8 @@ namespace NinjaStore.Tests.Helper
             {
                 Id = 1,
                 CaffMetadataFileId = fileID,
-                Username = "Test User 1",
+                //Username = "Test User 1",
+                User = user,
                 Text = "This is a test comment by Test User 1.",
                 PostingTimestamp = new DateTimeOffset(dateTime)
             };
@@ -66,7 +75,8 @@ namespace NinjaStore.Tests.Helper
             {
                 Id = 2,
                 CaffMetadataFileId = fileID,
-                Username = "Test User 2",
+                //Username = "Test User 2",
+                User = user,
                 Text = "This is a test comment by Test User 2.",
                 PostingTimestamp = new DateTimeOffset(dateTime)
             };
@@ -80,7 +90,8 @@ namespace NinjaStore.Tests.Helper
                 FileId = fileID,
                 FileName = "testFileName",
                 Description = "test description",
-                Username = userName,
+                //Username = userName,
+                User = user,
                 UploadTimestamp = new DateTimeOffset(dateTime),
                 FileSize = 1,
                 Lenght = 7,
