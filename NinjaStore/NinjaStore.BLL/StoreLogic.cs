@@ -27,7 +27,9 @@ namespace NinjaStore.BLL
 		public async Task<CaffMetadata> GetMetadataWithCommentsAsync(string fileId)
 		{
 			CaffMetadata metadata = await _storeContext.CaffMetadata
+				.Include(u => u.User)
 				.Include(cm => cm.Comments)
+				.ThenInclude(c => c.User)
 				.FirstOrDefaultAsync(cm => cm.FileId == fileId);
 
 			return metadata;
@@ -38,6 +40,7 @@ namespace NinjaStore.BLL
 			// TODO Dani: use free text filter
 			List<CaffMetadata> result = await _storeContext.CaffMetadata
 				.Where(cm => string.IsNullOrWhiteSpace(filter) || cm.FileName.Contains(filter))
+				.Include(u => u.User)
 				.ToListAsync();
 
 			return result;
@@ -108,6 +111,7 @@ namespace NinjaStore.BLL
 		{
 			CaffFile file = await _storeContext.CaffFiles
 				.Include(cf => cf.Metadata)
+				.ThenInclude(cm => cm.User)
 				.FirstOrDefaultAsync(cf => cf.FileId == fileId);
 
 			if (file != null)
@@ -131,7 +135,9 @@ namespace NinjaStore.BLL
 
 		public async Task<Comment> GetCommentAsync(int id)
 		{
-			Comment comment = await _storeContext.Comments.FindAsync(id);
+			Comment comment = await _storeContext.Comments
+								.Include(u => u.User)
+								.FirstOrDefaultAsync(c => c.Id == id);
 			return comment;
 		}
 
