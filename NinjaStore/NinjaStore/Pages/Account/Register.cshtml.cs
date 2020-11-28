@@ -56,8 +56,6 @@ namespace NinjaStore.Pages.Account
 
         public IActionResult OnGet()
         {
-            bool isSignedIn = _signInManager.IsSignedIn(User);
-
             string Message = $"GET Register Page {DateTime.UtcNow.ToLongTimeString()}";
             _log.LogInformation(Message);
            // _logger.LogInformation(Message);
@@ -81,11 +79,22 @@ namespace NinjaStore.Pages.Account
 
             if (result.Succeeded)
 			{
-                string Message = $"POST User created at {DateTime.UtcNow.ToLongTimeString()}";
-                _log.LogInformation(Message);
-              //  _logger.LogInformation(Message);
-                await _signInManager.SignInAsync(user, false);
-                return RedirectToPage("../Index");
+                var roleResult = await _userManager.AddToRoleAsync(user, Roles.USER);
+
+                if (roleResult.Succeeded)
+				{
+                    string Message = $"POST User created at {DateTime.UtcNow.ToLongTimeString()}";
+                    _log.LogInformation(Message);
+                    //  _logger.LogInformation(Message);
+
+                    await _signInManager.SignInAsync(user, false);
+
+                    return RedirectToPage("../Index");
+                }
+                else
+				{
+                    await _userManager.DeleteAsync(user);
+				}
             }
 
 			foreach (var error in result.Errors)
@@ -94,6 +103,7 @@ namespace NinjaStore.Pages.Account
                 _log.LogInformation(error.Description);
                 //_logger.LogInformation(error.Description);
             }
+
             return Page();
         }
     }

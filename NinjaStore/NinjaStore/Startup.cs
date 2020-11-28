@@ -45,8 +45,13 @@ namespace NinjaStore
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-		public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILogger<Startup> logger,
-						  ILoggerFactory loggerFactory)
+		public void Configure(
+			IApplicationBuilder app,
+			IWebHostEnvironment env,
+			UserManager<User> userManager,
+			RoleManager<IdentityRole> roleManager,
+			ILogger<Startup> logger,
+			ILoggerFactory loggerFactory)
 		{
 			/* LOGGER CODE */
 			if (env.IsDevelopment())
@@ -79,6 +84,8 @@ namespace NinjaStore
 			//OLD LOGGER CODE
 			//app.UseMiddleware<Logger>();
 
+			SeedIdentity(userManager, roleManager);
+
 			app.UseHttpsRedirection();
 			app.UseStaticFiles();
 
@@ -91,6 +98,46 @@ namespace NinjaStore
 			{
 				endpoints.MapRazorPages();
 			});
+		}
+
+		private static void SeedIdentity(UserManager<User> userManager, RoleManager<IdentityRole> roleManager)
+		{
+			CreateRoleIfNotExists(roleManager, Roles.ADMIN);
+			CreateRoleIfNotExists(roleManager, Roles.USER);
+
+			CreateAdminIfNotExists(userManager, "admin", "NinjAdmin_01");
+		}
+
+		private static void CreateRoleIfNotExists(RoleManager<IdentityRole> roleManager, string role)
+		{
+			bool roleExists = roleManager.RoleExistsAsync(role).Result;
+			if (!roleExists)
+			{
+				roleManager.CreateAsync(new IdentityRole
+				{
+					Name = role,
+				});
+			}
+		}
+
+		private static void CreateAdminIfNotExists(UserManager<User> userManager, string username, string password)
+		{
+			var user = userManager.FindByNameAsync(username).Result;
+			if (user == null)
+			{
+				user = new User
+				{
+					UserName = username,
+					Email = $"{username}@ninjas.com",
+				};
+				userManager.CreateAsync(user, password);
+			}
+
+			bool isAdmin = userManager.IsInRoleAsync(user, Roles.ADMIN).Result;
+			if (!isAdmin)
+			{
+				userManager.AddToRoleAsync(user, Roles.ADMIN);
+			}
 		}
 	}
 }
