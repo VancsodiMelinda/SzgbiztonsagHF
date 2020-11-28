@@ -23,8 +23,9 @@ using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.Mvc.Routing;
+using NinjaStore.Tests.Utilities;
 
-namespace NinjaStore.Tests.UnitTests.Account.Register
+namespace NinjaStore.Tests.UnitTests.Account
 {
     public class AccountRegisterTests
     {
@@ -43,23 +44,15 @@ namespace NinjaStore.Tests.UnitTests.Account.Register
         public void OnGet_ReturnsPageResult()
         {
             // mock
-            Mock<IParserService> mockIParserService = new Mock<IParserService>();
-            Mock<ILogger<RegisterModel>> mockILogger = new Mock<ILogger<RegisterModel>>();
-
-            var store = new Mock<IUserStore<User>>();
-            var userManager = new UserManager<User>(store.Object, null, null, null, null, null, null, null, null);
-            var mockSignInManager = new Mock<SignInManager<User>>(
-                userManager,
-                new HttpContextAccessor(),
-                new Mock<IUserClaimsPrincipalFactory<User>>().Object,
-                new Mock<IOptions<IdentityOptions>>().Object,
-                new Mock<ILogger<SignInManager<User>>>().Object,
-                new Mock<IAuthenticationSchemeProvider>().Object,
-                new Mock<IUserConfirmation<User>>().Object
-            );
+            MockHelper mockHelper = new MockHelper();
 
             // test
-            var registerModel = new RegisterModel(userManager, mockSignInManager.Object, mockILogger.Object);
+            var registerModel = new RegisterModel(
+                mockHelper.mockUserManager.Object,
+                mockHelper.mockSignInManager.Object,
+                mockHelper.mockILogger.Object
+            );
+
             var result = registerModel.OnGet();
 
             Assert.IsType<PageResult>(result);
@@ -69,24 +62,15 @@ namespace NinjaStore.Tests.UnitTests.Account.Register
         [Fact]
         public async Task OnPostAsync_ReturnsPageResult_WhenModelIsInvalid()
         {
-            // mock
-            Mock<IParserService> mockIParserService = new Mock<IParserService>();
-            Mock<ILogger<RegisterModel>> mockILogger = new Mock<ILogger<RegisterModel>>();
-
-            var store = new Mock<IUserStore<User>>();
-            var userManager = new UserManager<User>(store.Object, null, null, null, null, null, null, null, null);
-            var mockSignInManager = new Mock<SignInManager<User>>(
-                userManager,
-                new HttpContextAccessor(),
-                new Mock<IUserClaimsPrincipalFactory<User>>().Object,
-                new Mock<IOptions<IdentityOptions>>().Object,
-                new Mock<ILogger<SignInManager<User>>>().Object,
-                new Mock<IAuthenticationSchemeProvider>().Object,
-                new Mock<IUserConfirmation<User>>().Object
-            );
+            //mock
+            MockHelper mockHelper = new MockHelper();
 
             // test
-            var registerModel = new RegisterModel(userManager, mockSignInManager.Object, mockILogger.Object);
+            var registerModel = new RegisterModel(
+                mockHelper.mockUserManager.Object,
+                mockHelper.mockSignInManager.Object,
+                mockHelper.mockILogger.Object
+            );
             registerModel.ModelState.AddModelError("test", "test");
             var result = await registerModel.OnPostAsync();
 
@@ -98,39 +82,23 @@ namespace NinjaStore.Tests.UnitTests.Account.Register
         public async Task OnPostAsync_ReturnsRedirectToPageResult_WhenUserCreationSucceeded()
         {
             // mock
-            Mock<IParserService> mockIParserService = new Mock<IParserService>();
-            Mock<ILogger<RegisterModel>> mockILogger = new Mock<ILogger<RegisterModel>>();
+            MockHelper mockHelper = new MockHelper();
 
-            var mockIUserStore = new Mock<IUserStore<User>>();
-            var mockUserManager = new Mock<UserManager<User>>(mockIUserStore.Object, null, null, null, null, null, null, null, null);
-            var mockSignInManager = new Mock<SignInManager<User>>(
-                mockUserManager.Object,
-                new HttpContextAccessor(),
-                new Mock<IUserClaimsPrincipalFactory<User>>().Object,
-                new Mock<IOptions<IdentityOptions>>().Object,
-                new Mock<ILogger<SignInManager<User>>>().Object,
-                new Mock<IAuthenticationSchemeProvider>().Object,
-                new Mock<IUserConfirmation<User>>().Object
-            );
+            mockHelper.mockSignInManager.Setup(x => x.SignInAsync(It.IsAny<User>(), It.IsAny<bool>(), It.IsAny<string>())).Returns(Task.CompletedTask);
 
-            User user = new User
-            {
-                UserName = "Meli",
-                Email = "testemail@gmail.com",
-            };
-
-            mockSignInManager.Setup(x => x.SignInAsync(It.IsAny<User>(), It.IsAny<bool>(), It.IsAny<string>())).Returns(Task.CompletedTask);
-
-            mockUserManager.Setup(x => x.CreateAsync(It.IsAny<User>(), It.IsAny<string>())).ReturnsAsync(IdentityResult.Success);
-            mockUserManager.Setup(x => x.AddToRoleAsync(It.IsAny<User>(), It.IsAny<string>())).ReturnsAsync(IdentityResult.Success);
-            mockUserManager.Setup(x => x.DeleteAsync(It.IsAny<User>())).ReturnsAsync(IdentityResult.Success);
+            mockHelper.mockUserManager.Setup(x => x.CreateAsync(It.IsAny<User>(), It.IsAny<string>())).ReturnsAsync(IdentityResult.Success);
+            mockHelper.mockUserManager.Setup(x => x.AddToRoleAsync(It.IsAny<User>(), It.IsAny<string>())).ReturnsAsync(IdentityResult.Success);
+            mockHelper.mockUserManager.Setup(x => x.DeleteAsync(It.IsAny<User>())).ReturnsAsync(IdentityResult.Success);
 
             // test
-            var registerModel = new RegisterModel(mockUserManager.Object, mockSignInManager.Object, mockILogger.Object)
+            var registerModel = new RegisterModel(
+                mockHelper.mockUserManager.Object,
+                mockHelper.mockSignInManager.Object,
+                mockHelper.mockILogger.Object)
             {
                 Input = new RegisterModel.InputModel {
-                    Username = user.UserName,
-                    Email = user.Email,
+                    Username = "Meli",
+                    Email = "testemail@gmail.com",
                     Password = "Super_SECRETpassword123?",
                     ConfirmPassword = "Super_SECRETpassword123?"
                 }
@@ -145,40 +113,23 @@ namespace NinjaStore.Tests.UnitTests.Account.Register
         public async Task OnPostAsync_ReturnsPageResult_WhenUserCreatonFailed()
         {
             // mock
-            Mock<IParserService> mockIParserService = new Mock<IParserService>();
-            Mock<ILogger<RegisterModel>> mockILogger = new Mock<ILogger<RegisterModel>>();
+            MockHelper mockHelper = new MockHelper();
 
-            var mockIUserStore = new Mock<IUserStore<User>>();
-            var mockUserManager = new Mock<UserManager<User>>(mockIUserStore.Object, null, null, null, null, null, null, null, null);
-            var mockSignInManager = new Mock<SignInManager<User>>(
-                mockUserManager.Object,
-                new HttpContextAccessor(),
-                new Mock<IUserClaimsPrincipalFactory<User>>().Object,
-                new Mock<IOptions<IdentityOptions>>().Object,
-                new Mock<ILogger<SignInManager<User>>>().Object,
-                new Mock<IAuthenticationSchemeProvider>().Object,
-                new Mock<IUserConfirmation<User>>().Object
-            );
+            mockHelper.mockSignInManager.Setup(x => x.SignInAsync(It.IsAny<User>(), It.IsAny<bool>(), It.IsAny<string>())).Returns(Task.CompletedTask);
 
-            User user = new User
-            {
-                UserName = "Meli",
-                Email = "testemail@gmail.com",
-            };
-
-            mockSignInManager.Setup(x => x.SignInAsync(It.IsAny<User>(), It.IsAny<bool>(), It.IsAny<string>())).Returns(Task.CompletedTask);
-
-            //IdentityError[] errors = new IdentityError[];
-            mockUserManager.Setup(x => x.CreateAsync(It.IsAny<User>(), It.IsAny<string>())).ReturnsAsync(IdentityResult.Failed());
-            mockUserManager.Setup(x => x.AddToRoleAsync(It.IsAny<User>(), It.IsAny<string>())).ReturnsAsync(IdentityResult.Success);
-            mockUserManager.Setup(x => x.DeleteAsync(It.IsAny<User>())).ReturnsAsync(IdentityResult.Success);
+            mockHelper.mockUserManager.Setup(x => x.CreateAsync(It.IsAny<User>(), It.IsAny<string>())).ReturnsAsync(IdentityResult.Failed());
+            mockHelper.mockUserManager.Setup(x => x.AddToRoleAsync(It.IsAny<User>(), It.IsAny<string>())).ReturnsAsync(IdentityResult.Success);
+            mockHelper.mockUserManager.Setup(x => x.DeleteAsync(It.IsAny<User>())).ReturnsAsync(IdentityResult.Success);
 
             // test
-            var registerModel = new RegisterModel(mockUserManager.Object, mockSignInManager.Object, mockILogger.Object)
+            var registerModel = new RegisterModel(
+                mockHelper.mockUserManager.Object,
+                mockHelper.mockSignInManager.Object,
+                mockHelper.mockILogger.Object)
             {
                 Input = new RegisterModel.InputModel {
-                    Username = user.UserName,
-                    Email = user.Email,
+                    Username = "Meli",
+                    Email = "testemail@gmail.com",
                     Password = "Super_SECRETpassword123?",
                     ConfirmPassword = "Super_SECRETpassword123?"
                 }
