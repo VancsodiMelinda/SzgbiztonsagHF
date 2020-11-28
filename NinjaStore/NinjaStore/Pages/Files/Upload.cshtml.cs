@@ -12,7 +12,7 @@ using NinjaStore.DAL.Models;
 
 namespace NinjaStore.Pages.Files
 {
-    [Authorize(Roles = Roles.USER)]
+    [Authorize(Roles = Roles.ADMIN + "," + Roles.USER)]
     public class UploadModel : PageModel
     {
         private readonly IStoreLogic _logic;
