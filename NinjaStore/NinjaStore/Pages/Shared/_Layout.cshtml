@@ -29,22 +29,34 @@
                         <li class="nav-item">
                             <a class="nav-link text-light" asp-area="" asp-page="/Index">Home</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-light" asp-area="" asp-page="/Files/Index">File store</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-light" asp-area="" asp-page="/Files/Upload">Upload</a>
-                        </li>
+                        @if (signInManager.IsSignedIn(User))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-light" asp-area="" asp-page="/Files/Index">File store</a>
+                            </li>
+                        }
+                        @if (signInManager.IsSignedIn(User) && User.IsInRole("User"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-light" asp-area="" asp-page="/Files/Upload">Upload</a>
+                            </li>
+                        }
+                        @if (signInManager.IsSignedIn(User) && User.IsInRole("Admin"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-light" asp-area="" asp-page="/Account/List">User list</a>
+                            </li>
+                        }
                     </ul>
                 </div>
 
                 @if (signInManager.IsSignedIn(User))
                 {
                     <form method="post" asp-page="/Account/Logout">
-                        <input type="submit" value="Logout" class="nav-link text-light" />
+                        <input type="submit" value="Logout" class="nav-link text-light" style="border:none; background-color:transparent" />
                     </form>
-                    <p>@User.Identity.Name</p>
-                    <a asp-page="/Index">
+                    <a asp-page="/Account/Details" class="text-light" style="margin-right:20px">@User.Identity.Name</a>
+                    <a asp-page="/Account/Details">
                         <img class="fa fa-bicycle fa-5x circle-icon" src="~/ninjauser.png">
                     </a>
                 }

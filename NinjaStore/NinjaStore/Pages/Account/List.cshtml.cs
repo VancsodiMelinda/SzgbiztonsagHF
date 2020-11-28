@@ -16,6 +16,15 @@ namespace NinjaStore.Pages.Account
         private readonly UserManager<User> _userManager;
         private readonly ILogger<ListModel> _logger;
 
+        public class UserModel
+        {
+            public string Username { get; set; }
+            public string Email { get; set; }
+        }
+
+        [BindProperty]
+        public IList<UserModel> List { get; set; }
+
         public ListModel(UserManager<User> userManager, SignInManager<User> signInManager, ILogger<ListModel> logger)
 		{
             _signInManager = signInManager;
@@ -23,9 +32,18 @@ namespace NinjaStore.Pages.Account
             _logger = logger;
         }
 
-        public void OnGet()
+        public async Task<IActionResult> OnGetAsync()
         {
+            List = new List<UserModel>();
+            foreach (var user in _userManager.Users)
+            {
+                UserModel userModel = new UserModel();
+                userModel.Username = user.UserName;
+                userModel.Email = user.Email;
+                List.Add(userModel);
+            }
 
+            return Page();
         }
     }
 }

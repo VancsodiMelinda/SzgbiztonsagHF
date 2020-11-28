@@ -1,0 +1,25 @@
+﻿@model NinjaStore.Pages.Account.ListModel.UserModel
+@{
+    var showButtons = (bool)ViewData["ShowButtons"];
+}
+
+    <div class="card" style="width: 14rem; display: inline-block;">
+        <img class="card-img-top"
+             style="height: 100%; width: 10vw; object-fit: cover;"
+             src="~/ninjauser.png">
+        <div class="card-body">
+            <h5>@Html.DisplayFor(modelItem => Model.Username)</h5>
+            <p class="card-subtitle text-left">@Html.DisplayFor(modelItem => Model.Email)</p>
+        </div>
+
+        @if (showButtons)
+        {
+            <form method="post" asp-page="../Account/Delete">
+                <div class="card-footer text-right">
+                    <input type="hidden" asp-for="@Model.Username" name="username" id="username" />
+                    <input type="submit" value="Delete" class="btn btn-danger text-light"
+                           onclick="return confirm('Are you sure you want to delete this user?');" />
+                </div>
+            </form>
+        }
+    </div>

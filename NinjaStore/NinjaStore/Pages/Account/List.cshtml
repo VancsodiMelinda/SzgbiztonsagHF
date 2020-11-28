@@ -1,16 +1,12 @@
 ﻿@page
 @model NinjaStore.Pages.Account.ListModel
 @{
-    Layout = null;
+    ViewData["Title"] = "List";
+    ViewData["ShowButtons"] = true;
 }
 
-<!DOCTYPE html>
-
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title>List</title>
-</head>
-<body>
-</body>
-</html>
+<h1>Users</h1>
+@foreach (var item in Model.List)
+{
+    <partial name="_DisplayUserPartial" model="item" view-data="ViewData" />
+}

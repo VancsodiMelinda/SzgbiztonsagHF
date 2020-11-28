@@ -1,16 +1,56 @@
 ﻿@page
 @model NinjaStore.Pages.Account.DetailsModel
 @{
-    Layout = null;
+    ViewData["Title"] = "Details";
 }
 
-<!DOCTYPE html>
-
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title>Details</title>
-</head>
-<body>
-</body>
-</html>
+<div class="container">
+    <h1>User details</h1>
+    <hr />
+    <form method="post">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="form-group row">
+            <label asp-for="Input.Email" class="control-label col-md-2"></label>
+            <div class="col-md-10">
+                <input asp-for="Input.Email" class="form-control" />
+                <span asp-validation-for="Input.Email" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label asp-for="Input.OldPassword" class="control-label col-md-2"></label>
+            <div class="col-md-10">
+                <input asp-for="Input.OldPassword" class="form-control" />
+                <span asp-validation-for="Input.OldPassword" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label asp-for="Input.NewPassword" class="control-label col-md-2"></label>
+            <div class="col-md-10">
+                <input asp-for="Input.NewPassword" class="form-control" />
+                <span asp-validation-for="Input.NewPassword" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="control-label col-md-2">Confirm password</label>
+            <div class="col-md-10">
+                <input asp-for="Input.ConfirmPassword" class="form-control" />
+                <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group row">
+            <p class="control-label col-md-2"></p>
+            <div class="col-md-10">
+                <input type="submit" value="Update" class="btn btn-success" />
+            </div>
+        </div>
+        @if (TempData["Success"] != null)
+        {
+            <div class="form-group row">
+                <p class="control-label col-md-2"></p>
+                <div class="text-success col-md-10">
+                    <p><strong>Success:</strong> @TempData["Success"].ToString()</p>
+                </div>
+            </div>
+        }
+    </form>
+</div>

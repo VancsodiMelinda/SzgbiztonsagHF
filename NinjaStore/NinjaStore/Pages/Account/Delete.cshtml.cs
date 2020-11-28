@@ -23,9 +23,38 @@ namespace NinjaStore.Pages.Account
             _logger = logger;
         }
 
-        public void OnGet()
+        public async Task<IActionResult> OnPostAsync(string username)
         {
+            if (string.IsNullOrWhiteSpace(username))
+            {
+                // TODO Gergő log
+                return NotFound();
+            }
+            else
+            {
+                var user = await _userManager.FindByNameAsync(username);
+                if (user == null)
+                {
+                    // TODO Gergő log
+                    return NotFound();
+                } 
+                else if(User.IsInRole("Admin"))
+                {
 
+                }
+                var result = await _userManager.DeleteAsync(user);
+                if (result.Succeeded)
+                {
+                    return RedirectToPage("./List");
+                }
+
+                foreach (var error in result.Errors)
+                {
+                    ModelState.AddModelError(string.Empty, error.Description);
+                }
+
+                return RedirectToPage("./List");
+            }
         }
     }
 }

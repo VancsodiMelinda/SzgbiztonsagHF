@@ -25,15 +25,21 @@ namespace NinjaStore.Pages.Account
 
             [Required]
             [DataType(DataType.Password)]
+            [Display(Name = "Current password")]
             public string OldPassword { get; set; }
 
             [DataType(DataType.Password)]
+            [Display(Name = "New password")]
             public string NewPassword { get; set; }
 
             [DataType(DataType.Password)]
-            [Compare("NewPassword", ErrorMessage = "New password and confirmation password do not match.")]
+            [Display(Name = "Confirm new password")]
+            [Compare("NewPassword", ErrorMessage = "The new password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; }
         }
+
+        [BindProperty]
+        public InputModel Input { get; set; }
 
         public DetailsModel(UserManager<User> userManager, SignInManager<User> signInManager, ILogger<DetailsModel> logger)
 		{
@@ -42,9 +48,61 @@ namespace NinjaStore.Pages.Account
             _logger = logger;
         }
 
-        public void OnGet()
+        public async Task<IActionResult> OnGetAsync()
         {
-            _userManager.GetUserAsync(User);
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                // TODO Gergő log - user not found
+            }
+            Input = new InputModel();
+            Input.Email = user.Email;
+            
+            return Page();
+        }
+
+        public async Task<IActionResult> OnPostAsync()
+        {
+            if (!ModelState.IsValid)
+            {
+                return Page();
+            }
+
+            // change email
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                // TODO Gergő log - user not found
+            }
+            user.Email = Input.Email;
+            var result = await _userManager.UpdateAsync(user);
+            if (!result.Succeeded)
+            {
+                foreach (var error in result.Errors)
+                {
+                    ModelState.AddModelError(string.Empty, error.Description);
+                }
+            }
+
+            // change password
+            if (!string.IsNullOrWhiteSpace(Input.NewPassword))
+            {
+                var resultP = await _userManager.ChangePasswordAsync(user, Input.OldPassword, Input.NewPassword);
+
+                if (resultP.Succeeded)
+                {
+                    // Upon successfully changing the password refresh sign-in cookie
+                    await _signInManager.RefreshSignInAsync(user);
+                    TempData["Success"] = "Your password is successfully changed.";
+                    return Page();
+                }
+
+                foreach (var error in resultP.Errors)
+                {
+                    ModelState.AddModelError(string.Empty, error.Description);
+                }
+            }
+            return Page();
         }
     }
 }
