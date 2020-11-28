@@ -13,13 +13,12 @@ namespace NinjaStore.Pages.Files
     public class DetailsModel : PageModel
     {
         private readonly IStoreLogic _logic;
+        private readonly ILogger<DetailsModel> _logger;
 
-        readonly ILogger<DetailsModel> _log;
-
-        public DetailsModel(IStoreLogic logic, ILogger<DetailsModel> log)
+        public DetailsModel(IStoreLogic logic, ILogger<DetailsModel> logger)
         {
             _logic = logic;
-            _log = log;
+            _logger = logger;
         }
 
         public CaffMetadata CaffMetadata { get; set; }
@@ -29,7 +28,7 @@ namespace NinjaStore.Pages.Files
             if (id == null)
             {
                 string Message = $"GET ERROR: MetaData ID not found {DateTime.UtcNow.ToLongTimeString()}";
-                _log.LogInformation(Message);
+                _logger.LogInformation(Message);
                 return NotFound();
             }
 
@@ -37,7 +36,7 @@ namespace NinjaStore.Pages.Files
             if (CaffMetadata == null)
             {
                 string Message2 = $"GET ERROR: MetaData value is null {DateTime.UtcNow.ToLongTimeString()}";
-                _log.LogInformation(Message2);
+                _logger.LogInformation(Message2);
                 return NotFound();
             }
             return Page();

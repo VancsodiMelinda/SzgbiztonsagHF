@@ -16,19 +16,18 @@ namespace NinjaStore.Pages.Files
     public class UploadModel : PageModel
     {
         private readonly IStoreLogic _logic;
+        private readonly ILogger<UploadModel> _logger;
 
-        readonly ILogger<UploadModel> _log;
-
-        public UploadModel(IStoreLogic logic, ILogger<UploadModel> log)
+        public UploadModel(IStoreLogic logic, ILogger<UploadModel> logger)
         {
             _logic = logic;
-            _log = log;
+            _logger = logger;
         }
 
         public IActionResult OnGet()
         {
             string Message = $"GET Upload page visited at {DateTime.UtcNow.ToLongTimeString()}";
-            _log.LogInformation(Message);
+            _logger.LogInformation(Message);
             return Page();
         }
 
