@@ -46,6 +46,7 @@ namespace NinjaStore.Tests.UnitTests.DALtests
             }
         }
 
+        // METHOD: GetMetadataWithCommentsAsync
         [Fact]
         public async Task GetMetadataWithCommentsAsync_ReturnCaffmetadataByFileId()
         {
@@ -63,6 +64,7 @@ namespace NinjaStore.Tests.UnitTests.DALtests
             }
         }
 
+        // METHOD: QueryMetadataByFreeTextAsync
         [Fact]
         public async Task QueryMetadataByFreeTextAsync_ReturnCaffmetadataListByFileName()
         {
@@ -113,7 +115,8 @@ namespace NinjaStore.Tests.UnitTests.DALtests
             }
         }
         */
-        
+
+        // METHOD: DownloadFileAsync
         [Fact]
         public async Task DownloadFileAsync_ReturnCaffFile()
         {
@@ -131,6 +134,7 @@ namespace NinjaStore.Tests.UnitTests.DALtests
             }
         }
 
+        // METHOD: GetCommentAsync
         [Fact]
         public async Task GetCommentAsync_ReturnCommentById()
         {
@@ -148,6 +152,7 @@ namespace NinjaStore.Tests.UnitTests.DALtests
             }
         }
 
+        // METHOD: InsertCommentAsync
         [Fact]
         public async Task InsertCommentAsync_ReturnNewCommentId()
         {

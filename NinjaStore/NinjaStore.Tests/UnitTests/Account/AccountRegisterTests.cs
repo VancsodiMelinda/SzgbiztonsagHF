@@ -14,6 +14,7 @@ using NinjaStore.DAL.Models;
 using Microsoft.AspNetCore.Identity;
 using NinjaStore.Tests.Utilities;
 using Microsoft.Extensions.Logging;
+using System.Security.Claims;
 
 namespace NinjaStore.Tests.UnitTests.Account
 {
@@ -36,6 +37,9 @@ namespace NinjaStore.Tests.UnitTests.Account
             // mock
             MockHelper mockHelper = new MockHelper();
             Mock<ILogger<RegisterModel>> mockILogger = new Mock<ILogger<RegisterModel>>();
+
+            Mock<ClaimsPrincipal> mockClaimsPrincipal = new Mock<ClaimsPrincipal>();
+            mockHelper.mockSignInManager.Setup(x => x.IsSignedIn(mockClaimsPrincipal.Object)).Returns(true);
 
             // test
             var registerModel = new RegisterModel(
