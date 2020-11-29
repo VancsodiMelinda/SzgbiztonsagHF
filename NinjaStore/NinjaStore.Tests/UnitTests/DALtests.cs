@@ -164,7 +164,7 @@ namespace NinjaStore.Tests.UnitTests.DALtests
             {
                 StoreLogic storeLogic = new StoreLogic(context, mockIParserService.Object);
                 string fileID = "testFileID";
-                string username = "user name of commenter";
+                string username = "Test User";
                 string comment = "this is a new comment";
                 int result = await storeLogic.InsertCommentAsync(fileID, username, comment);
 
