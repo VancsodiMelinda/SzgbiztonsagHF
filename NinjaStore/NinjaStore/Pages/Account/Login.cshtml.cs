@@ -57,7 +57,7 @@ namespace NinjaStore.Pages.Account
         {
             if (ModelState.IsValid)
             {
-                var result = await _signInManager.PasswordSignInAsync(Username, Password, false, false);
+                var result = await _signInManager.PasswordSignInAsync(Username, Password, false, true);
 
                 if (result.Succeeded)
 				{
