@@ -125,6 +125,14 @@ namespace NinjaStore
 			app.UseStaticFiles();
 			/* ZAP HTTPS AND STATIC FILES END */
 
+			/* ZAP */
+			app.Use(async (context, next) =>
+			{
+				context.Response.Headers.Add("X-Frame-Options", "SAMEORIGIN");
+				await next();
+			});
+			/* ZAP END */
+
 			app.UseRouting();
 
 			app.UseAuthentication();
