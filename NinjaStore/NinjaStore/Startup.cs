@@ -43,6 +43,16 @@ namespace NinjaStore
 				.AddEntityFrameworkStores<StoreContext>()
 				.AddDefaultTokenProviders();
 
+			services.Configure<IdentityOptions>(options =>
+			{
+				options.Password.RequiredLength = 12;
+				options.Password.RequiredUniqueChars = 1;
+				options.Password.RequireNonAlphanumeric = true;
+				options.Password.RequireLowercase = true;
+				options.Password.RequireUppercase = true;
+				options.Password.RequireDigit = true;
+			});
+
 			/* ZAP */
 			services.AddMvc(options =>
 			{
