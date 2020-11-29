@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
+using NinjaStore.BLL;
 using NinjaStore.DAL.Models;
 
 namespace NinjaStore.Pages.Account
@@ -15,12 +16,20 @@ namespace NinjaStore.Pages.Account
     public class DeleteModel : PageModel
     {
         private readonly UserManager<User> _userManager;
+        private readonly IStoreLogic _logic;
         private readonly ILogger<DeleteModel> _logger;
 
-        public DeleteModel(UserManager<User> userManager, ILogger<DeleteModel> logger)
+        public DeleteModel(UserManager<User> userManager, IStoreLogic logic, ILogger<DeleteModel> logger)
 		{
             _userManager = userManager;
+            _logic = logic;
             _logger = logger;
+        }
+
+        public IActionResult OnGet()
+        {
+            // HTTP 405 Method Not Allowed
+            return StatusCode(405);
         }
 
         public async Task<IActionResult> OnPostAsync(string username)
@@ -31,41 +40,34 @@ namespace NinjaStore.Pages.Account
                 _logger.LogInformation(Message);
                 return NotFound();
             }
-            else
+
+            var user = await _userManager.FindByNameAsync(username);
+
+            if (user == null)
             {
-                var user = await _userManager.FindByNameAsync(username);
-                bool isAdmin = _userManager.IsInRoleAsync(user, Roles.ADMIN).Result;
-                if (user == null)
-                {
-                    string Message = $"POST User not found {DateTime.UtcNow.ToLongTimeString()}";
-                    _logger.LogInformation(Message);
-                    return NotFound();
-                } 
-                else if(isAdmin)
-                { 
-                    string Message = $"POST Can not delete admin. {DateTime.UtcNow.ToLongTimeString()}";
-                    _logger.LogInformation(Message);
-
-                    // TODO Dani: Exception - can not delete admin
-
-                }
-                else
-                {
-                    // TODO Dani: Delete user's comment too
-                    var result = await _userManager.DeleteAsync(user);
-                    if (result.Succeeded)
-                    {
-                        return RedirectToPage("./List");
-                    }
-
-                    foreach (var error in result.Errors)
-                    {
-                        ModelState.AddModelError(string.Empty, error.Description);
-                    }
-                }
-
-                return RedirectToPage("./List");
+                string Message = $"POST User not found {DateTime.UtcNow.ToLongTimeString()}";
+                _logger.LogInformation(Message);
+                return NotFound();
             }
+
+            bool isAdmin = await _userManager.IsInRoleAsync(user, Roles.ADMIN);
+            
+            if (isAdmin)
+            {
+                string Message = $"POST Can not delete admin. {DateTime.UtcNow.ToLongTimeString()}";
+                _logger.LogInformation(Message);
+                return Forbid();
+            }
+
+            await _logic.RemoveUserFromFilesAsync(username);
+            var result = await _userManager.DeleteAsync(user);
+
+            foreach (var error in result.Errors)
+            {
+                ModelState.AddModelError(string.Empty, error.Description);
+            }
+
+            return RedirectToPage("./List");
         }
     }
 }

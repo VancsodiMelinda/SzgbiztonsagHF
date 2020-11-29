@@ -11,7 +11,8 @@ using NinjaStore.DAL.Models;
 
 namespace NinjaStore.Pages.Account
 {
-    [AllowAnonymous]
+    [ResponseCache(CacheProfileName = "Default30")]
+    [Authorize]
     public class LogoutModel : PageModel
     {
         private readonly SignInManager<User> _signInManager;
@@ -23,9 +24,10 @@ namespace NinjaStore.Pages.Account
             _logger = logger;
         }
 
-        public void OnGet()
+        public IActionResult OnGet()
         {
-
+            // HTTP 405 Method Not Allowed
+            return StatusCode(405);
         }
 
         public async Task<IActionResult> OnPostAsync()
