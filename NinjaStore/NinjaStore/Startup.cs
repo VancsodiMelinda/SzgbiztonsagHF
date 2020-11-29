@@ -71,10 +71,6 @@ namespace NinjaStore
 			}).SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
 			/* ZAP END */
 
-			/* ZAP */
-			services.AddAntiforgery(o => o.SuppressXFrameOptionsHeader = true);
-			/* ZAP END */
-
 			services.AddRazorPages();
 			services.AddTransient<IStoreLogic, StoreLogic>();
 			services.AddTransient<IParserService, ParserService>();
@@ -128,6 +124,14 @@ namespace NinjaStore
 		    app.UseHttpsRedirection();
 			app.UseStaticFiles();
 			/* ZAP HTTPS AND STATIC FILES END */
+
+			/* ZAP */
+			app.Use(async (context, next) =>
+			{
+				context.Response.Headers.Add("X-Frame-Options", "SAMEORIGIN");
+				await next();
+			});
+			/* ZAP END */
 
 			app.UseRouting();
 
