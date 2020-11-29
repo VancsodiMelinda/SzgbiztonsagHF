@@ -71,6 +71,10 @@ namespace NinjaStore
 			}).SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
 			/* ZAP END */
 
+			/* ZAP */
+			services.AddAntiforgery(o => o.SuppressXFrameOptionsHeader = true);
+			/* ZAP END */
+
 			services.AddRazorPages();
 			services.AddTransient<IStoreLogic, StoreLogic>();
 			services.AddTransient<IParserService, ParserService>();
