@@ -53,8 +53,12 @@ namespace NinjaStore.Pages.Account
 
         public IActionResult OnGet()
         {
-            string Message = $"GET Register Page {DateTime.UtcNow.ToLongTimeString()}";
-            _logger.LogInformation(Message);
+            bool isSignedIn = _signInManager.IsSignedIn(User);
+            if (isSignedIn)
+            {
+                return RedirectToPage("../Index");
+            }
+
             return Page();
         }
 

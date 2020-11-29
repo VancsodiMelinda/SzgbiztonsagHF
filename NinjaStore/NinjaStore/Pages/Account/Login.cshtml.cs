@@ -28,15 +28,29 @@ namespace NinjaStore.Pages.Account
         [DataType(DataType.Password)]
         public string Password { get; set; }
 
+        [BindProperty]
+        public string ReturnUrl { get; set; }
+
         public LoginModel(SignInManager<User> signInManager, ILogger<LoginModel> logger)
 		{
             _signInManager = signInManager;
             _logger = logger;
         }
 
-        public void OnGet()
+        public IActionResult OnGet()
         {
+            bool isSignedIn = _signInManager.IsSignedIn(User);
+            if (isSignedIn)
+            {
+                if (!string.IsNullOrEmpty(ReturnUrl) && Url.IsLocalUrl(ReturnUrl))
+                {
+                    return Redirect(ReturnUrl);
+                }
 
+                return RedirectToPage("../Index");
+            }
+
+            return Page();
         }
 
         public async Task<IActionResult> OnPostAsync()
@@ -47,6 +61,11 @@ namespace NinjaStore.Pages.Account
 
                 if (result.Succeeded)
 				{
+                    if (!string.IsNullOrEmpty(ReturnUrl) && Url.IsLocalUrl(ReturnUrl))
+					{
+                        return Redirect(ReturnUrl);
+                    }
+
                     return RedirectToPage("../Index");
                 }
 

@@ -26,6 +26,12 @@ namespace NinjaStore.Pages.Account
             _logger = logger;
         }
 
+        public IActionResult OnGet()
+        {
+            // HTTP 405 Method Not Allowed
+            return StatusCode(405);
+        }
+
         public async Task<IActionResult> OnPostAsync(string username)
         {
             if (string.IsNullOrWhiteSpace(username))

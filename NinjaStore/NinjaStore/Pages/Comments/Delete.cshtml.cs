@@ -24,6 +24,12 @@ namespace NinjaStore.Pages.Comments
             _logger = logger;
         }
 
+        public IActionResult OnGet()
+        {
+            // HTTP 405 Method Not Allowed
+            return StatusCode(405);
+        }
+
         public async Task<IActionResult> OnPostAsync(int? id)
         {
             if (id == null)
