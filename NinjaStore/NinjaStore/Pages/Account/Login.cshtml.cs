@@ -44,9 +44,13 @@ namespace NinjaStore.Pages.Account
             {
                 if (!string.IsNullOrEmpty(ReturnUrl) && Url.IsLocalUrl(ReturnUrl))
                 {
+                    string Message = $"GET redirection to URL {ReturnUrl} at {DateTime.UtcNow.ToLongTimeString()}";
+                    _logger.LogInformation(Message);
                     return Redirect(ReturnUrl);
                 }
 
+                string Message2 = $"POST redirection to Index at {DateTime.UtcNow.ToLongTimeString()}";
+                _logger.LogInformation(Message2);
                 return RedirectToPage("../Index");
             }
 
@@ -63,12 +67,18 @@ namespace NinjaStore.Pages.Account
 				{
                     if (!string.IsNullOrEmpty(ReturnUrl) && Url.IsLocalUrl(ReturnUrl))
 					{
+                        string Message = $"POST redirection to URL {ReturnUrl} at {DateTime.UtcNow.ToLongTimeString()}";
+                        _logger.LogInformation(Message);
                         return Redirect(ReturnUrl);
                     }
 
+                    string Message2 = $"POST redirection to Index at {DateTime.UtcNow.ToLongTimeString()}";
+                    _logger.LogInformation(Message2);
                     return RedirectToPage("../Index");
                 }
 
+                string Message3 = $"POST Model State is Invalid at {DateTime.UtcNow.ToLongTimeString()}";
+                _logger.LogInformation(Message3);
                 ModelState.AddModelError("", "Invalid username or password");
             }
 

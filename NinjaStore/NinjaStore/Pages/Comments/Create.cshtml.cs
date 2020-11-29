@@ -25,6 +25,8 @@ namespace NinjaStore.Pages.Comments
         public IActionResult OnGet()
         {
             // HTTP 405 Method Not Allowed
+            string Message = $"GET HTTP 405 Method Not Allowed {DateTime.UtcNow.ToLongTimeString()}";
+            _logger.LogInformation(Message);
             return StatusCode(405);
         }
 
@@ -32,12 +34,17 @@ namespace NinjaStore.Pages.Comments
         {
             if (!ModelState.IsValid)
             {
+                string Message2 = $"POST Model State is not Valid at {DateTime.UtcNow.ToLongTimeString()}";
+                _logger.LogInformation(Message2);
                 return Page();
             }
 
             await _logic.InsertCommentAsync(fileId, User.Identity.Name, commentText);
-            string Message = $"POST Comment added to file {DateTime.UtcNow.ToLongTimeString()}";
+            string Message = $"POST Comment added to file at {DateTime.UtcNow.ToLongTimeString()}";
             _logger.LogInformation(Message);
+
+            string Message3 = $"POST Redirecting to ../Files/Details at {DateTime.UtcNow.ToLongTimeString()}";
+            _logger.LogInformation(Message3);
 
             return RedirectToPage("../Files/Details", new {id = fileId });
         }

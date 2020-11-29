@@ -29,6 +29,8 @@ namespace NinjaStore.Pages.Account
         public IActionResult OnGet()
         {
             // HTTP 405 Method Not Allowed
+            string Message = $"GET HTTP 405 Method Not Allowed {DateTime.UtcNow.ToLongTimeString()}";
+            _logger.LogInformation(Message);
             return StatusCode(405);
         }
 
@@ -36,7 +38,7 @@ namespace NinjaStore.Pages.Account
         {
             if (string.IsNullOrWhiteSpace(username))
             {
-                string Message = $"POST Username is empty null or only consists of whitespaces : {DateTime.UtcNow.ToLongTimeString()}";
+                string Message = $"POST Username {username} is empty null or only consists of whitespaces : {DateTime.UtcNow.ToLongTimeString()}";
                 _logger.LogInformation(Message);
                 return NotFound();
             }
@@ -45,7 +47,7 @@ namespace NinjaStore.Pages.Account
 
             if (user == null)
             {
-                string Message = $"POST User not found {DateTime.UtcNow.ToLongTimeString()}";
+                string Message = $"POST User {username} not found {DateTime.UtcNow.ToLongTimeString()}";
                 _logger.LogInformation(Message);
                 return NotFound();
             }
@@ -54,7 +56,7 @@ namespace NinjaStore.Pages.Account
             
             if (isAdmin)
             {
-                string Message = $"POST Can not delete admin. {DateTime.UtcNow.ToLongTimeString()}";
+                string Message = $"POST Can not delete {user.UserName} admin. {DateTime.UtcNow.ToLongTimeString()}";
                 _logger.LogInformation(Message);
                 return Forbid();
             }
@@ -67,6 +69,8 @@ namespace NinjaStore.Pages.Account
                 ModelState.AddModelError(string.Empty, error.Description);
             }
 
+            string Message2 = $"POST Redirect to page ./List. {DateTime.UtcNow.ToLongTimeString()}";
+            _logger.LogInformation(Message2);
             return RedirectToPage("./List");
         }
     }

@@ -27,7 +27,7 @@ namespace NinjaStore.Pages.Files
         {
             if (id == null)
             {
-                string Message = $"GET ERROR: MetaData ID not found {DateTime.UtcNow.ToLongTimeString()}";
+                string Message = $"GET ERROR: MetaData ID {id} not found {DateTime.UtcNow.ToLongTimeString()}";
                 _logger.LogInformation(Message);
                 return NotFound();
             }
@@ -35,7 +35,7 @@ namespace NinjaStore.Pages.Files
             CaffMetadata = await _logic.GetMetadataWithCommentsAsync(id);
             if (CaffMetadata == null)
             {
-                string Message2 = $"GET ERROR: MetaData value is null {DateTime.UtcNow.ToLongTimeString()}";
+                string Message2 = $"GET ERROR: MetaData value with id {id} is null {DateTime.UtcNow.ToLongTimeString()}";
                 _logger.LogInformation(Message2);
                 return NotFound();
             }

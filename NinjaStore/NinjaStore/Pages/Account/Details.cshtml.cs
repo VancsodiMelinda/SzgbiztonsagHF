@@ -58,7 +58,7 @@ namespace NinjaStore.Pages.Account
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
             {
-                string Message = $"GET User not found at {DateTime.UtcNow.ToLongTimeString()}";
+                string Message = $"GET User {Username} not found at {DateTime.UtcNow.ToLongTimeString()}";
                 _logger.LogInformation(Message);
             }
             Input = new InputModel();
@@ -71,6 +71,8 @@ namespace NinjaStore.Pages.Account
         {
             if (!ModelState.IsValid)
             {
+                string Message = $"POST Model State is not valid at {DateTime.UtcNow.ToLongTimeString()}";
+                _logger.LogInformation(Message);
                 return Page();
             }
             
@@ -78,7 +80,7 @@ namespace NinjaStore.Pages.Account
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
             {
-                string Message = $"GET User not found at {DateTime.UtcNow.ToLongTimeString()}";
+                string Message = $"POST User {Username} not found at {DateTime.UtcNow.ToLongTimeString()}";
                 _logger.LogInformation(Message);
             }
             bool oldPassIsValid = await _userManager.CheckPasswordAsync(user, Input.OldPassword);
@@ -104,6 +106,8 @@ namespace NinjaStore.Pages.Account
                         // Upon successfully changing the password refresh sign-in cookie
                         await _signInManager.RefreshSignInAsync(user);
                         TempData["Success"] = "Your password is successfully changed.";
+                        string Message = $"POST password successfully changed at {DateTime.UtcNow.ToLongTimeString()}";
+                        _logger.LogInformation(Message);
                         return Page();
                     }
 

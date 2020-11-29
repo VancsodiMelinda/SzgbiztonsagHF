@@ -48,6 +48,8 @@ namespace NinjaStore.Pages.Files
         {
             if (!ModelState.IsValid)
             {
+                string Message = $"POST Model State is not Valid {DateTime.UtcNow.ToLongTimeString()}";
+                _logger.LogInformation(Message);
                 return Page();
             }
 
@@ -59,7 +61,11 @@ namespace NinjaStore.Pages.Files
 					byte[] preview = memoryStream.ToArray();
 
 					string savedFileId = await _logic.UploadFileAsync(User.Identity.Name, FileName, Description, preview);
-					return RedirectToPage("./Details", new { id = savedFileId });
+
+                    string Message2 = $"POST Redirecting to page ./Details at {DateTime.UtcNow.ToLongTimeString()}";
+                    _logger.LogInformation(Message2);
+
+                    return RedirectToPage("./Details", new { id = savedFileId });
 				}
 			}
 			catch (InvalidFileNameException)

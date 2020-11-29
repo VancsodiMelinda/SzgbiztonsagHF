@@ -27,12 +27,16 @@ namespace NinjaStore.Pages.Account
         public IActionResult OnGet()
         {
             // HTTP 405 Method Not Allowed
+            string Message = $"GET HTTP 405 Method Not Allowed at {DateTime.UtcNow.ToLongTimeString()}";
+            _logger.LogInformation(Message);
             return StatusCode(405);
         }
 
         public async Task<IActionResult> OnPostAsync()
         {
             await _signInManager.SignOutAsync();
+            string Message = $"POST Redirect to Page ../Index at {DateTime.UtcNow.ToLongTimeString()}";
+            _logger.LogInformation(Message);
             return RedirectToPage("../Index");
         }
     }

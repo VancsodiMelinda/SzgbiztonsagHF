@@ -25,7 +25,7 @@ namespace NinjaStore.Pages.Files
         {
             if (string.IsNullOrWhiteSpace(id))
             {
-                string Message = $"GET ERROR: File not found {DateTime.UtcNow.ToLongTimeString()}";
+                string Message = $"GET ERROR: File not found with id {id} at {DateTime.UtcNow.ToLongTimeString()}";
                 _logger.LogInformation(Message);
                 return NotFound();
             }
@@ -33,11 +33,11 @@ namespace NinjaStore.Pages.Files
 
             if (file != null)
             {
-                string Message2 = $"GET file downloaded at {DateTime.UtcNow.ToLongTimeString()}";
+                string Message2 = $"GET file {file.Metadata.FileName}.caff downloaded at {DateTime.UtcNow.ToLongTimeString()}";
                 _logger.LogInformation(Message2);
                 return File(file.Data, "application/octet-stream", file.Metadata.FileName + ".caff");
             }
-            string Message3 = $"GET ERROR: File value is null {DateTime.UtcNow.ToLongTimeString()}";
+            string Message3 = $"GET ERROR: File with id {id} has null value {DateTime.UtcNow.ToLongTimeString()}";
             _logger.LogInformation(Message3);
             return NotFound();
         }

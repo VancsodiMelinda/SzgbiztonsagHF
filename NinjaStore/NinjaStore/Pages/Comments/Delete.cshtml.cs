@@ -27,6 +27,8 @@ namespace NinjaStore.Pages.Comments
         public IActionResult OnGet()
         {
             // HTTP 405 Method Not Allowed
+            string Message = $"GET HTTP 405 Method Not Allowed {DateTime.UtcNow.ToLongTimeString()}";
+            _logger.LogInformation(Message);
             return StatusCode(405);
         }
 
@@ -34,7 +36,7 @@ namespace NinjaStore.Pages.Comments
         {
             if (id == null)
             {
-                string Message = $"POST ERROR: Comment ID not found {DateTime.UtcNow.ToLongTimeString()}";
+                string Message = $"POST ERROR: Comment ID {id} not found {DateTime.UtcNow.ToLongTimeString()}";
                 _logger.LogInformation(Message);
                 return NotFound();
             }
@@ -43,7 +45,7 @@ namespace NinjaStore.Pages.Comments
 
             if (comment == null)
             {
-                string Message2 = $"POST ERROR: Comment value is null {DateTime.UtcNow.ToLongTimeString()}";
+                string Message2 = $"POST ERROR: Comment with id {id} has value of null {DateTime.UtcNow.ToLongTimeString()}";
                 _logger.LogInformation(Message2);
                 return NotFound();
             }
@@ -52,6 +54,8 @@ namespace NinjaStore.Pages.Comments
             
             if (user == null)
 			{
+                string Message = $"POST User {user.UserName} is not authorized at {DateTime.UtcNow.ToLongTimeString()}";
+                _logger.LogInformation(Message);
                 return Unauthorized();
 			}
 
@@ -59,11 +63,13 @@ namespace NinjaStore.Pages.Comments
             bool isAdmin = await _userManager.IsInRoleAsync(user, Roles.ADMIN);
             if (!isOwnComment && !isAdmin)
 			{
+                string Message = $"POST User {user.UserName} is not authorized at {DateTime.UtcNow.ToLongTimeString()}";
+                _logger.LogInformation(Message);
                 return Unauthorized();
             }
 
             await _logic.DeleteCommentAsync(comment.Id);
-            string Message3 = $"POST Comment is deleted {DateTime.UtcNow.ToLongTimeString()}";
+            string Message3 = $"POST Comment {comment.Id} is deleted {DateTime.UtcNow.ToLongTimeString()}";
             _logger.LogInformation(Message3);
 
             return RedirectToPage("../Files/Details", new { id = comment.CaffMetadataFileId });

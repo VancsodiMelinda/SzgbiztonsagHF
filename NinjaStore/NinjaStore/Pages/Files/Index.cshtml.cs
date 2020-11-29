@@ -30,7 +30,7 @@ namespace NinjaStore.Pages.Files
         public async Task<IActionResult> OnGetAsync()
         {
             CaffMetadata = await _logic.QueryMetadataByFreeTextAsync(Filter);
-            string Message = $"GET MetaData Query at {DateTime.UtcNow.ToLongTimeString()}";
+            string Message = $"GET Querying CaffMetadata list at {DateTime.UtcNow.ToLongTimeString()}";
             _logger.LogInformation(Message);
             return Page();
         }

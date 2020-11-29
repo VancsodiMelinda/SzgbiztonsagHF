@@ -57,7 +57,7 @@ namespace NinjaStore.Pages.Account
             var user = await _userManager.FindByNameAsync(id);
             if (user == null)
             {
-                string Message = $"GET User not found at {DateTime.UtcNow.ToLongTimeString()}";
+                string Message = $"GET User not found by id {id} , {DateTime.UtcNow.ToLongTimeString()}";
                 _logger.LogInformation(Message);
             }
             Input = new InputModel();
@@ -70,13 +70,15 @@ namespace NinjaStore.Pages.Account
         {
             if (!ModelState.IsValid)
             {
+                string Message = $"POST Model State is not valid at {DateTime.UtcNow.ToLongTimeString()}";
+                _logger.LogInformation(Message);
                 return Page();
             }
 
             var user = await _userManager.FindByNameAsync(Username);
             if (user == null)
             {
-                string Message = $"GET User not found at {DateTime.UtcNow.ToLongTimeString()}";
+                string Message = $"POST User {Username} not found at {DateTime.UtcNow.ToLongTimeString()}";
                 _logger.LogInformation(Message);
             }
 

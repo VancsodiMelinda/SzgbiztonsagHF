@@ -38,8 +38,6 @@ namespace NinjaStore.Pages.Account
 
         public async Task<IActionResult> OnGetAsync()
         {
-            string Message = $"GET User not found at {DateTime.UtcNow.ToLongTimeString()}";
-            _logger.LogInformation(Message);
 
             
             AdminList = new List<UserModel>();

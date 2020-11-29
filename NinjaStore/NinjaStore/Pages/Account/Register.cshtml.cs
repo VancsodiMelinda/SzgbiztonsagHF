@@ -66,6 +66,8 @@ namespace NinjaStore.Pages.Account
         {
             if (!ModelState.IsValid)
             {
+                string Message = $"POST Model State is not Valid at {DateTime.UtcNow.ToLongTimeString()}";
+                _logger.LogInformation(Message);
                 return Page();
             }
 
@@ -87,6 +89,9 @@ namespace NinjaStore.Pages.Account
                     _logger.LogInformation(Message);
 
                     await _signInManager.SignInAsync(user, false);
+
+                    string Message2 = $"POST Redirect to page ../Index at {DateTime.UtcNow.ToLongTimeString()}";
+                    _logger.LogInformation(Message2);
 
                     return RedirectToPage("../Index");
                 }

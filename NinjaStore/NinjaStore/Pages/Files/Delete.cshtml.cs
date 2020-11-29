@@ -28,7 +28,7 @@ namespace NinjaStore.Pages.Files
         {
             if (id == null)
             {
-                string Message = $"GET ERROR: MetaData ID not found {DateTime.UtcNow.ToLongTimeString()}";
+                string Message = $"GET ERROR: MetaData ID {id} not found {DateTime.UtcNow.ToLongTimeString()}";
                 _logger.LogInformation(Message);
                 return NotFound();
             }
@@ -37,7 +37,7 @@ namespace NinjaStore.Pages.Files
 
             if (CaffMetadata == null)
             {
-                string Message2 = $"GET ERROR: MetaData value is null {DateTime.UtcNow.ToLongTimeString()}";
+                string Message2 = $"GET ERROR: MetaData {id} value is null {DateTime.UtcNow.ToLongTimeString()}";
                 _logger.LogInformation(Message2);
                 return NotFound();
             }
@@ -48,13 +48,13 @@ namespace NinjaStore.Pages.Files
         {
             if (id == null)
             {
-                string Message = $"POST ERROR: MetaData ID not found {DateTime.UtcNow.ToLongTimeString()}";
+                string Message = $"POST ERROR: MetaData ID {id} not found {DateTime.UtcNow.ToLongTimeString()}";
                 _logger.LogInformation(Message);
                 return NotFound();
             }
 
             await _logic.DeleteFileAsync(id);
-            string Message2 = $"POST CaffMetadata is deleted {DateTime.UtcNow.ToLongTimeString()}";
+            string Message2 = $"POST CaffMetadata with id {id} is deleted {DateTime.UtcNow.ToLongTimeString()}";
             _logger.LogInformation(Message2);
 
             return RedirectToPage("./Index");
