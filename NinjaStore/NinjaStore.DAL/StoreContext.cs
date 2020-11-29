@@ -27,6 +27,11 @@ namespace NinjaStore.DAL
 			modelBuilder.Entity<Comment>()
 				.Property(c => c.CaffMetadataFileId)
 				.HasColumnName("FileId");
+
+			modelBuilder.Entity<Comment>()
+				.HasOne(c => c.User)
+				.WithMany()
+				.IsRequired();
 		}
 	}
 }

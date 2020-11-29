@@ -133,6 +133,21 @@ namespace NinjaStore.BLL
 			}
 		}
 
+		public async Task RemoveUserFromFilesAsync(string username)
+		{
+			List<CaffMetadata> metadataList = await _storeContext.CaffMetadata
+				.Where(cm => cm.User.UserName == username)
+				.Include(cm => cm.User)
+				.ToListAsync();
+
+			foreach (var metadata in metadataList)
+			{
+				metadata.User = null;
+			}
+
+			_storeContext.SaveChanges();
+		}
+
 		public async Task<Comment> GetCommentAsync(int id)
 		{
 			Comment comment = await _storeContext.Comments

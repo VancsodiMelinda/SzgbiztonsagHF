@@ -14,14 +14,6 @@ namespace NinjaStore.DAL.Migrations
                 name: "FK_Files_AspNetUsers_Username",
                 table: "Files");
 
-            migrationBuilder.DropIndex(
-                name: "IX_Comments_Username",
-                table: "Comments");
-
-            migrationBuilder.DropColumn(
-                name: "Username",
-                table: "Comments");
-
             migrationBuilder.RenameColumn(
                 name: "Username",
                 table: "Files",
@@ -32,16 +24,15 @@ namespace NinjaStore.DAL.Migrations
                 table: "Files",
                 newName: "IX_Files_UserId");
 
-            migrationBuilder.AddColumn<string>(
-                name: "UserId",
+            migrationBuilder.RenameColumn(
+                name: "Username",
                 table: "Comments",
-                type: "nvarchar(450)",
-                nullable: true);
+                newName: "UserId");
 
-            migrationBuilder.CreateIndex(
-                name: "IX_Comments_UserId",
+            migrationBuilder.RenameIndex(
+                name: "IX_Comments_Username",
                 table: "Comments",
-                column: "UserId");
+                newName: "IX_Comments_UserId");
 
             migrationBuilder.AddForeignKey(
                 name: "FK_Comments_AspNetUsers_UserId",
@@ -49,7 +40,7 @@ namespace NinjaStore.DAL.Migrations
                 column: "UserId",
                 principalTable: "AspNetUsers",
                 principalColumn: "Id",
-                onDelete: ReferentialAction.Restrict);
+                onDelete: ReferentialAction.Cascade);
 
             migrationBuilder.AddForeignKey(
                 name: "FK_Files_AspNetUsers_UserId",
@@ -70,14 +61,6 @@ namespace NinjaStore.DAL.Migrations
                 name: "FK_Files_AspNetUsers_UserId",
                 table: "Files");
 
-            migrationBuilder.DropIndex(
-                name: "IX_Comments_UserId",
-                table: "Comments");
-
-            migrationBuilder.DropColumn(
-                name: "UserId",
-                table: "Comments");
-
             migrationBuilder.RenameColumn(
                 name: "UserId",
                 table: "Files",
@@ -88,17 +71,15 @@ namespace NinjaStore.DAL.Migrations
                 table: "Files",
                 newName: "IX_Files_Username");
 
-            migrationBuilder.AddColumn<string>(
-                name: "Username",
+            migrationBuilder.RenameColumn(
+                name: "UserId",
                 table: "Comments",
-                type: "nvarchar(450)",
-                nullable: false,
-                defaultValue: "");
+                newName: "Username");
 
-            migrationBuilder.CreateIndex(
-                name: "IX_Comments_Username",
+            migrationBuilder.RenameIndex(
+                name: "IX_Comments_UserId",
                 table: "Comments",
-                column: "Username");
+                newName: "IX_Comments_Username");
 
             migrationBuilder.AddForeignKey(
                 name: "FK_Comments_AspNetUsers_Username",

@@ -13,6 +13,7 @@ namespace NinjaStore.BLL
 		Task<string> UploadFileAsync(string username, string fileName, string description, byte[] content);
 		Task<CaffFile> DownloadFileAsync(string fileId);
 		Task DeleteFileAsync(string fileId);
+		Task RemoveUserFromFilesAsync(string username);
 		Task<Comment> GetCommentAsync(int id);
 		Task<int> InsertCommentAsync(string fileId, string username, string comment);
 		Task DeleteCommentAsync(int id);
