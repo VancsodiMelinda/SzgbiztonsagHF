@@ -35,12 +35,10 @@ namespace NinjaStore.Pages.Comments
                 return Page();
             }
 
+            await _logic.InsertCommentAsync(fileId, User.Identity.Name, commentText);
             string Message = $"POST Comment added to file {DateTime.UtcNow.ToLongTimeString()}";
             _logger.LogInformation(Message);
-            string Message2 = $"POST File ID is {fileId}";
-            _logger.LogInformation(Message2);
 
-            await _logic.InsertCommentAsync(fileId, User.Identity.Name, commentText);
             return RedirectToPage("../Files/Details", new {id = fileId });
         }
     }

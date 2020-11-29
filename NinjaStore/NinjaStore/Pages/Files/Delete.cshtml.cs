@@ -53,16 +53,9 @@ namespace NinjaStore.Pages.Files
                 return NotFound();
             }
 
-            CaffMetadata = await _logic.GetMetadataWithCommentsAsync(id);
-
-            if (CaffMetadata != null)
-            {
-                string Message2 = $"POST CaffMetadata is deleted {DateTime.UtcNow.ToLongTimeString()}";
-                _logger.LogInformation(Message2);
-                string Message3 = $"POST CaffMetadata ID was {id}";
-                _logger.LogInformation(Message3);
-                await _logic.DeleteFileAsync(id);
-            }
+            await _logic.DeleteFileAsync(id);
+            string Message2 = $"POST CaffMetadata is deleted {DateTime.UtcNow.ToLongTimeString()}";
+            _logger.LogInformation(Message2);
 
             return RedirectToPage("./Index");
         }

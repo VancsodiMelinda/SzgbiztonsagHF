@@ -8,7 +8,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using NinjaStore.BLL;
+using NinjaStore.BLL.Exceptions;
 using NinjaStore.DAL.Models;
+using NinjaStore.Parser.Exceptions;
 
 namespace NinjaStore.Pages.Files
 {
@@ -49,14 +51,39 @@ namespace NinjaStore.Pages.Files
                 return Page();
             }
 
-            using (var memoryStream = new MemoryStream())
-            {
-                await NewFile.CopyToAsync(memoryStream);
-                byte[] preview = memoryStream.ToArray();
+			try
+			{
+				using (var memoryStream = new MemoryStream())
+				{
+					await NewFile.CopyToAsync(memoryStream);
+					byte[] preview = memoryStream.ToArray();
 
-                string savedFileId = await _logic.UploadFileAsync(User.Identity.Name, FileName, Description, preview);
-                return RedirectToPage("./Details", new { id = savedFileId });
+					string savedFileId = await _logic.UploadFileAsync(User.Identity.Name, FileName, Description, preview);
+					return RedirectToPage("./Details", new { id = savedFileId });
+				}
+			}
+			catch (InvalidFileNameException)
+			{
+                ModelState.AddModelError("", "Invalid file name");
+			}
+            catch (EmptyFileException)
+            {
+                ModelState.AddModelError("", "Cannot upload empty file");
             }
+            catch (LargeFileException lfe)
+            {
+                ModelState.AddModelError("", $"File size exceeds the maximum of {lfe.MaxSize} bytes");
+            }
+            catch (FileNameTakenException)
+            {
+                ModelState.AddModelError("", "File name already taken by this user");
+            }
+            catch (InvalidCaffFileContentException)
+            {
+                ModelState.AddModelError("", "Invalid CAFF file content");
+            }
+
+            return Page();
         }
     }
 }

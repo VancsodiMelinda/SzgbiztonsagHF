@@ -62,7 +62,7 @@ namespace NinjaStore.Pages.Comments
                 return Unauthorized();
             }
 
-            await _logic.DeleteCommentAsync((int)id);
+            await _logic.DeleteCommentAsync(comment.Id);
             string Message3 = $"POST Comment is deleted {DateTime.UtcNow.ToLongTimeString()}";
             _logger.LogInformation(Message3);
 

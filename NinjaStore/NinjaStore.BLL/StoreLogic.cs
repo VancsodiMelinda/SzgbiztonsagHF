@@ -1,13 +1,14 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using NinjaStore.BLL.Exceptions;
 using NinjaStore.DAL;
 using NinjaStore.DAL.Models;
 using NinjaStore.Parser.Data;
 using NinjaStore.Parser.Services;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using NinjaStore.Parser.Exceptions;
 
 namespace NinjaStore.BLL
 {
@@ -41,6 +42,7 @@ namespace NinjaStore.BLL
 			List<CaffMetadata> result = await _storeContext.CaffMetadata
 				.Where(cm => string.IsNullOrWhiteSpace(filter) || cm.FileName.Contains(filter))
 				.Include(u => u.User)
+				.OrderByDescending(cm => cm.UploadTimestamp)
 				.ToListAsync();
 
 			return result;
@@ -50,29 +52,38 @@ namespace NinjaStore.BLL
 		{
 			if (string.IsNullOrWhiteSpace(fileName))
 			{
-				throw new InternalParserException("Input file name contains '.'");
+				throw new InvalidFileNameException();
 			}
 
-			if (fileName.IndexOfAny(System.IO.Path.GetInvalidFileNameChars()) != -1)
+			char[] invalidCharacters = Path.GetInvalidFileNameChars();
+			if (fileName.IndexOfAny(invalidCharacters) != -1)
 			{
-				throw new InternalParserException("Regex failure for filename.");
+				throw new InvalidFileNameException();
 			}
 
 			if (content == null || content.Length == 0)
 			{
-				throw new InvalidCaffFileContentException("File is null.");
+				throw new EmptyFileException();
 			}
 
 			if (content.Length > MAX_FILE_SIZE)
 			{
-				throw new InvalidCaffFileContentException("Too much blocks");
+				throw new LargeFileException(MAX_FILE_SIZE);
 			}
 
 			User user = await _storeContext.Users.FirstOrDefaultAsync(u => u.UserName == username);
 
 			if (user == null)
 			{
-				// TODO Dani: throw exception
+				throw new UsernameNotFoundException(username);
+			}
+
+			bool fileNameAlreadyExistsForUser = await _storeContext.CaffMetadata
+				.AnyAsync(cm => cm.User.Id == user.Id && cm.FileName == fileName);
+
+			if (fileNameAlreadyExistsForUser)
+			{
+				throw new FileNameTakenException(fileName, username);
 			}
 
 			string fileId = Guid.NewGuid().ToString("N");
@@ -160,21 +171,21 @@ namespace NinjaStore.BLL
 		{
 			if (string.IsNullOrWhiteSpace(comment))
 			{
-				throw new InvalidCaffFileContentException("Input file name contains '.'");
+				throw new EmptyCommentException();
 			}
 
 			CaffMetadata metadata = await GetMetadataWithCommentsAsync(fileId);
 
 			if (metadata == null)
 			{
-				throw new InvalidCaffFileContentException("Metadata null.");
+				throw new FileNotFoundException(fileId);
 			}
 
 			User user = await _storeContext.Users.FirstOrDefaultAsync(u => u.UserName == username);
 
 			if(user == null)
 			{
-				// TODO Dani: throw exception
+				throw new UsernameNotFoundException(username);
 			}
 
 			Comment newComment = new Comment
